@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PROFILE } from '@/data/profile';
 import { RESEARCH } from '@/data/research';
 import type { ResearchItem } from '@/types';
 
@@ -87,7 +88,7 @@ export default function ResearchApp() {
           className="flex items-center px-4 h-7 shrink-0 text-[10.5px]"
           style={{ borderTop: '1px solid var(--os-border)', color: 'var(--os-text-3)', background: 'rgba(255,255,255,0.01)' }}
         >
-          Last updated: May 2025
+          Last updated: {PROFILE.lastUpdated}
         </div>
       </div>
     </div>

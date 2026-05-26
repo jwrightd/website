@@ -3,18 +3,30 @@ import type { Skill } from '@/types';
 export const SKILLS: Skill[] = [
   {
     category: 'Languages',
-    items: ['Python', 'TypeScript', 'JavaScript', 'C', 'Java', 'SQL', 'R'],
+    items: ['Python', 'Java', 'C++', 'C', 'TypeScript', 'HTML', 'CSS'],
   },
   {
-    category: 'ML / Data',
-    items: ['PyTorch', 'JAX', 'scikit-learn', 'pandas', 'NumPy', 'torchcde', 'HuggingFace'],
-  },
-  {
-    category: 'Web',
-    items: ['React', 'Next.js', 'FastAPI', 'Node.js', 'WebSockets', 'REST APIs'],
-  },
-  {
-    category: 'Tools',
-    items: ['Git', 'Docker', 'PostgreSQL', 'Linux', 'Jupyter', 'LaTeX'],
+    category: 'Libraries & Tools',
+    items: [
+      'NumPy',
+      'Scikit-learn',
+      'Pandas',
+      'Matplotlib',
+      'Keras',
+      'NLTK',
+      'Hugging Face',
+      'React',
+      'FastAPI',
+      'LangGraph',
+      'Firebase',
+      'OpenCV',
+      'Roboflow',
+      'WebSockets',
+      'Gemini API',
+      'Whisper',
+      'ElevenLabs',
+      'DigitalOcean',
+      'Auth0',
+    ],
   },
 ];

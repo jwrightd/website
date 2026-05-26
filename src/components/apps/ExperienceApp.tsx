@@ -1,15 +1,17 @@
 'use client';
 
 import { EXPERIENCE } from '@/data/experience';
+import { PROFILE } from '@/data/profile';
 
 const STATUS: Record<string, { dot: string; label: string }> = {
   Active:    { dot: '#32d74b', label: 'Active' },
   Completed: { dot: '#4f8ef7', label: 'Completed' },
+  Incoming:  { dot: '#ffd60a', label: 'Incoming' },
   'On Hold': { dot: '#ffd60a', label: 'On Hold' },
 };
 
 export default function ExperienceApp() {
-  const active = EXPERIENCE.filter((e) => e.status === 'Active').length;
+  const active = EXPERIENCE.filter((e) => e.status === 'Active' || e.status === 'Incoming').length;
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
@@ -97,7 +99,7 @@ export default function ExperienceApp() {
         style={{ borderTop: '1px solid var(--os-border)', color: 'var(--os-text-3)', background: 'rgba(255,255,255,0.01)' }}
       >
         <span>{EXPERIENCE.length} processes · {active} active · {EXPERIENCE.length - active} completed</span>
-        <span>Last updated: 2025</span>
+        <span>Last updated: {PROFILE.lastUpdated}</span>
       </div>
     </div>
   );

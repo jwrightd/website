@@ -1,176 +1,331 @@
 'use client';
 
-import { useState } from 'react';
-import { GitBranch, ExternalLink, Trophy, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import { ExternalLink, FolderOpen, GitBranch, Link2 } from 'lucide-react';
 import { PROJECTS } from '@/data/projects';
-import type { Project } from '@/types';
+import type { Project, ProjectLink } from '@/types';
 
-export default function ProjectsApp() {
-  const [selectedId, setSelectedId] = useState<string>(PROJECTS[0].id);
-  const selected = PROJECTS.find((p) => p.id === selectedId) ?? PROJECTS[0];
+interface ProjectsAppProps {
+  selectedId: string;
+  onSelectProject: (id: string) => void;
+  isMobile?: boolean;
+}
+
+export default function ProjectsApp({
+  selectedId,
+  onSelectProject,
+  isMobile = false,
+}: ProjectsAppProps) {
+  const selected = PROJECTS.find((project) => project.id === selectedId) ?? PROJECTS[0];
+
+  if (isMobile) {
+    return (
+      <div className="flex h-full flex-col overflow-auto">
+        <div
+          className="border-b px-4 py-4"
+          style={{ borderColor: 'var(--os-border)', background: 'rgba(255,255,255,0.02)' }}
+        >
+          <div className="flex items-center gap-2 text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
+            <FolderOpen size={15} />
+            Projects
+          </div>
+          <p className="mt-1 text-[12px]" style={{ color: 'var(--os-text-2)' }}>
+            Open a project to review the problem, build details, and outcomes.
+          </p>
+        </div>
+
+        <div className="border-b px-4 py-3" style={{ borderColor: 'var(--os-border)' }}>
+          <div className="flex gap-2 overflow-x-auto pb-1">
+            {PROJECTS.map((project) => {
+              const isSelected = project.id === selected.id;
+              return (
+                <button
+                  key={project.id}
+                  onClick={() => onSelectProject(project.id)}
+                  className="min-w-[150px] rounded-lg border px-3 py-2 text-left"
+                  style={{
+                    borderColor: isSelected ? 'rgba(79,142,247,0.34)' : 'rgba(255,255,255,0.08)',
+                    background: isSelected ? 'rgba(79,142,247,0.12)' : 'rgba(255,255,255,0.03)',
+                  }}
+                >
+                  <p className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+                    {project.name}
+                  </p>
+                  <p className="mt-0.5 text-[11px]" style={{ color: 'var(--os-text-3)' }}>
+                    {project.category}
+                  </p>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <ProjectDetail project={selected} isMobile />
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-full overflow-hidden">
-      {/* ── Finder sidebar ─────────────────────────────── */}
       <div
-        className="w-[196px] shrink-0 flex flex-col overflow-y-auto"
+        className="flex w-[222px] shrink-0 flex-col overflow-y-auto"
         style={{
           background: 'var(--os-sidebar)',
           borderRight: '1px solid var(--os-border)',
         }}
       >
         <div className="px-3 pt-3 pb-2">
-          <p className="text-[10px] font-semibold uppercase tracking-widest px-2" style={{ color: 'var(--os-text-3)' }}>
+          <p className="px-2 text-[12px] font-medium" style={{ color: 'var(--os-text-2)' }}>
             Projects
           </p>
         </div>
 
-        {PROJECTS.map((project) => (
-          <button
-            key={project.id}
-            onClick={() => setSelectedId(project.id)}
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-left transition-colors"
-            style={{
-              background: selectedId === project.id ? 'rgba(79,142,247,0.18)' : 'transparent',
-              borderLeft: selectedId === project.id ? '2px solid #4f8ef7' : '2px solid transparent',
-            }}
-          >
-            <span className="text-[16px]">📁</span>
-            <span
-              className="text-[12.5px] font-medium truncate"
-              style={{ color: selectedId === project.id ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.55)' }}
+        {PROJECTS.map((project) => {
+          const isSelected = selectedId === project.id;
+
+          return (
+            <button
+              key={project.id}
+              onClick={() => onSelectProject(project.id)}
+              className="w-full border-l-2 px-4 py-3 text-left transition-colors"
+              style={{
+                background: isSelected ? 'rgba(79,142,247,0.14)' : 'transparent',
+                borderLeftColor: isSelected ? '#4f8ef7' : 'transparent',
+              }}
             >
-              {project.name}
-            </span>
-          </button>
-        ))}
+              <p
+                className="text-[12.5px] font-medium"
+                style={{ color: isSelected ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.62)' }}
+              >
+                {project.name}
+              </p>
+              <p className="mt-1 text-[11px]" style={{ color: 'var(--os-text-3)' }}>
+                {project.category}
+              </p>
+              <p className="mt-1 line-clamp-2 text-[11px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
+                {project.summary}
+              </p>
+            </button>
+          );
+        })}
 
         <div className="flex-1" />
         <div
-          className="px-4 py-2.5 text-[10.5px]"
+          className="px-4 py-2.5 text-[11px]"
           style={{ color: 'var(--os-text-3)', borderTop: '1px solid var(--os-border)' }}
         >
-          {PROJECTS.length} items
+          {PROJECTS.length} projects indexed
         </div>
       </div>
 
-      {/* ── Detail pane ────────────────────────────────── */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Path bar */}
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <div
-          className="flex items-center gap-1 px-4 h-8 shrink-0"
-          style={{ borderBottom: '1px solid var(--os-border)', background: 'rgba(255,255,255,0.02)' }}
+          className="flex h-8 items-center gap-2 px-4 text-[11px]"
+          style={{ borderBottom: '1px solid var(--os-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--os-text-3)' }}
         >
-          <span className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>~/projects</span>
-          <ChevronRight size={11} style={{ color: 'var(--os-text-3)' }} />
-          <span className="text-[11px]" style={{ color: 'var(--os-text-2)' }}>{selected.name}</span>
+          <span>Projects</span>
+          <span>/</span>
+          <span style={{ color: 'var(--os-text-2)' }}>{selected.name}</span>
         </div>
 
         <ProjectDetail project={selected} />
 
-        {/* Status bar */}
         <div
-          className="flex items-center justify-between px-4 h-7 shrink-0 text-[10.5px]"
+          className="flex h-7 items-center justify-between px-4 text-[10.5px]"
           style={{ borderTop: '1px solid var(--os-border)', color: 'var(--os-text-3)', background: 'rgba(255,255,255,0.01)' }}
         >
-          <span>~/projects/{selected.id}</span>
-          {selected.result && <span style={{ color: '#fbbf24' }}>{selected.result}</span>}
+          <span>{selected.category}</span>
+          <span>{selected.status}</span>
         </div>
       </div>
     </div>
   );
 }
 
-function ProjectDetail({ project }: { project: Project }) {
+function ProjectDetail({ project, isMobile = false }: { project: Project; isMobile?: boolean }) {
   return (
-    <div className="flex-1 overflow-auto px-6 py-5 flex flex-col gap-5">
-      {/* Name + badge */}
-      <div>
-        <div className="flex items-center gap-2.5 mb-1.5">
-          <h2 className="text-[18px] font-bold" style={{ color: 'var(--os-text)' }}>
-            {project.name}
-          </h2>
-          {project.result && (
+    <div className={`flex-1 overflow-auto ${isMobile ? 'px-4 py-4' : 'px-6 py-5'}`}>
+      <div className="flex flex-col gap-5">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-[18px] font-semibold" style={{ color: 'var(--os-text)' }}>
+              {project.name}
+            </h2>
             <span
-              className="flex items-center gap-1 px-2 py-0.5 rounded text-[10.5px] font-medium"
-              style={{ background: 'rgba(251,191,36,0.12)', border: '1px solid rgba(251,191,36,0.22)', color: '#fbbf24' }}
-            >
-              <Trophy size={9} /> {project.result}
-            </span>
-          )}
-        </div>
-        <p className="text-[13px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
-          {project.description}
-        </p>
-      </div>
-
-      {/* Tech stack */}
-      <div>
-        <Label>Tech Stack</Label>
-        <div className="flex flex-wrap gap-1.5 mt-2">
-          {project.tech.map((t) => (
-            <span
-              key={t}
-              className="px-2 py-0.5 rounded text-[11.5px] font-mono"
+              className="rounded-md border px-2 py-0.5 text-[11px]"
               style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.09)',
-                color: 'rgba(255,255,255,0.62)',
+                borderColor: 'rgba(255,255,255,0.08)',
+                background: 'rgba(255,255,255,0.03)',
+                color: 'var(--os-text-2)',
               }}
             >
-              {t}
+              {project.status}
             </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Links */}
-      {(project.github || project.demo || project.devpost || project.writeup) && (
-        <div>
-          <Label>Links</Label>
-          <div className="flex gap-2 mt-2">
-            {project.github && (
-              <LinkBtn href={project.github} icon={<GitBranch size={12} />} label="GitHub" />
-            )}
-            {project.devpost && (
-              <LinkBtn href={project.devpost} icon={<ExternalLink size={12} />} label="Devpost" />
-            )}
-            {project.demo && (
-              <LinkBtn href={project.demo} icon={<ExternalLink size={12} />} label="Demo" />
-            )}
-            {project.writeup && (
-              <LinkBtn href={project.writeup} icon={<ExternalLink size={12} />} label="Write-up" />
-            )}
           </div>
+          <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+            {project.summary}
+          </p>
         </div>
-      )}
+
+        <div className={`${isMobile ? 'grid grid-cols-1 gap-2' : 'grid grid-cols-2 gap-3'}`}>
+          <MetaCard label="Category" value={project.category} />
+          <MetaCard label="Status" value={project.status} />
+        </div>
+
+        <DetailSection title="Overview">
+          <p className="text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+            {project.overview}
+          </p>
+        </DetailSection>
+
+        <DetailSection title="Problem">
+          <p className="text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+            {project.problem}
+          </p>
+        </DetailSection>
+
+        <DetailSection title="Approach">
+          <div className="flex flex-col gap-2">
+            {project.approach.map((item) => (
+              <p key={item} className="text-[13px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
+                {item}
+              </p>
+            ))}
+          </div>
+        </DetailSection>
+
+        <DetailSection title="Technical Challenge">
+          <p className="text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+            {project.technicalChallenge}
+          </p>
+        </DetailSection>
+
+        <DetailSection title="Result / Impact">
+          <p className="text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+            {project.result}
+          </p>
+        </DetailSection>
+
+        <DetailSection title="Tech Stack">
+          <div className="flex flex-wrap gap-1.5">
+            {project.techStack.map((item) => (
+              <span
+                key={item}
+                className="rounded-md border px-2 py-1 text-[11.5px]"
+                style={{
+                  borderColor: 'rgba(255,255,255,0.08)',
+                  background: 'rgba(255,255,255,0.04)',
+                  color: 'rgba(255,255,255,0.64)',
+                }}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </DetailSection>
+
+        {project.media && project.media.length > 0 && (
+          <DetailSection title="Images">
+            <div className="grid gap-2">
+              {project.media.map((item) => (
+                <figure
+                  key={`${project.id}-${item.alt}`}
+                  className="overflow-hidden rounded-lg border"
+                  style={{
+                    borderColor: 'rgba(255,255,255,0.08)',
+                    background: 'rgba(255,255,255,0.03)',
+                  }}
+                >
+                  <div
+                    className="relative aspect-[16/9] w-full overflow-hidden border-b"
+                    style={{
+                      borderColor: 'rgba(255,255,255,0.08)',
+                      background: 'rgba(8,11,20,0.92)',
+                    }}
+                  >
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes={isMobile ? '100vw' : '(max-width: 1280px) 100vw, 720px'}
+                      className="object-contain"
+                    />
+                  </div>
+                  <figcaption className="px-3 py-3">
+                    <p className="text-[12px]" style={{ color: 'var(--os-text)' }}>
+                      {item.alt}
+                    </p>
+                    {item.caption && (
+                      <p className="mt-1 text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
+                        {item.caption}
+                      </p>
+                    )}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </DetailSection>
+        )}
+
+        <DetailSection title="Links">
+          <div className="flex flex-wrap gap-2">
+            {project.links.map((link) => (
+              <ProjectLinkButton key={`${project.id}-${link.label}`} link={link} />
+            ))}
+          </div>
+        </DetailSection>
+      </div>
     </div>
   );
 }
 
-function Label({ children }: { children: React.ReactNode }) {
+function MetaCard({ label, value }: { label: string; value: string }) {
   return (
-    <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-3)' }}>
-      {children}
-    </p>
+    <div
+      className="rounded-lg border px-3 py-3"
+      style={{
+        borderColor: 'rgba(255,255,255,0.08)',
+        background: 'rgba(255,255,255,0.03)',
+      }}
+    >
+      <p className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>
+        {label}
+      </p>
+      <p className="mt-1 text-[12.5px] leading-[1.65]" style={{ color: 'var(--os-text-2)' }}>
+        {value}
+      </p>
+    </div>
   );
 }
 
-function LinkBtn({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
+function DetailSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section>
+      <h3 className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+        {title}
+      </h3>
+      <div className="mt-2">{children}</div>
+    </section>
+  );
+}
+
+function ProjectLinkButton({ link }: { link: ProjectLink }) {
+  const Icon = link.kind === 'github' ? GitBranch : link.kind === 'live' ? Link2 : ExternalLink;
+
   return (
     <a
-      href={href}
+      href={link.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-colors"
+      className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/6"
       style={{
-        background: 'rgba(255,255,255,0.05)',
-        border: '1px solid rgba(255,255,255,0.09)',
-        color: 'rgba(255,255,255,0.58)',
+        borderColor: 'rgba(255,255,255,0.09)',
+        background: 'rgba(255,255,255,0.03)',
+        color: 'rgba(255,255,255,0.68)',
       }}
     >
-      {icon}
-      {label}
+      <Icon size={12} />
+      {link.label}
     </a>
   );
 }

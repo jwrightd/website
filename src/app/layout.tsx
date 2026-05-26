@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "James Wright — JamesOS",
-  description: "CS + Math student at Duke. ML, systems, data science, research.",
+  title: 'James Wright — JamesOS',
+  description: 'Mathematics and Computer Science student at Duke University working across machine learning, research engineering, and applied software.',
 };
 
 export default function RootLayout({
@@ -16,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} font-sans antialiased bg-[#080b14] overflow-hidden`}>
+      <body className="font-sans antialiased bg-[#080b14] overflow-hidden">
         {children}
       </body>
     </html>

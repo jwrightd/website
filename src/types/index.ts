@@ -7,41 +7,71 @@ export type AppId =
   | 'contact'
   | 'sysinfo';
 
+export interface WindowPosition {
+  x: number;
+  y: number;
+}
+
+export interface WindowSize {
+  width: number;
+  height: number;
+}
+
 export interface WindowState {
   id: AppId;
   isOpen: boolean;
   isMinimized: boolean;
   zIndex: number;
-  position: { x: number; y: number };
+  position: WindowPosition;
+  size: WindowSize;
 }
 
 export interface AppConfig {
   id: AppId;
   label: string;
   iconName: string;
-  defaultSize: { width: number; height: number };
-  defaultPosition: { x: number; y: number };
+  minSize: WindowSize;
+  defaultSize: WindowSize;
+  defaultPosition: WindowPosition;
+}
+
+export interface ProjectLink {
+  label: string;
+  href: string;
+  kind: 'github' | 'demo' | 'devpost' | 'writeup' | 'paper' | 'live';
+}
+
+export interface ProjectMedia {
+  src: string;
+  alt: string;
+  caption?: string;
 }
 
 export interface Project {
   id: string;
   name: string;
-  description: string;
-  tech: string[];
-  result?: string;
-  github?: string;
-  demo?: string;
-  devpost?: string;
-  writeup?: string;
+  category: string;
+  status: string;
+  summary: string;
+  overview: string;
+  problem: string;
+  approach: string[];
+  technicalChallenge: string;
+  result: string;
+  techStack: string[];
+  links: ProjectLink[];
+  media?: ProjectMedia[];
 }
 
 export interface Experience {
   pid: string;
   role: string;
   organization: string;
-  status: 'Active' | 'Completed' | 'On Hold';
+  location?: string;
+  status: 'Active' | 'Completed' | 'On Hold' | 'Incoming';
   focus: string;
   period: string;
+  highlights?: string[];
 }
 
 export interface ResearchItem {
@@ -56,4 +86,38 @@ export interface ResearchItem {
 export interface Skill {
   category: string;
   items: string[];
+}
+
+export interface EducationEntry {
+  id: string;
+  institution: string;
+  location: string;
+  program: string;
+  period: string;
+}
+
+export interface AchievementEntry {
+  id: string;
+  label: string;
+  detail: string;
+}
+
+export interface ContactMethod {
+  id: 'email' | 'github' | 'linkedin' | 'resume';
+  label: string;
+  address: string;
+  href: string;
+  iconName: string;
+  dot: string;
+  subject: string;
+  body: string;
+  actionLabel: string;
+  copyValue?: string;
+}
+
+export interface PortfolioReadme {
+  label: string;
+  summary: string;
+  description: string;
+  stack: string[];
 }

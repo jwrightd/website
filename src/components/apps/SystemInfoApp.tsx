@@ -1,22 +1,25 @@
 'use client';
 
 import { useState } from 'react';
+import { ACHIEVEMENTS } from '@/data/achievements';
+import { EXPERIENCE } from '@/data/experience';
+import { JAMES_OS_README, PROFILE } from '@/data/profile';
 import { SKILLS } from '@/data/skills';
 
-const SECTIONS = ['System', 'Stack', 'Skills'] as const;
+const SECTIONS = ['System', 'Stack', 'Skills', 'README'] as const;
 type Section = typeof SECTIONS[number];
 
 const SYSTEM_INFO = [
-  { label: 'Name',       value: 'James Wright' },
-  { label: 'OS',         value: 'JamesOS v1.0' },
-  { label: 'Build',      value: 'CS + Mathematics' },
-  { label: 'Institution',value: 'Duke University' },
-  { label: 'Focus',      value: 'ML · Systems · Data Science · Quant' },
-  { label: 'Kernel',     value: 'curiosity-driven-5.4.0' },
-  { label: 'Shell',      value: 'python3 + typescript' },
-  { label: 'Uptime',     value: '20+ years' },
-  { label: 'Status',     value: 'Seeking 2026 internships / research' },
-];
+  { label: 'Name', value: PROFILE.name },
+  { label: 'OS', value: 'JamesOS v1.0' },
+  { label: 'Major', value: 'Mathematics and Computer Science' },
+  { label: 'Institution', value: 'Duke University' },
+  { label: 'GPA', value: '4.0' },
+  { label: 'Current', value: PROFILE.recruiterHeadline },
+  { label: 'Focus', value: PROFILE.currentFocus },
+  { label: 'Stack', value: JAMES_OS_README.stack.join(' · ') },
+  { label: 'Resume', value: `Updated ${PROFILE.lastUpdated}` },
+] as const;
 
 export default function SystemInfoApp() {
   const [active, setActive] = useState<Section>('System');
@@ -75,6 +78,7 @@ export default function SystemInfoApp() {
           {active === 'System' && <SystemSection />}
           {active === 'Stack' && <StackSection />}
           {active === 'Skills' && <SkillsSection />}
+          {active === 'README' && <ReadmeSection />}
         </div>
 
         <div
@@ -138,19 +142,27 @@ function StackSection() {
         </div>
       ))}
       <p className="text-[11px] mt-1" style={{ color: 'var(--os-text-3)' }}>
-        {allSkills.length} packages installed
+        {allSkills.length} toolchain entries indexed
       </p>
     </div>
   );
 }
 
 function SkillsSection() {
+  const groups = [
+    {
+      label: 'Current Roles',
+      items: EXPERIENCE.map((item) => `${item.role} · ${item.organization}`),
+    },
+    {
+      label: 'Recognition',
+      items: ACHIEVEMENTS.map((item) => `${item.label} — ${item.detail}`),
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-5">
-      {[
-        { label: 'Core CS', items: ['Algorithms', 'Data Structures', 'Systems Programming', 'Linear Algebra', 'Probability', 'Optimization'] },
-        { label: 'Strengths', items: ['Applied ML', 'Research Engineering', 'Scientific Computing', 'Data Pipelines', 'API Design'] },
-      ].map((group) => (
+      {groups.map((group) => (
         <div key={group.label}>
           <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--os-text-3)' }}>
             {group.label}
@@ -172,6 +184,48 @@ function SkillsSection() {
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+function ReadmeSection() {
+  return (
+    <div className="flex flex-col gap-5">
+      <div
+        className="rounded-lg border px-4 py-4"
+        style={{ borderColor: 'var(--os-border)', background: 'rgba(255,255,255,0.03)' }}
+      >
+        <p className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
+          {JAMES_OS_README.label}
+        </p>
+        <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
+          {JAMES_OS_README.summary}
+        </p>
+        <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.44)' }}>
+          {JAMES_OS_README.description}
+        </p>
+      </div>
+
+      <div>
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-3)' }}>
+          Stack
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {JAMES_OS_README.stack.map((item) => (
+            <span
+              key={item}
+              className="rounded-md border px-2.5 py-1 text-[11.5px]"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                borderColor: 'rgba(255,255,255,0.08)',
+                color: 'rgba(255,255,255,0.62)',
+              }}
+            >
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

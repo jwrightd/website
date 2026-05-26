@@ -17,40 +17,72 @@ interface DesktopIconProps {
   label: string;
   iconName: string;
   isOpen: boolean;
-  onClick: () => void;
+  isFocused: boolean;
+  onActivate: () => void;
 }
 
-export default function DesktopIcon({ id, label, iconName, isOpen, onClick }: DesktopIconProps) {
+export default function DesktopIcon({
+  id,
+  label,
+  iconName,
+  isOpen,
+  isFocused,
+  onActivate,
+}: DesktopIconProps) {
   const Icon = ICON_MAP[iconName] ?? Cpu;
   const accent = APP_ACCENTS[id] ?? APP_ACCENTS.sysinfo;
+  const iconColor = isFocused
+    ? 'rgba(255,255,255,0.88)'
+    : isOpen
+      ? 'rgba(255,255,255,0.82)'
+      : 'rgba(255,255,255,0.40)';
 
   return (
     <motion.button
+      type="button"
+      aria-label={`${isOpen ? 'Focus' : 'Open'} ${label}`}
+      title={label}
       whileHover={{ scale: 1.05, y: -1 }}
       whileTap={{ scale: 0.94 }}
-      onClick={onClick}
-      className="flex flex-col items-center gap-1.5 w-16 py-1.5 px-1 rounded-lg group select-none focus:outline-none"
+      onClick={onActivate}
+      className="group flex w-16 flex-col items-center gap-1.5 rounded-lg px-1 py-1.5 select-none outline-none transition-colors focus-visible:bg-white/5"
     >
       <div
-        className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-150"
+        className="flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-150 group-focus-visible:ring-1"
         style={{
-          background: isOpen ? accent.iconBg : 'transparent',
-          border: isOpen ? '1px solid rgba(255,255,255,0.10)' : '1px solid transparent',
-          boxShadow: isOpen ? '0 2px 8px rgba(0,0,0,0.4)' : 'none',
+          background: isFocused
+            ? 'rgba(255,255,255,0.08)'
+            : isOpen
+              ? accent.iconBg
+              : 'transparent',
+          border: isFocused
+            ? `1px solid ${accent.dot}50`
+            : isOpen
+              ? '1px solid rgba(255,255,255,0.10)'
+              : '1px solid transparent',
+          boxShadow: isFocused
+            ? `0 0 0 1px ${accent.dot}20, 0 4px 14px rgba(0,0,0,0.42)`
+            : isOpen
+              ? '0 2px 8px rgba(0,0,0,0.4)'
+              : 'none',
         }}
       >
         <Icon
           size={20}
           strokeWidth={1.6}
-          style={{ color: isOpen ? 'rgba(255,255,255,0.82)' : 'rgba(255,255,255,0.38)' }}
-          className="group-hover:!opacity-90 transition-all"
+          style={{ color: iconColor }}
+          className="transition-all group-hover:!opacity-90 group-focus-visible:!opacity-100"
         />
       </div>
 
       <span
         className="text-[10.5px] font-medium text-center leading-tight"
         style={{
-          color: isOpen ? 'rgba(255,255,255,0.72)' : 'rgba(255,255,255,0.32)',
+          color: isFocused
+            ? 'rgba(255,255,255,0.82)'
+            : isOpen
+              ? 'rgba(255,255,255,0.72)'
+              : 'rgba(255,255,255,0.34)',
           textShadow: '0 1px 3px rgba(0,0,0,0.9)',
         }}
       >

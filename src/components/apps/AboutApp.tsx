@@ -1,18 +1,15 @@
 'use client';
 
-import { FileText, FolderOpen, Mail, ArrowRight } from 'lucide-react';
+import { ArrowRight, FileText, FolderOpen, Mail, MonitorSmartphone } from 'lucide-react';
+import { JAMES_OS_README, PROFILE } from '@/data/profile';
 import type { AppId } from '@/types';
 
 interface AboutAppProps {
   onOpen: (id: AppId) => void;
+  onOpenWorkspace: () => void;
 }
 
-const INTERESTS = [
-  'Machine Learning', 'Systems', 'Data Science',
-  'Quantitative Finance', 'Chess', 'Scientific Computing', 'Cybersecurity',
-];
-
-export default function AboutApp({ onOpen }: AboutAppProps) {
+export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -28,9 +25,9 @@ export default function AboutApp({ onOpen }: AboutAppProps) {
             JW
           </div>
           <div>
-            <h1 className="text-[16px] font-bold" style={{ color: 'var(--os-text)' }}>James Wright</h1>
+            <h1 className="text-[16px] font-bold" style={{ color: 'var(--os-text)' }}>{PROFILE.name}</h1>
             <p className="text-[12px] mt-0.5" style={{ color: 'var(--os-accent)' }}>
-              CS + Mathematics · Duke University
+              {PROFILE.subtitle}
             </p>
           </div>
         </div>
@@ -39,22 +36,16 @@ export default function AboutApp({ onOpen }: AboutAppProps) {
       {/* Bio */}
       <div className="flex-1 overflow-auto px-6 py-5 flex flex-col gap-4">
         <p className="text-[13.5px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.62)' }}>
-          I build at the intersection of{' '}
-          <span style={{ color: '#4f8ef7' }} className="font-medium">machine learning</span>,{' '}
-          <span style={{ color: '#a78bfa' }} className="font-medium">systems</span>, and{' '}
-          <span style={{ color: '#22d3ee' }} className="font-medium">data science</span>. Whether it&apos;s a
-          spatial proteomics pipeline, a multimodal Alzheimer&apos;s model, or a voice-first
-          language app — I care about work that ships and does something real.
+          {PROFILE.aboutSummary}
         </p>
 
         <p className="text-[13px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.44)' }}>
-          Outside of research and engineering I play chess competitively, think about quantitative
-          systems, and try to ship useful products.
+          {PROFILE.aboutSecondary}
         </p>
 
         {/* Interest chips */}
         <div className="flex flex-wrap gap-1.5">
-          {INTERESTS.map((tag) => (
+          {PROFILE.interests.map((tag) => (
             <span
               key={tag}
               className="px-2.5 py-0.5 rounded text-[11.5px]"
@@ -68,6 +59,44 @@ export default function AboutApp({ onOpen }: AboutAppProps) {
             </span>
           ))}
         </div>
+
+        <div
+          className="rounded-lg border px-4 py-4"
+          style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderColor: 'rgba(255,255,255,0.08)',
+          }}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+              {JAMES_OS_README.label}
+            </p>
+            <span className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>
+              Portfolio shell
+            </span>
+          </div>
+          <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
+            {JAMES_OS_README.summary}
+          </p>
+          <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.44)' }}>
+            {JAMES_OS_README.description}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {JAMES_OS_README.stack.map((item) => (
+              <span
+                key={item}
+                className="rounded-md border px-2 py-0.5 text-[11.5px]"
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  borderColor: 'rgba(255,255,255,0.08)',
+                  color: 'var(--os-text-3)',
+                }}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* CTA footer */}
@@ -78,6 +107,21 @@ export default function AboutApp({ onOpen }: AboutAppProps) {
         <p className="text-[10px] font-semibold uppercase tracking-widest mb-2.5" style={{ color: 'var(--os-text-3)' }}>
           Quick access
         </p>
+        <button
+          onClick={onOpenWorkspace}
+          className="mb-2 flex w-full items-center justify-between rounded-lg border px-3.5 py-2.5 text-left text-[12.5px] font-medium transition-colors hover:bg-white/6"
+          style={{
+            background: 'rgba(255,255,255,0.04)',
+            borderColor: 'rgba(255,255,255,0.09)',
+            color: 'rgba(255,255,255,0.74)',
+          }}
+        >
+          <span className="flex items-center gap-2">
+            <MonitorSmartphone size={13} strokeWidth={1.8} />
+            Open Workspace
+          </span>
+          <ArrowRight size={11} style={{ color: 'rgba(255,255,255,0.34)' }} />
+        </button>
         <div className="grid grid-cols-3 gap-2">
           {([
             { id: 'resume'   as AppId, icon: FileText,   label: 'Resume',   color: '#32d74b' },

@@ -21,7 +21,7 @@
 @theme inline {
   --color-background: var(--os-bg);
   --color-foreground: var(--os-text);
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
 }
 
 html, body { height: 100%; overflow: hidden; }
@@ -32,6 +32,55 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.boot-screen {
+  animation: boot-fade 0.35s ease-in 0.8s forwards;
+}
+
+.boot-content {
+  animation: boot-rise 0.25s ease-out;
+}
+
+.boot-progress {
+  width: 0;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  animation: boot-progress 0.65s cubic-bezier(0.4, 0, 0.2, 1) 0.05s forwards;
+}
+
+@keyframes boot-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes boot-progress {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes boot-fade {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 
 /* Thin OS-style scrollbars */
