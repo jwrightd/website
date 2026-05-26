@@ -17,7 +17,7 @@ export const PERSONAL_INTERESTS: PersonalInterest[] = [
       'Peaked at #41 for age 18 in June 2025',
       'Virginia College State Champion (March 2026)',
       '2x National Team Runner-Up',
-      '10th at the Cherry Blossom Classic with a 9/9 score in U2000, featured in The Washington Times.',
+      'Won the 10th Cherry Blossom Classic U2000 with a perfect 9/9 score, featured in The Washington Times.',
       'Featured again in The Washington Times for a Round 1 upset over an International Master at the 2023 North American Junior U20.',
       '12th out of 243 individually at SuperNationals VIII',
       '12th individually in the 2024 National 12th Grade Championship',
