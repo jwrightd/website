@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* ── JamesOS design tokens ─────────────────────────────── */
+:root {
+  --os-bg:          #0f0f11;
+  --os-window:      #1c1c1e;
+  --os-titlebar:    #252527;
+  --os-sidebar:     #191919;
+  --os-hover:       #2a2a2c;
+  --os-border:      rgba(255,255,255,0.07);
+  --os-border-2:    rgba(255,255,255,0.12);
+  --os-text:        rgba(255,255,255,0.85);
+  --os-text-2:      rgba(255,255,255,0.48);
+  --os-text-3:      rgba(255,255,255,0.26);
+  --os-accent:      #4f8ef7;
+  --os-green:       #32d74b;
+  --os-yellow:      #ffd60a;
+  --os-red:         #ff453a;
+}
+
+@theme inline {
+  --color-background: var(--os-bg);
+  --color-foreground: var(--os-text);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  background: var(--os-bg);
+  color: var(--os-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Thin OS-style scrollbars */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.12); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
