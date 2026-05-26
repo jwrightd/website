@@ -4,6 +4,7 @@ export type AppId =
   | 'projects'
   | 'research'
   | 'experience'
+  | 'interests'
   | 'contact'
   | 'sysinfo';
 
@@ -120,4 +121,23 @@ export interface PortfolioReadme {
   summary: string;
   description: string;
   stack: string[];
+}
+
+export interface PersonalInterestLink {
+  label: string;
+  href: string;
+  kind: 'profile' | 'article' | 'result';
+}
+
+export interface PersonalInterest {
+  id: string;
+  name: string;
+  category: string;
+  status: string;
+  summary?: string;
+  overview: string;
+  recognition: string[];
+  notes?: string[];
+  accent: string;
+  links?: PersonalInterestLink[];
 }

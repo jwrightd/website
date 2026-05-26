@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { ArrowRight, FileText, FolderOpen, Mail, MonitorSmartphone } from 'lucide-react';
 import { JAMES_OS_README, PROFILE } from '@/data/profile';
 import type { AppId } from '@/types';
@@ -19,10 +20,20 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
       >
         <div className="flex items-center gap-3.5">
           <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center text-[17px] font-black text-white shrink-0"
-            style={{ background: 'linear-gradient(145deg,#2563eb,#6d28d9)', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
+            className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border"
+            style={{
+              borderColor: 'rgba(255,255,255,0.08)',
+              background: 'rgba(255,255,255,0.04)',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.24)',
+            }}
           >
-            JW
+            <Image
+              src={PROFILE.profilePhotoSrc}
+              alt={PROFILE.profilePhotoAlt}
+              fill
+              sizes="48px"
+              className="object-cover"
+            />
           </div>
           <div>
             <h1 className="text-[16px] font-bold" style={{ color: 'var(--os-text)' }}>{PROFILE.name}</h1>
@@ -42,24 +53,6 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
         <p className="text-[13.5px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.44)' }}>
           {PROFILE.aboutSecondary}
         </p>
-
-        {/* Interest chips */}
-        <div className="flex flex-wrap gap-1.5">
-          {PROFILE.interests.map((tag) => (
-            <span
-              key={tag}
-              className="rounded px-2.5 py-0.5 text-[12px]"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                color: 'var(--os-text-3)',
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
         <div
           className="rounded-lg border px-4 py-4"
           style={{

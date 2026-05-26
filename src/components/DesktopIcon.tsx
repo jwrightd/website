@@ -2,14 +2,14 @@
 
 import { motion } from 'framer-motion';
 import {
-  User, FileText, FolderOpen, FlaskConical, Monitor, Mail, Cpu,
+  User, FileText, FolderOpen, FlaskConical, Monitor, Mail, Cpu, Trophy,
   type LucideProps,
 } from 'lucide-react';
 import type { AppId } from '@/types';
 import { APP_ACCENTS } from '@/data/apps';
 
 const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
-  User, FileText, FolderOpen, FlaskConical, Monitor, Mail, Cpu,
+  User, FileText, FolderOpen, FlaskConical, Monitor, Mail, Cpu, Trophy,
 };
 
 interface DesktopIconProps {

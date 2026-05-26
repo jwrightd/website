@@ -42,6 +42,14 @@ export const APPS: AppConfig[] = [
     defaultPosition: { x: 96, y: 52 },
   },
   {
+    id: 'interests',
+    label: 'Interests',
+    iconName: 'Trophy',
+    minSize: { width: 480, height: 320 },
+    defaultSize: { width: 660, height: 520 },
+    defaultPosition: { x: 118, y: 72 },
+  },
+  {
     id: 'contact',
     label: 'Contact',
     iconName: 'Mail',
@@ -69,6 +77,7 @@ export const APP_ACCENTS: Record<string, { iconBg: string; dot: string }> = {
   projects:   { iconBg: 'rgba(167,139,250,0.12)',  dot: '#a78bfa' },
   research:   { iconBg: 'rgba(34,211,238,0.10)',   dot: '#22d3ee' },
   experience: { iconBg: 'rgba(251,191,36,0.10)',   dot: '#fbbf24' },
+  interests:  { iconBg: 'rgba(245,158,11,0.12)',   dot: '#f59e0b' },
   contact:    { iconBg: 'rgba(244,114,182,0.10)',  dot: '#f472b6' },
   sysinfo:    { iconBg: 'rgba(148,163,184,0.10)',  dot: '#94a3b8' },
 };

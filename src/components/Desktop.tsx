@@ -9,6 +9,7 @@ import { useWindowManager } from '@/hooks/useWindowManager';
 import type { AppId } from '@/types';
 
 import BootScreen from './BootScreen';
+import DesktopBackdrop from './DesktopBackdrop';
 import DesktopIcon from './DesktopIcon';
 import Dock from './Dock';
 import MobileAppPanel from './MobileAppPanel';
@@ -20,6 +21,7 @@ import WorkspaceStatus from './WorkspaceStatus';
 import AboutApp from './apps/AboutApp';
 import ContactApp from './apps/ContactApp';
 import ExperienceApp from './apps/ExperienceApp';
+import InterestsApp from './apps/InterestsApp';
 import ProjectsApp from './apps/ProjectsApp';
 import ResearchApp from './apps/ResearchApp';
 import ResumeApp from './apps/ResumeApp';
@@ -59,6 +61,8 @@ function AppContent({
       return <ResearchApp />;
     case 'experience':
       return <ExperienceApp />;
+    case 'interests':
+      return <InterestsApp />;
     case 'contact':
       return <ContactApp isMobile={isMobile} />;
     case 'sysinfo':
@@ -207,6 +211,15 @@ export default function Desktop() {
       onSelect: () => openApp('contact'),
     },
     {
+      id: 'action-open-interests',
+      title: 'Open Interests',
+      subtitle: 'Show outside-of-work interests',
+      group: 'Actions' as const,
+      iconName: 'Trophy',
+      keywords: ['chess', 'outside work', 'personal'],
+      onSelect: () => openApp('interests'),
+    },
+    {
       id: 'action-open-sysinfo',
       title: 'Open System Info',
       subtitle: 'Show JamesOS system details',
@@ -290,17 +303,9 @@ export default function Desktop() {
     <>
       <div
         className="relative hidden h-screen w-screen overflow-hidden select-none md:block"
-        style={{
-          background: 'radial-gradient(ellipse 70% 60% at 50% 40%, #161618 0%, #0f0f11 100%)',
-        }}
+        style={{ background: '#0f0f11' }}
       >
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(rgba(255,255,255,0.013) 0px, transparent 1px, transparent 32px, rgba(255,255,255,0.013) 33px), repeating-linear-gradient(90deg, rgba(255,255,255,0.013) 0px, transparent 1px, transparent 32px, rgba(255,255,255,0.013) 33px)',
-          }}
-        />
+        <DesktopBackdrop />
 
         <Taskbar
           focusedId={focusedId}
@@ -411,7 +416,13 @@ function MobileLayout({
   onSelectProject: (id: string) => void;
 }) {
   return (
-    <div className="fixed inset-0 overflow-y-auto md:hidden" style={{ background: '#0f0f11' }}>
+    <div
+      className="fixed inset-0 overflow-y-auto md:hidden"
+      style={{
+        background:
+          'radial-gradient(circle at 18% 12%, rgba(79,142,247,0.12) 0%, rgba(79,142,247,0.03) 18%, rgba(79,142,247,0) 38%), linear-gradient(180deg, #101114 0%, #0d0f12 100%)',
+      }}
+    >
       <div
         className="sticky top-0 z-10 flex h-14 items-center justify-between border-b px-5"
         style={{

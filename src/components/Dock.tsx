@@ -3,14 +3,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  User, FileText, FolderOpen, FlaskConical, Monitor, Mail, Cpu,
+  User, FileText, FolderOpen, FlaskConical, Monitor, Mail, Cpu, Trophy,
   type LucideProps,
 } from 'lucide-react';
 import type { AppId, WindowState } from '@/types';
 import { APPS, APP_ACCENTS } from '@/data/apps';
 
 const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
-  User, FileText, FolderOpen, FlaskConical, Monitor, Mail, Cpu,
+  User, FileText, FolderOpen, FlaskConical, Monitor, Mail, Cpu, Trophy,
 };
 
 interface DockProps {

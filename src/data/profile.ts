@@ -23,16 +23,6 @@ export const PROFILE = {
     'Mathematics and Computer Science student at Duke University building across machine learning, data systems, and applied software.',
   aboutSecondary:
     'Current work spans Duke Impact Investment Group, Duke Applied Machine Learning, and the Hickey Lab, with experience in cyberdefense tooling, voice interfaces, longitudinal Alzheimer’s modeling, spatial proteomics, and computer vision.',
-  interests: [
-    'Machine Learning',
-    'Research Engineering',
-    'Data Systems',
-    'Computer Vision',
-    'Spatial Proteomics',
-    'Cybersecurity',
-    'Voice Interfaces',
-    'Chess',
-  ],
 } as const;
 
 export const PRIMARY_RECRUITER_APPS: AppId[] = ['resume', 'projects', 'contact'];
