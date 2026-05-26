@@ -32,7 +32,7 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
         style={{ minHeight: 52, borderBottom: '1px solid var(--os-border)', background: 'rgba(255,255,255,0.015)' }}
       >
         <div className="min-w-0">
-          <p className="truncate text-[12px] font-medium" style={{ color: 'var(--os-text-2)' }}>
+          <p className="truncate text-[12.5px] font-medium" style={{ color: 'var(--os-text-2)' }}>
             {PROFILE.resumeLabel}
           </p>
           <p className="mt-0.5 text-[10.5px]" style={{ color: 'var(--os-text-3)' }}>
@@ -43,7 +43,7 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
           <a
             href={PROFILE.resumeHref}
             download
-            className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/6"
+            className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors hover:bg-white/6"
             style={{
               borderColor: 'rgba(255,255,255,0.1)',
               background: 'rgba(255,255,255,0.05)',
@@ -57,7 +57,7 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
             href={PROFILE.resumeHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/6"
+            className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors hover:bg-white/6"
             style={{
               borderColor: 'rgba(255,255,255,0.1)',
               background: 'rgba(255,255,255,0.05)',
@@ -71,7 +71,7 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
             onClick={() => {
               void handleCopyEmail();
             }}
-            className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/6"
+            className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors hover:bg-white/6"
             style={{
               borderColor: 'rgba(255,255,255,0.1)',
               background: 'rgba(255,255,255,0.05)',
@@ -90,10 +90,10 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
             <h2 className="text-[20px] font-semibold" style={{ color: 'var(--os-text)' }}>
               {PROFILE.name}
             </h2>
-            <p className="mt-1 text-[12.5px]" style={{ color: 'var(--os-text-2)' }}>
+            <p className="mt-1 text-[13px]" style={{ color: 'var(--os-text-2)' }}>
               {PROFILE.subtitle} · {PROFILE.location}
             </p>
-            <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
+            <p className="mt-2 text-[13.5px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
               {PROFILE.aboutSummary}
             </p>
           </div>
@@ -125,10 +125,10 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
             <div className="flex flex-col gap-3">
               {SKILLS.map((group) => (
                 <div key={group.category} className={`${isMobile ? 'flex flex-col gap-1' : 'flex gap-4'}`}>
-                  <span className="w-20 shrink-0 text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
+                  <span className="w-20 shrink-0 text-[12px]" style={{ color: 'var(--os-text-3)' }}>
                     {group.category}
                   </span>
-                  <p className="text-[12.5px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>
+                  <p className="text-[13px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>
                     {group.items.join(', ')}
                   </p>
                 </div>
@@ -140,10 +140,10 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
             <div className="flex flex-col gap-3">
               {ACHIEVEMENTS.map((item) => (
                 <div key={item.id} className="flex gap-3">
-                  <span className="w-24 shrink-0 text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
+                  <span className="w-24 shrink-0 text-[12px]" style={{ color: 'var(--os-text-3)' }}>
                     {item.label}
                   </span>
-                  <p className="text-[12.5px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>
+                  <p className="text-[13px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>
                     {item.detail}
                   </p>
                 </div>
@@ -159,7 +159,7 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
 function ResumeSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h3 className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+      <h3 className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
         {title}
       </h3>
       <div className="mt-3">{children}</div>
@@ -181,18 +181,18 @@ function ResumeEntry({
   return (
     <div className="flex items-start justify-between gap-4 border-b py-3 last:border-b-0 last:pb-0 first:pt-0" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
       <div>
-        <p className="text-[13.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+        <p className="text-[14px] font-medium" style={{ color: 'var(--os-text)' }}>
           {title}
         </p>
         {subtitle && (
-          <p className="mt-0.5 text-[12px]" style={{ color: 'var(--os-text-2)' }}>
+          <p className="mt-0.5 text-[12.5px]" style={{ color: 'var(--os-text-2)' }}>
             {subtitle}
           </p>
         )}
         {details && details.length > 0 && (
           <div className="mt-2 flex flex-col gap-1.5">
             {details.map((detail) => (
-              <p key={detail} className="text-[12px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              <p key={detail} className="text-[12.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.6)' }}>
                 {detail}
               </p>
             ))}

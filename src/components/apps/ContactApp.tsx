@@ -62,7 +62,7 @@ export default function ContactApp({ isMobile = false }: ContactAppProps) {
                   background: item.id === selected.id ? 'rgba(79,142,247,0.12)' : 'rgba(255,255,255,0.03)',
                 }}
               >
-                <p className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+                <p className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
                   {item.label}
                 </p>
                 <p className="mt-1 text-[11px]" style={{ color: 'var(--os-text-3)' }}>
@@ -107,7 +107,7 @@ export default function ContactApp({ isMobile = false }: ContactAppProps) {
               <div className="flex items-center gap-2">
                 <Icon size={13} style={{ color: isSelected ? item.dot : 'rgba(255,255,255,0.4)' }} />
                 <span
-                  className="text-[12.5px] font-medium"
+                  className="text-[13px] font-medium"
                   style={{ color: isSelected ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.56)' }}
                 >
                   {item.label}
@@ -136,7 +136,7 @@ export default function ContactApp({ isMobile = false }: ContactAppProps) {
         >
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+              <p className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
                 {selected.subject}
               </p>
               <p className="mt-0.5 text-[11px]" style={{ color: 'var(--os-text-3)' }}>
@@ -166,7 +166,7 @@ function ContactDetail({
 }) {
   return (
     <div className="flex flex-col gap-5">
-      <p className="text-[13.5px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+      <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
         {selected.body}
       </p>
 
@@ -177,7 +177,7 @@ function ContactDetail({
         <p className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>
           Address
         </p>
-        <p className="mt-1 text-[13px]" style={{ color: 'var(--os-text)' }}>
+        <p className="mt-1 text-[13.5px]" style={{ color: 'var(--os-text)' }}>
           {selected.address}
         </p>
       </div>
@@ -187,7 +187,7 @@ function ContactDetail({
           href={selected.href}
           target={selected.href.startsWith('http') ? '_blank' : undefined}
           rel={selected.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-          className="inline-flex items-center gap-1.5 rounded-md border px-3.5 py-2 text-[12.5px] font-medium transition-colors hover:bg-white/6"
+          className="inline-flex items-center gap-1.5 rounded-md border px-3.5 py-2 text-[13px] font-medium transition-colors hover:bg-white/6"
           style={{
             borderColor: 'rgba(255,255,255,0.1)',
             background: 'rgba(255,255,255,0.04)',
@@ -201,7 +201,7 @@ function ContactDetail({
         {selected.copyValue && (
           <button
             onClick={onCopy}
-            className="inline-flex items-center gap-1.5 rounded-md border px-3.5 py-2 text-[12.5px] font-medium transition-colors hover:bg-white/6"
+            className="inline-flex items-center gap-1.5 rounded-md border px-3.5 py-2 text-[13px] font-medium transition-colors hover:bg-white/6"
             style={{
               borderColor: 'rgba(255,255,255,0.1)',
               background: 'rgba(255,255,255,0.04)',

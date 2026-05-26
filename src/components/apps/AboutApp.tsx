@@ -26,7 +26,7 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
           </div>
           <div>
             <h1 className="text-[16px] font-bold" style={{ color: 'var(--os-text)' }}>{PROFILE.name}</h1>
-            <p className="text-[12px] mt-0.5" style={{ color: 'var(--os-accent)' }}>
+            <p className="mt-0.5 text-[12.5px]" style={{ color: 'var(--os-accent)' }}>
               {PROFILE.subtitle}
             </p>
           </div>
@@ -35,11 +35,11 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
 
       {/* Bio */}
       <div className="flex-1 overflow-auto px-6 py-5 flex flex-col gap-4">
-        <p className="text-[13.5px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.62)' }}>
+        <p className="text-[14.5px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.62)' }}>
           {PROFILE.aboutSummary}
         </p>
 
-        <p className="text-[13px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.44)' }}>
+        <p className="text-[13.5px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.44)' }}>
           {PROFILE.aboutSecondary}
         </p>
 
@@ -48,7 +48,7 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
           {PROFILE.interests.map((tag) => (
             <span
               key={tag}
-              className="px-2.5 py-0.5 rounded text-[11.5px]"
+              className="rounded px-2.5 py-0.5 text-[12px]"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.08)',
@@ -68,24 +68,24 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
           }}
         >
           <div className="flex items-center justify-between gap-3">
-            <p className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+            <p className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
               {JAMES_OS_README.label}
             </p>
             <span className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>
               Portfolio shell
             </span>
           </div>
-          <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
+          <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
             {JAMES_OS_README.summary}
           </p>
-          <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.44)' }}>
+          <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.44)' }}>
             {JAMES_OS_README.description}
           </p>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {JAMES_OS_README.stack.map((item) => (
               <span
                 key={item}
-                className="rounded-md border px-2 py-0.5 text-[11.5px]"
+                className="rounded-md border px-2 py-0.5 text-[12px]"
                 style={{
                   background: 'rgba(255,255,255,0.03)',
                   borderColor: 'rgba(255,255,255,0.08)',
@@ -109,7 +109,7 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
         </p>
         <button
           onClick={onOpenWorkspace}
-          className="mb-2 flex w-full items-center justify-between rounded-lg border px-3.5 py-2.5 text-left text-[12.5px] font-medium transition-colors hover:bg-white/6"
+          className="mb-2 flex w-full items-center justify-between rounded-lg border px-3.5 py-2.5 text-left text-[13px] font-medium transition-colors hover:bg-white/6"
           style={{
             background: 'rgba(255,255,255,0.04)',
             borderColor: 'rgba(255,255,255,0.09)',
@@ -131,7 +131,7 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
             <button
               key={id}
               onClick={() => onOpen(id)}
-              className="group flex items-center justify-center gap-1.5 py-2 rounded-lg text-[12.5px] font-medium transition-all"
+              className="group flex items-center justify-center gap-1.5 rounded-lg py-2 text-[13px] font-medium transition-all"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.08)',

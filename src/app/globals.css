@@ -35,17 +35,23 @@ body {
 }
 
 .boot-screen {
-  animation: boot-fade 0.35s ease-in 0.8s forwards;
+  isolation: isolate;
 }
 
 .boot-content {
-  animation: boot-rise 0.25s ease-out;
+  animation: boot-rise 0.4s ease-out;
 }
 
-.boot-progress {
-  width: 0;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  animation: boot-progress 0.65s cubic-bezier(0.4, 0, 0.2, 1) 0.05s forwards;
+.boot-ambient {
+  animation: boot-ambient 10s linear infinite;
+}
+
+.boot-caret {
+  animation: boot-caret 1s step-end infinite;
+}
+
+.boot-loader {
+  animation: boot-spin 0.7s linear infinite;
 }
 
 @keyframes boot-rise {
@@ -60,26 +66,33 @@ body {
   }
 }
 
-@keyframes boot-progress {
+@keyframes boot-ambient {
   from {
-    width: 0;
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    width: 100%;
+    transform: translate3d(-12px, 0, 0);
   }
 }
 
-@keyframes boot-fade {
+@keyframes boot-caret {
   from {
     opacity: 1;
-    visibility: visible;
   }
 
   to {
     opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+  }
+}
+
+@keyframes boot-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
 

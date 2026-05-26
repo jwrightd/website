@@ -67,13 +67,13 @@ export default function ExperienceApp() {
                 {exp.pid}
               </span>
               <div>
-                <p className="text-[12.5px] font-semibold" style={{ color: 'var(--os-text)' }}>{exp.role}</p>
+                <p className="text-[13px] font-semibold" style={{ color: 'var(--os-text)' }}>{exp.role}</p>
                 <p className="text-[11px] mt-0.5" style={{ color: 'var(--os-text-3)' }}>{exp.period}</p>
               </div>
-              <p className="text-[12.5px] pt-0.5" style={{ color: 'var(--os-text-2)' }}>{exp.organization}</p>
+              <p className="text-[13px] pt-0.5" style={{ color: 'var(--os-text-2)' }}>{exp.organization}</p>
               <div className="flex items-center gap-1.5 pt-0.5">
                 <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: s.dot }} />
-                <span className="text-[11.5px]" style={{ color: s.dot }}>{s.label}</span>
+                <span className="text-[12px]" style={{ color: s.dot }}>{s.label}</span>
               </div>
             </div>
           );
@@ -87,7 +87,7 @@ export default function ExperienceApp() {
           {EXPERIENCE.map((exp) => (
             <div key={exp.pid} className="flex gap-3 mb-3 last:mb-0">
               <span className="text-[11px] font-mono shrink-0 pt-0.5" style={{ color: 'var(--os-text-3)' }}>{exp.pid}</span>
-              <span className="text-[12.5px] leading-[1.6]" style={{ color: 'var(--os-text-2)' }}>{exp.focus}</span>
+              <span className="text-[13px] leading-[1.65]" style={{ color: 'var(--os-text-2)' }}>{exp.focus}</span>
             </div>
           ))}
         </div>

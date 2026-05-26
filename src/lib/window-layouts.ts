@@ -20,8 +20,26 @@ interface WindowRect {
   size: WindowSize;
 }
 
+const OPEN_SCAN_X = 40;
+const OPEN_SCAN_Y = 28;
+const OPEN_OVERLAP_PADDING = 14;
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
+}
+
+function rectsOverlap(left: WindowRect, right: WindowRect, padding = 0) {
+  const leftRight = left.position.x + left.size.width + padding;
+  const rightRight = right.position.x + right.size.width + padding;
+  const leftBottom = left.position.y + left.size.height + WINDOW_CHROME_HEIGHT + padding;
+  const rightBottom = right.position.y + right.size.height + WINDOW_CHROME_HEIGHT + padding;
+
+  return !(
+    leftRight <= right.position.x ||
+    rightRight <= left.position.x ||
+    leftBottom <= right.position.y ||
+    rightBottom <= left.position.y
+  );
 }
 
 export function getDesktopWorkspaceBounds(): WorkspaceBounds {
@@ -171,6 +189,94 @@ export function getRecruiterModeLayouts(): Partial<Record<AppId, WindowRect>> {
       },
     },
   };
+}
+
+export function getNextOpenWindowRect(
+  id: AppId,
+  currentWindows: Record<AppId, WindowState>
+): WindowRect {
+  const app = APPS.find((item) => item.id === id);
+
+  if (!app) {
+    return normalizeWindowRect({ x: 88, y: 52 }, { width: 640, height: 420 });
+  }
+
+  const visibleWindows = Object.values(currentWindows)
+    .filter((windowState) => windowState.isOpen && !windowState.isMinimized && windowState.id !== id)
+    .sort((left, right) => right.zIndex - left.zIndex);
+
+  const desiredSize = currentWindows[id]?.size ?? app.defaultSize;
+  const minSize = app.minSize ?? FALLBACK_MIN_SIZE;
+  const defaultRect = normalizeWindowRect(app.defaultPosition, desiredSize, minSize);
+
+  if (visibleWindows.length === 0) {
+    return defaultRect;
+  }
+
+  const bounds = getDesktopWorkspaceBounds();
+  const existingRects = visibleWindows.map((windowState) => ({
+    position: windowState.position,
+    size: windowState.size,
+  }));
+  const anchor = visibleWindows[0];
+  const candidatePositions: WindowPosition[] = [
+    {
+      x: anchor.position.x + anchor.size.width + WINDOW_GAP,
+      y: anchor.position.y,
+    },
+    {
+      x: anchor.position.x + OPEN_SCAN_X,
+      y: anchor.position.y + OPEN_SCAN_Y,
+    },
+    ...visibleWindows.map((windowState) => ({
+      x: windowState.position.x + windowState.size.width + WINDOW_GAP,
+      y: windowState.position.y,
+    })),
+    ...visibleWindows.map((windowState) => ({
+      x: windowState.position.x,
+      y: windowState.position.y + windowState.size.height + WINDOW_CHROME_HEIGHT + WINDOW_GAP,
+    })),
+    ...Array.from({ length: 12 }, (_value, index) => ({
+      x: defaultRect.position.x + index * OPEN_SCAN_X,
+      y: defaultRect.position.y + index * OPEN_SCAN_Y,
+    })),
+  ];
+
+  for (const candidate of candidatePositions) {
+    const rect = normalizeWindowRect(candidate, desiredSize, minSize);
+    const overlapsExisting = existingRects.some((existingRect) =>
+      rectsOverlap(rect, existingRect, OPEN_OVERLAP_PADDING)
+    );
+
+    if (!overlapsExisting) {
+      return rect;
+    }
+  }
+
+  const maxX = bounds.left + bounds.width - defaultRect.size.width;
+  const maxY = bounds.top + bounds.height - defaultRect.size.height - WINDOW_CHROME_HEIGHT;
+
+  for (let y = bounds.top; y <= maxY; y += OPEN_SCAN_Y) {
+    for (let x = bounds.left; x <= maxX; x += OPEN_SCAN_X) {
+      const rect = normalizeWindowRect({ x, y }, desiredSize, minSize);
+      const overlapsExisting = existingRects.some((existingRect) =>
+        rectsOverlap(rect, existingRect, OPEN_OVERLAP_PADDING)
+      );
+
+      if (!overlapsExisting) {
+        return rect;
+      }
+    }
+  }
+
+  return normalizeWindowRect(
+    {
+      x: anchor.position.x + OPEN_SCAN_X,
+      y: anchor.position.y + OPEN_SCAN_Y,
+    },
+    desiredSize,
+    minSize
+  );
 }
 
 export function getNormalizedWindowState(windowState: WindowState): WindowState {

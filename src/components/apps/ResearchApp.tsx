@@ -48,10 +48,10 @@ export default function ResearchApp() {
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: dot }} />
-                  <span className="text-[10px]" style={{ color: dot }}>{item.status}</span>
+                  <span className="text-[10.5px]" style={{ color: dot }}>{item.status}</span>
                 </div>
                 <p
-                  className="text-[12px] font-medium leading-tight truncate"
+                  className="text-[12.5px] font-medium leading-tight truncate"
                   style={{ color: isSelected ? 'rgba(255,255,255,0.88)' : 'var(--os-text-2)' }}
                 >
                   {item.title.split('—')[0].trim()}
@@ -104,13 +104,13 @@ function EntryDetail({ item }: { item: ResearchItem }) {
           <div className="w-2 h-2 rounded-full" style={{ background: dot }} />
           <span className="text-[11px] font-medium" style={{ color: dot }}>{item.status}</span>
         </div>
-        <h2 className="text-[16px] font-bold leading-snug" style={{ color: 'var(--os-text)' }}>
+        <h2 className="text-[17px] font-bold leading-snug" style={{ color: 'var(--os-text)' }}>
           {item.title}
         </h2>
       </div>
 
       <Section label="Research Question">
-        <p className="text-[13px] leading-[1.7] italic" style={{ color: 'var(--os-text-2)' }}>
+        <p className="text-[14px] leading-[1.75] italic" style={{ color: 'var(--os-text-2)' }}>
           &ldquo;{item.question}&rdquo;
         </p>
       </Section>
@@ -120,7 +120,7 @@ function EntryDetail({ item }: { item: ResearchItem }) {
           {item.methods.map((m) => (
             <span
               key={m}
-              className="px-2 py-0.5 rounded text-[11.5px] font-mono"
+              className="rounded px-2 py-0.5 text-[12px] font-mono"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.08)',
@@ -134,7 +134,7 @@ function EntryDetail({ item }: { item: ResearchItem }) {
       </Section>
 
       <Section label="Why It Matters">
-        <p className="text-[13px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
+        <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
           {item.impact}
         </p>
       </Section>

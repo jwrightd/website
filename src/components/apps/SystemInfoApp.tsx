@@ -41,7 +41,7 @@ export default function SystemInfoApp() {
           <button
             key={s}
             onClick={() => setActive(s)}
-            className="w-full text-left px-5 py-2.5 text-[13px] font-medium transition-colors"
+            className="w-full text-left px-5 py-2.5 text-[13.5px] font-medium transition-colors"
             style={{
               background: active === s ? 'rgba(79,142,247,0.15)' : 'transparent',
               borderLeft: `2px solid ${active === s ? '#4f8ef7' : 'transparent'}`,
@@ -108,7 +108,7 @@ function SystemSection() {
           }}
         >
           <span className="text-[12px] font-mono w-24 shrink-0" style={{ color: 'var(--os-text-3)' }}>{label}</span>
-          <span className="text-[12.5px]" style={{ color: 'var(--os-text-2)' }}>{value}</span>
+          <span className="text-[13px]" style={{ color: 'var(--os-text-2)' }}>{value}</span>
         </div>
       ))}
     </div>
@@ -128,7 +128,7 @@ function StackSection() {
             {s.items.map((item) => (
               <span
                 key={item}
-                className="px-2.5 py-1 rounded text-[11.5px] font-mono"
+                className="rounded px-2.5 py-1 text-[12px] font-mono"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
@@ -171,7 +171,7 @@ function SkillsSection() {
             {group.items.map((item) => (
               <span
                 key={item}
-                className="px-2.5 py-1 rounded text-[11.5px]"
+                className="rounded px-2.5 py-1 text-[12px]"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
@@ -195,13 +195,13 @@ function ReadmeSection() {
         className="rounded-lg border px-4 py-4"
         style={{ borderColor: 'var(--os-border)', background: 'rgba(255,255,255,0.03)' }}
       >
-        <p className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
+        <p className="text-[13.5px] font-medium" style={{ color: 'var(--os-text)' }}>
           {JAMES_OS_README.label}
         </p>
-        <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
+        <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
           {JAMES_OS_README.summary}
         </p>
-        <p className="mt-2 text-[12.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.44)' }}>
+        <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.44)' }}>
           {JAMES_OS_README.description}
         </p>
       </div>
@@ -214,7 +214,7 @@ function ReadmeSection() {
           {JAMES_OS_README.stack.map((item) => (
             <span
               key={item}
-              className="rounded-md border px-2.5 py-1 text-[11.5px]"
+              className="rounded-md border px-2.5 py-1 text-[12px]"
               style={{
                 background: 'rgba(255,255,255,0.04)',
                 borderColor: 'rgba(255,255,255,0.08)',

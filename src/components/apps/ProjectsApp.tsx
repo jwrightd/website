@@ -89,20 +89,20 @@ export default function ProjectsApp({
               onClick={() => onSelectProject(project.id)}
               className="w-full border-l-2 px-4 py-3 text-left transition-colors"
               style={{
-                background: isSelected ? 'rgba(79,142,247,0.14)' : 'transparent',
+                background: isSelected ? 'rgba(167,139,250,0.16)' : 'transparent',
                 borderLeftColor: isSelected ? '#4f8ef7' : 'transparent',
               }}
             >
               <p
-                className="text-[12.5px] font-medium"
+                className="text-[13px] font-medium"
                 style={{ color: isSelected ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.62)' }}
               >
                 {project.name}
               </p>
-              <p className="mt-1 text-[11px]" style={{ color: 'var(--os-text-3)' }}>
+              <p className="mt-1 text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
                 {project.category}
               </p>
-              <p className="mt-1 line-clamp-2 text-[11px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
+              <p className="mt-1 line-clamp-2 text-[11.5px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
                 {project.summary}
               </p>
             </button>
@@ -148,21 +148,21 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
       <div className="flex flex-col gap-5">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-[18px] font-semibold" style={{ color: 'var(--os-text)' }}>
+            <h2 className="text-[20px] font-semibold" style={{ color: 'var(--os-text)' }}>
               {project.name}
             </h2>
             <span
-              className="rounded-md border px-2 py-0.5 text-[11px]"
+              className="rounded-md border px-2 py-0.5 text-[11.5px]"
               style={{
-                borderColor: 'rgba(255,255,255,0.08)',
-                background: 'rgba(255,255,255,0.03)',
-                color: 'var(--os-text-2)',
+                borderColor: 'rgba(167,139,250,0.18)',
+                background: 'rgba(167,139,250,0.08)',
+                color: 'rgba(201,183,255,0.92)',
               }}
             >
               {project.status}
             </span>
           </div>
-          <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+          <p className="mt-2 text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
             {project.summary}
           </p>
         </div>
@@ -173,13 +173,13 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
         </div>
 
         <DetailSection title="Overview">
-          <p className="text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
             {project.overview}
           </p>
         </DetailSection>
 
         <DetailSection title="Problem">
-          <p className="text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
             {project.problem}
           </p>
         </DetailSection>
@@ -187,7 +187,7 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
         <DetailSection title="Approach">
           <div className="flex flex-col gap-2">
             {project.approach.map((item) => (
-              <p key={item} className="text-[13px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
+              <p key={item} className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
                 {item}
               </p>
             ))}
@@ -195,13 +195,13 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
         </DetailSection>
 
         <DetailSection title="Technical Challenge">
-          <p className="text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
             {project.technicalChallenge}
           </p>
         </DetailSection>
 
         <DetailSection title="Result / Impact">
-          <p className="text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
+          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
             {project.result}
           </p>
         </DetailSection>
@@ -211,7 +211,7 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
             {project.techStack.map((item) => (
               <span
                 key={item}
-                className="rounded-md border px-2 py-1 text-[11.5px]"
+                className="rounded-md border px-2 py-1 text-[12px]"
                 style={{
                   borderColor: 'rgba(255,255,255,0.08)',
                   background: 'rgba(255,255,255,0.04)',
@@ -252,11 +252,11 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
                     />
                   </div>
                   <figcaption className="px-3 py-3">
-                    <p className="text-[12px]" style={{ color: 'var(--os-text)' }}>
+                    <p className="text-[12.5px]" style={{ color: 'var(--os-text)' }}>
                       {item.alt}
                     </p>
                     {item.caption && (
-                      <p className="mt-1 text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
+                      <p className="mt-1 text-[12px]" style={{ color: 'var(--os-text-3)' }}>
                         {item.caption}
                       </p>
                     )}

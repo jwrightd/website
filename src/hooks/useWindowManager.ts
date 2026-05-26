@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { APPS } from '@/data/apps';
 import { PRIMARY_RECRUITER_APPS, PRIMARY_WORKSPACE_APPS } from '@/data/profile';
-import { getArrangedWindowLayouts, getNormalizedWindowState, getRecruiterModeLayouts } from '@/lib/window-layouts';
+import {
+  getArrangedWindowLayouts,
+  getNextOpenWindowRect,
+  getNormalizedWindowState,
+  getRecruiterModeLayouts,
+} from '@/lib/window-layouts';
 import type { AppId, WindowPosition, WindowSize, WindowState } from '@/types';
 
 const buildInitialState = (): Record<AppId, WindowState> => {
@@ -50,15 +55,35 @@ export function useWindowManager() {
   }, []);
 
   const openApp = (id: AppId) => {
-    setWindows((current) => ({
-      ...current,
-      [id]: getNormalizedWindowState({
-        ...current[id],
-        isOpen: true,
-        isMinimized: false,
-        zIndex: getNextZIndex(),
-      }),
-    }));
+    setWindows((current) => {
+      const currentWindow = current[id];
+      const nextZIndex = getNextZIndex();
+
+      if (currentWindow.isOpen) {
+        return {
+          ...current,
+          [id]: getNormalizedWindowState({
+            ...currentWindow,
+            isMinimized: false,
+            zIndex: nextZIndex,
+          }),
+        };
+      }
+
+      const nextRect = getNextOpenWindowRect(id, current);
+
+      return {
+        ...current,
+        [id]: getNormalizedWindowState({
+          ...currentWindow,
+          isOpen: true,
+          isMinimized: false,
+          position: nextRect.position,
+          size: nextRect.size,
+          zIndex: nextZIndex,
+        }),
+      };
+    });
   };
 
   const closeApp = (id: AppId) => {

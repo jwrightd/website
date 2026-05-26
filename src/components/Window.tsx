@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useDragControls } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
-import { APPS } from '@/data/apps';
+import { APP_ACCENTS, APPS } from '@/data/apps';
 import { WINDOW_CHROME_HEIGHT, getDesktopWorkspaceBounds } from '@/lib/window-layouts';
 import type { AppId, WindowPosition, WindowSize } from '@/types';
 
@@ -63,6 +63,7 @@ export default function Window({
   children,
 }: WindowProps) {
   const app = APPS.find((item) => item.id === id)!;
+  const accent = APP_ACCENTS[id];
   const dragControls = useDragControls();
   const [resizeState, setResizeState] = useState<ResizeState | null>(null);
   const onResizeRef = useRef(onResize);
@@ -200,10 +201,18 @@ export default function Window({
         overflow: 'hidden',
         touchAction: 'none',
         boxShadow: isFocused
-          ? '0 0 0 1px rgba(255,255,255,0.09), 0 18px 54px rgba(0,0,0,0.78), 0 2px 10px rgba(0,0,0,0.58)'
+          ? `0 0 0 1px rgba(255,255,255,0.09), 0 0 0 1px ${accent?.dot ?? '#4f8ef7'}24 inset, 0 18px 54px rgba(0,0,0,0.78), 0 2px 10px rgba(0,0,0,0.58)`
           : '0 0 0 1px rgba(255,255,255,0.06), 0 10px 28px rgba(0,0,0,0.62)',
       }}
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        style={{
+          background: accent?.dot ?? '#4f8ef7',
+          opacity: isFocused ? 0.7 : 0,
+        }}
+      />
       <div
         className="flex items-center gap-2.5 px-3.5 h-10 shrink-0 select-none"
         style={{
@@ -255,7 +264,7 @@ export default function Window({
 
         <span
           className="pointer-events-none flex-1 text-center text-[12.5px] font-medium"
-          style={{ color: isFocused ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.25)' }}
+          style={{ color: isFocused ? 'rgba(255,255,255,0.68)' : 'rgba(255,255,255,0.25)' }}
         >
           {app.label}
         </span>

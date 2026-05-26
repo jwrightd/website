@@ -91,6 +91,7 @@ export default function Desktop() {
   const [launcherOpen, setLauncherOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(PROJECTS[0].id);
   const [mobileAppId, setMobileAppId] = useState<AppId | null>(null);
+  const [bootComplete, setBootComplete] = useState(false);
 
   const openProject = (projectId: string) => {
     setSelectedProjectId(projectId);
@@ -281,10 +282,12 @@ export default function Desktop() {
     },
   ];
 
+  if (!bootComplete) {
+    return <BootScreen onComplete={() => setBootComplete(true)} />;
+  }
+
   return (
     <>
-      <BootScreen />
-
       <div
         className="relative hidden h-screen w-screen overflow-hidden select-none md:block"
         style={{

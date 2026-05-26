@@ -52,7 +52,17 @@ export default function WorkspaceStatus({ mountedApps }: WorkspaceStatusProps) {
             <span className="text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
               {label}
             </span>
-            <span className="text-right text-[11.5px] leading-[1.5]" style={{ color: 'rgba(255,255,255,0.7)' }}>
+            <span
+              className="text-right text-[11.5px] leading-[1.5]"
+              style={{
+                color:
+                  label === 'Current focus'
+                    ? 'rgba(167,139,250,0.9)'
+                    : label === 'Resume ready'
+                      ? 'rgba(50,215,75,0.82)'
+                      : 'rgba(255,255,255,0.7)',
+              }}
+            >
               {value}
             </span>
           </div>

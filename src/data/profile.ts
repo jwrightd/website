@@ -3,6 +3,10 @@ import type { AppId, ContactMethod, PortfolioReadme } from '@/types';
 export const PROFILE = {
   name: 'James Wright',
   subtitle: 'Mathematics and Computer Science · Duke University',
+  loginUsername: 'jwrightd',
+  loginPasswordMask: '••••••••••••',
+  profilePhotoSrc: '/profile-photo.jpg',
+  profilePhotoAlt: 'Portrait of James Wright',
   location: 'Durham, NC',
   currentFocus: 'Duke Code+ software engineering · Alzheimer’s forecasting · spatial proteomics',
   recruiterHeadline: 'Incoming Software Engineer, Duke Code+ · Summer 2026',

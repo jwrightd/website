@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Battery, FolderOpen, Search, Users, Wifi } from 'lucide-react';
-import { APPS } from '@/data/apps';
+import { APP_ACCENTS, APPS } from '@/data/apps';
 import { PROFILE } from '@/data/profile';
 import type { AppId } from '@/types';
 
@@ -38,6 +38,7 @@ export default function Taskbar({
     return () => window.clearInterval(intervalId);
   }, []);
   const activeApp = APPS.find((app) => app.id === focusedId);
+  const activeAccent = focusedId ? APP_ACCENTS[focusedId] : null;
 
   return (
     <div
@@ -54,7 +55,13 @@ export default function Taskbar({
         {activeApp && (
           <>
             <div className="h-3.5 w-px shrink-0 bg-white/15" />
-            <span className="truncate text-[12.5px] font-medium text-white/62">{activeApp.label}</span>
+            <span className="inline-flex min-w-0 items-center gap-2 truncate text-[12.5px] font-medium text-white/62">
+              <span
+                className="h-1.5 w-1.5 shrink-0 rounded-full"
+                style={{ background: activeAccent?.dot ?? '#4f8ef7' }}
+              />
+              <span className="truncate">{activeApp.label}</span>
+            </span>
           </>
         )}
       </div>
