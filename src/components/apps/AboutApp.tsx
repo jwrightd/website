@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ArrowRight, FileText, FolderOpen, Mail, MonitorSmartphone } from 'lucide-react';
 import { JAMES_OS_README, PROFILE } from '@/data/profile';
 import type { AppId } from '@/types';
+import { BodyText, LeadText, SectionBlock, SurfacePanel, TagList } from './shared/AppContent';
 
 interface AboutAppProps {
   onOpen: (id: AppId) => void;
@@ -11,9 +12,14 @@ interface AboutAppProps {
 }
 
 export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
+  const quickLinks = [
+    { id: 'resume' as AppId, icon: FileText, label: 'Resume', color: '#32d74b' },
+    { id: 'projects' as AppId, icon: FolderOpen, label: 'Projects', color: '#a78bfa' },
+    { id: 'contact' as AppId, icon: Mail, label: 'Contact', color: '#f472b6' },
+  ] as const;
+
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
       <div
         className="px-6 pt-5 pb-4 shrink-0"
         style={{ borderBottom: '1px solid var(--os-border)' }}
@@ -44,60 +50,29 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
         </div>
       </div>
 
-      {/* Bio */}
       <div className="flex-1 overflow-auto px-6 py-5 flex flex-col gap-4">
-        <p className="text-[14.5px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.62)' }}>
-          {PROFILE.aboutSummary}
-        </p>
+        <LeadText>{PROFILE.aboutSummary}</LeadText>
 
-        <p className="text-[13.5px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.44)' }}>
-          {PROFILE.aboutSecondary}
-        </p>
-        <div
-          className="rounded-lg border px-4 py-4"
-          style={{
-            background: 'rgba(255,255,255,0.03)',
-            borderColor: 'rgba(255,255,255,0.08)',
-          }}
-        >
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
-              {JAMES_OS_README.label}
-            </p>
-            <span className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>
-              Portfolio shell
-            </span>
-          </div>
-          <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-            {JAMES_OS_README.summary}
-          </p>
-          <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.44)' }}>
-            {JAMES_OS_README.description}
-          </p>
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {JAMES_OS_README.stack.map((item) => (
-              <span
-                key={item}
-                className="rounded-md border px-2 py-0.5 text-[12px]"
-                style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  borderColor: 'rgba(255,255,255,0.08)',
-                  color: 'var(--os-text-3)',
-                }}
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
+        <SectionBlock title="Overview">
+          <BodyText>{PROFILE.aboutSecondary}</BodyText>
+        </SectionBlock>
+
+        <SectionBlock title={JAMES_OS_README.label} description="This site is itself a small interactive portfolio system.">
+          <SurfacePanel>
+            <div className="flex flex-col gap-3">
+              <BodyText>{JAMES_OS_README.summary}</BodyText>
+              <BodyText>{JAMES_OS_README.description}</BodyText>
+              <TagList items={JAMES_OS_README.stack} />
+            </div>
+          </SurfacePanel>
+        </SectionBlock>
       </div>
 
-      {/* CTA footer */}
       <div
         className="px-6 py-4 shrink-0"
         style={{ borderTop: '1px solid var(--os-border)' }}
       >
-        <p className="text-[10px] font-semibold uppercase tracking-widest mb-2.5" style={{ color: 'var(--os-text-3)' }}>
+        <p className="mb-2.5 text-[12px] font-medium" style={{ color: 'var(--os-text-2)' }}>
           Quick access
         </p>
         <button
@@ -116,11 +91,7 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
           <ArrowRight size={11} style={{ color: 'rgba(255,255,255,0.34)' }} />
         </button>
         <div className="grid grid-cols-3 gap-2">
-          {([
-            { id: 'resume'   as AppId, icon: FileText,   label: 'Resume',   color: '#32d74b' },
-            { id: 'projects' as AppId, icon: FolderOpen, label: 'Projects', color: '#a78bfa' },
-            { id: 'contact'  as AppId, icon: Mail,       label: 'Contact',  color: '#f472b6' },
-          ] as const).map(({ id, icon: Icon, label, color }) => (
+          {quickLinks.map(({ id, icon: Icon, label, color }) => (
             <button
               key={id}
               onClick={() => onOpen(id)}

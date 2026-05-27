@@ -197,26 +197,47 @@ export default function Window({
         maxWidth: 'calc(100vw - 20px)',
         left: position.x,
         top: position.y,
-        borderRadius: 10,
+        borderRadius: 11,
         overflow: 'hidden',
         touchAction: 'none',
+        filter: isFocused ? 'none' : 'saturate(0.84) brightness(0.88)',
         boxShadow: isFocused
-          ? `0 0 0 1px rgba(255,255,255,0.09), 0 0 0 1px ${accent?.dot ?? '#4f8ef7'}24 inset, 0 18px 54px rgba(0,0,0,0.78), 0 2px 10px rgba(0,0,0,0.58)`
-          : '0 0 0 1px rgba(255,255,255,0.06), 0 10px 28px rgba(0,0,0,0.62)',
+          ? `0 0 0 1px rgba(255,255,255,0.09), 0 0 0 1px ${accent?.dot ?? '#4f8ef7'}30 inset, 0 28px 68px rgba(0,0,0,0.62), 0 12px 22px rgba(0,0,0,0.26), 0 1px 0 rgba(255,255,255,0.06) inset`
+          : '0 0 0 1px rgba(255,255,255,0.045), 0 12px 24px rgba(0,0,0,0.34), 0 1px 0 rgba(255,255,255,0.025) inset',
       }}
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            isFocused
+              ? 'linear-gradient(180deg, rgba(255,255,255,0.018) 0%, rgba(255,255,255,0) 12%)'
+              : 'linear-gradient(180deg, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0) 10%)',
+        }}
+      />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{
           background: accent?.dot ?? '#4f8ef7',
-          opacity: isFocused ? 0.7 : 0,
+          opacity: isFocused ? 0.72 : 0.16,
         }}
       />
       <div
-        className="flex items-center gap-2.5 px-3.5 h-10 shrink-0 select-none"
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-0 bottom-0 w-px"
         style={{
-          background: isFocused ? 'var(--os-titlebar)' : '#202022',
+          background: accent?.dot ?? '#4f8ef7',
+          opacity: isFocused ? 0.38 : 0.08,
+        }}
+      />
+      <div
+        className="relative flex h-10 shrink-0 select-none items-center gap-2.5 px-3.5"
+        style={{
+          background: isFocused
+            ? 'linear-gradient(180deg, rgba(37,37,39,0.98) 0%, rgba(31,31,33,0.98) 100%)'
+            : 'linear-gradient(180deg, rgba(31,31,33,0.96) 0%, rgba(27,27,29,0.96) 100%)',
           borderBottom: '1px solid var(--os-border)',
           touchAction: 'none',
           cursor: 'grab',
@@ -226,6 +247,11 @@ export default function Window({
           dragControls.start(event);
         }}
       >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{ background: 'rgba(255,255,255,0.06)' }}
+        />
         <div className="flex items-center gap-1.5">
           <button
             onPointerDown={(event) => event.stopPropagation()}
@@ -233,7 +259,7 @@ export default function Window({
               event.stopPropagation();
               onClose();
             }}
-            className="group flex h-3 w-3 items-center justify-center rounded-full transition-opacity"
+            className="group flex h-3 w-3 items-center justify-center rounded-full transition-[transform,opacity] duration-150 hover:scale-105 active:scale-95"
             style={{ background: isFocused ? '#ff5f57' : '#3a3a3c' }}
             title="Close"
           >
@@ -249,7 +275,7 @@ export default function Window({
               event.stopPropagation();
               onMinimize();
             }}
-            className="group flex h-3 w-3 items-center justify-center rounded-full transition-opacity"
+            className="group flex h-3 w-3 items-center justify-center rounded-full transition-[transform,opacity] duration-150 hover:scale-105 active:scale-95"
             style={{ background: isFocused ? '#febc2e' : '#3a3a3c' }}
             title="Minimize"
           >
@@ -259,15 +285,25 @@ export default function Window({
               </span>
             )}
           </button>
-          <div className="h-3 w-3 rounded-full" style={{ background: '#3a3a3c' }} />
+          <div className="h-3 w-3 rounded-full" style={{ background: isFocused ? '#28c840' : '#3a3a3c' }} />
         </div>
 
-        <span
-          className="pointer-events-none flex-1 text-center text-[12.5px] font-medium"
-          style={{ color: isFocused ? 'rgba(255,255,255,0.68)' : 'rgba(255,255,255,0.25)' }}
-        >
-          {app.label}
-        </span>
+        <div className="flex min-w-0 flex-1 justify-center">
+          <span
+            className="pointer-events-none inline-flex items-center gap-2 rounded-md border px-2.5 py-1 text-[12px] font-medium"
+            style={{
+              borderColor: isFocused ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.04)',
+              background: isFocused ? 'rgba(255,255,255,0.045)' : 'rgba(255,255,255,0.012)',
+              color: isFocused ? 'rgba(255,255,255,0.76)' : 'rgba(255,255,255,0.36)',
+            }}
+          >
+            <span
+              className="h-1.5 w-1.5 rounded-full"
+              style={{ background: accent?.dot ?? '#4f8ef7', opacity: isFocused ? 1 : 0.5 }}
+            />
+            <span className="truncate">{app.label}</span>
+          </span>
+        </div>
 
         <div className="w-[52px]" />
       </div>
@@ -276,8 +312,9 @@ export default function Window({
         className="flex flex-col overflow-hidden"
         style={{
           height: size.height,
-          background: 'var(--os-window)',
-          opacity: isFocused ? 1 : 0.9,
+          background:
+            'linear-gradient(180deg, rgba(255,255,255,0.012) 0%, rgba(255,255,255,0) 14%), var(--os-window)',
+          opacity: isFocused ? 1 : 0.94,
         }}
       >
         {children}

@@ -7,6 +7,7 @@ import { EDUCATION } from '@/data/education';
 import { EXPERIENCE } from '@/data/experience';
 import { PROFILE } from '@/data/profile';
 import { SKILLS } from '@/data/skills';
+import { BulletList, LeadText, SectionBlock } from './shared/AppContent';
 
 interface ResumeAppProps {
   isMobile?: boolean;
@@ -93,12 +94,12 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
             <p className="mt-1 text-[13px]" style={{ color: 'var(--os-text-2)' }}>
               {PROFILE.subtitle} · {PROFILE.location}
             </p>
-            <p className="mt-2 text-[13.5px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-              {PROFILE.aboutSummary}
-            </p>
+            <div className="mt-2 max-w-[72ch]">
+              <LeadText>{PROFILE.aboutSummary}</LeadText>
+            </div>
           </div>
 
-          <ResumeSection title="Education">
+          <SectionBlock title="Education">
             {EDUCATION.map((entry) => (
               <ResumeEntry
                 key={entry.id}
@@ -107,9 +108,9 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
                 right={entry.period}
               />
             ))}
-          </ResumeSection>
+          </SectionBlock>
 
-          <ResumeSection title="Experience">
+          <SectionBlock title="Experience">
             {EXPERIENCE.map((entry) => (
               <ResumeEntry
                 key={entry.pid}
@@ -119,51 +120,40 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
                 details={entry.highlights}
               />
             ))}
-          </ResumeSection>
+          </SectionBlock>
 
-          <ResumeSection title="Skills">
+          <SectionBlock title="Skills">
             <div className="flex flex-col gap-3">
               {SKILLS.map((group) => (
                 <div key={group.category} className={`${isMobile ? 'flex flex-col gap-1' : 'flex gap-4'}`}>
                   <span className="w-20 shrink-0 text-[12px]" style={{ color: 'var(--os-text-3)' }}>
                     {group.category}
                   </span>
-                  <p className="text-[13px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>
+                  <p className="text-[13.5px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.62)' }}>
                     {group.items.join(', ')}
                   </p>
                 </div>
               ))}
             </div>
-          </ResumeSection>
+          </SectionBlock>
 
-          <ResumeSection title="Selected Recognition">
+          <SectionBlock title="Selected Recognition">
             <div className="flex flex-col gap-3">
               {ACHIEVEMENTS.map((item) => (
                 <div key={item.id} className="flex gap-3">
                   <span className="w-24 shrink-0 text-[12px]" style={{ color: 'var(--os-text-3)' }}>
                     {item.label}
                   </span>
-                  <p className="text-[13px] leading-relaxed" style={{ color: 'var(--os-text-2)' }}>
+                  <p className="text-[13.5px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.62)' }}>
                     {item.detail}
                   </p>
                 </div>
               ))}
             </div>
-          </ResumeSection>
+          </SectionBlock>
         </div>
       </div>
     </div>
-  );
-}
-
-function ResumeSection({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section>
-      <h3 className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
-        {title}
-      </h3>
-      <div className="mt-3">{children}</div>
-    </section>
   );
 }
 
@@ -190,12 +180,8 @@ function ResumeEntry({
           </p>
         )}
         {details && details.length > 0 && (
-          <div className="mt-2 flex flex-col gap-1.5">
-            {details.map((detail) => (
-              <p key={detail} className="text-[12.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                {detail}
-              </p>
-            ))}
+          <div className="mt-2">
+            <BulletList items={details} accent="rgba(255,255,255,0.35)" />
           </div>
         )}
       </div>

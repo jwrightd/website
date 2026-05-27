@@ -17,11 +17,11 @@ export default function WorkspaceStatus({ mountedApps }: WorkspaceStatusProps) {
 
   return (
     <div
-      className="w-[252px] rounded-lg border"
+      className="w-[260px] overflow-hidden rounded-[10px] border"
       style={{
         borderColor: 'rgba(255,255,255,0.08)',
-        background: 'rgba(18,18,20,0.92)',
-        boxShadow: '0 10px 28px rgba(0,0,0,0.32)',
+        background: 'linear-gradient(180deg, rgba(20,20,22,0.94) 0%, rgba(17,17,19,0.92) 100%)',
+        boxShadow: '0 16px 28px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.04) inset',
       }}
     >
       <div
@@ -33,8 +33,12 @@ export default function WorkspaceStatus({ mountedApps }: WorkspaceStatusProps) {
             Workspace status
           </p>
           <span
-            className="inline-flex items-center gap-1.5 text-[10.5px]"
-            style={{ color: 'rgba(255,255,255,0.34)' }}
+            className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[10.5px]"
+            style={{
+              color: 'rgba(255,255,255,0.44)',
+              borderColor: 'rgba(255,255,255,0.08)',
+              background: 'rgba(255,255,255,0.03)',
+            }}
           >
             <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#32d74b' }} />
             Online
@@ -57,10 +61,10 @@ export default function WorkspaceStatus({ mountedApps }: WorkspaceStatusProps) {
               style={{
                 color:
                   label === 'Current focus'
-                    ? 'rgba(167,139,250,0.9)'
+                    ? 'rgba(167,139,250,0.92)'
                     : label === 'Resume ready'
-                      ? 'rgba(50,215,75,0.82)'
-                      : 'rgba(255,255,255,0.7)',
+                      ? 'rgba(50,215,75,0.84)'
+                      : 'rgba(255,255,255,0.74)',
               }}
             >
               {value}

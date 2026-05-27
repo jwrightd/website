@@ -5,6 +5,7 @@ import { ACHIEVEMENTS } from '@/data/achievements';
 import { EXPERIENCE } from '@/data/experience';
 import { JAMES_OS_README, PROFILE } from '@/data/profile';
 import { SKILLS } from '@/data/skills';
+import { BodyText, KeyValueRows, SectionBlock, SurfacePanel, TagList } from './shared/AppContent';
 
 const SECTIONS = ['System', 'Stack', 'Skills', 'README'] as const;
 type Section = typeof SECTIONS[number];
@@ -26,13 +27,12 @@ export default function SystemInfoApp() {
 
   return (
     <div className="flex h-full overflow-hidden">
-      {/* ── Sidebar ─────────────────────────────────── */}
       <div
         className="w-[148px] shrink-0 flex flex-col"
         style={{ background: 'var(--os-sidebar)', borderRight: '1px solid var(--os-border)' }}
       >
         <div className="px-3 pt-3 pb-2">
-          <p className="text-[10px] font-semibold uppercase tracking-widest px-2" style={{ color: 'var(--os-text-3)' }}>
+          <p className="px-2 text-[12px] font-medium" style={{ color: 'var(--os-text-2)' }}>
             JamesOS
           </p>
         </div>
@@ -53,9 +53,7 @@ export default function SystemInfoApp() {
         ))}
       </div>
 
-      {/* ── Content ─────────────────────────────────── */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
         <div
           className="flex items-center gap-4 px-6 py-4 shrink-0"
           style={{ borderBottom: '1px solid var(--os-border)' }}
@@ -94,24 +92,9 @@ export default function SystemInfoApp() {
 
 function SystemSection() {
   return (
-    <div
-      className="rounded-lg overflow-hidden"
-      style={{ border: '1px solid var(--os-border)' }}
-    >
-      {SYSTEM_INFO.map(({ label, value }, i) => (
-        <div
-          key={label}
-          className="flex gap-4 px-4 py-2.5"
-          style={{
-            background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)',
-            borderBottom: i < SYSTEM_INFO.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-          }}
-        >
-          <span className="text-[12px] font-mono w-24 shrink-0" style={{ color: 'var(--os-text-3)' }}>{label}</span>
-          <span className="text-[13px]" style={{ color: 'var(--os-text-2)' }}>{value}</span>
-        </div>
-      ))}
-    </div>
+    <SurfacePanel>
+      <KeyValueRows rows={SYSTEM_INFO} />
+    </SurfacePanel>
   );
 }
 
@@ -120,26 +103,9 @@ function StackSection() {
   return (
     <div className="flex flex-col gap-4">
       {SKILLS.map((s) => (
-        <div key={s.category}>
-          <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--os-text-3)' }}>
-            {s.category}
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {s.items.map((item) => (
-              <span
-                key={item}
-                className="rounded px-2.5 py-1 text-[12px] font-mono"
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: 'rgba(255,255,255,0.62)',
-                }}
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
+        <SectionBlock key={s.category} title={s.category}>
+          <TagList items={s.items} />
+        </SectionBlock>
       ))}
       <p className="text-[11px] mt-1" style={{ color: 'var(--os-text-3)' }}>
         {allSkills.length} toolchain entries indexed
@@ -163,26 +129,9 @@ function SkillsSection() {
   return (
     <div className="flex flex-col gap-5">
       {groups.map((group) => (
-        <div key={group.label}>
-          <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--os-text-3)' }}>
-            {group.label}
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {group.items.map((item) => (
-              <span
-                key={item}
-                className="rounded px-2.5 py-1 text-[12px]"
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: 'rgba(255,255,255,0.62)',
-                }}
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
+        <SectionBlock key={group.label} title={group.label}>
+          <TagList items={group.items} />
+        </SectionBlock>
       ))}
     </div>
   );
@@ -191,41 +140,19 @@ function SkillsSection() {
 function ReadmeSection() {
   return (
     <div className="flex flex-col gap-5">
-      <div
-        className="rounded-lg border px-4 py-4"
-        style={{ borderColor: 'var(--os-border)', background: 'rgba(255,255,255,0.03)' }}
-      >
-        <p className="text-[13.5px] font-medium" style={{ color: 'var(--os-text)' }}>
-          {JAMES_OS_README.label}
-        </p>
-        <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-          {JAMES_OS_README.summary}
-        </p>
-        <p className="mt-2 text-[13px] leading-[1.75]" style={{ color: 'rgba(255,255,255,0.44)' }}>
-          {JAMES_OS_README.description}
-        </p>
-      </div>
-
-      <div>
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest" style={{ color: 'var(--os-text-3)' }}>
-          Stack
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {JAMES_OS_README.stack.map((item) => (
-            <span
-              key={item}
-              className="rounded-md border px-2.5 py-1 text-[12px]"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                borderColor: 'rgba(255,255,255,0.08)',
-                color: 'rgba(255,255,255,0.62)',
-              }}
-            >
-              {item}
-            </span>
-          ))}
+      <SurfacePanel>
+        <div className="flex flex-col gap-3">
+          <p className="text-[13.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+            {JAMES_OS_README.label}
+          </p>
+          <BodyText>{JAMES_OS_README.summary}</BodyText>
+          <BodyText>{JAMES_OS_README.description}</BodyText>
         </div>
-      </div>
+      </SurfacePanel>
+
+      <SectionBlock title="Stack">
+        <TagList items={JAMES_OS_README.stack} />
+      </SectionBlock>
     </div>
   );
 }

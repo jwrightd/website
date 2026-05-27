@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { PROFILE } from '@/data/profile';
 import { RESEARCH } from '@/data/research';
 import type { ResearchItem } from '@/types';
+import { BodyText, LeadText, SectionBlock, TagList } from './shared/AppContent';
 
 const STATUS_COLOR: Record<string, string> = {
   Ongoing:       '#32d74b',
@@ -18,14 +19,13 @@ export default function ResearchApp() {
 
   return (
     <div className="flex h-full overflow-hidden">
-      {/* ── Sidebar ─────────────────────────────────────── */}
       <div
         className="w-[188px] shrink-0 flex flex-col overflow-y-auto"
         style={{ background: 'var(--os-sidebar)', borderRight: '1px solid var(--os-border)' }}
       >
         <div className="px-3 pt-3 pb-1.5">
-          <p className="text-[10px] font-semibold uppercase tracking-widest px-2" style={{ color: 'var(--os-text-3)' }}>
-            Experiment Log
+          <p className="px-2 text-[12px] font-medium" style={{ color: 'var(--os-text-2)' }}>
+            Research
           </p>
         </div>
 
@@ -46,7 +46,7 @@ export default function ResearchApp() {
                 [{String(i + 1).padStart(2, '0')}]
               </span>
               <div className="min-w-0">
-                <div className="flex items-center gap-1.5 mb-0.5">
+                <div className="mb-0.5 flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: dot }} />
                   <span className="text-[10.5px]" style={{ color: dot }}>{item.status}</span>
                 </div>
@@ -71,13 +71,12 @@ export default function ResearchApp() {
       </div>
 
       {/* ── Entry detail ────────────────────────────────── */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Path / breadcrumb */}
+        <div className="flex-1 flex flex-col overflow-hidden">
         <div
           className="flex items-center gap-1.5 px-4 h-8 shrink-0 text-[11px]"
           style={{ borderBottom: '1px solid var(--os-border)', background: 'rgba(255,255,255,0.015)', color: 'var(--os-text-3)' }}
         >
-          <span className="font-mono">~/research</span>
+          <span>Research</span>
           <span>/</span>
           <span style={{ color: 'var(--os-text-2)' }}>{selected.id}</span>
         </div>
@@ -109,46 +108,17 @@ function EntryDetail({ item }: { item: ResearchItem }) {
         </h2>
       </div>
 
-      <Section label="Research Question">
-        <p className="text-[14px] leading-[1.75] italic" style={{ color: 'var(--os-text-2)' }}>
-          &ldquo;{item.question}&rdquo;
-        </p>
-      </Section>
+      <SectionBlock title="Question">
+        <LeadText>&ldquo;{item.question}&rdquo;</LeadText>
+      </SectionBlock>
 
-      <Section label="Methods">
-        <div className="flex flex-wrap gap-1.5">
-          {item.methods.map((m) => (
-            <span
-              key={m}
-              className="rounded px-2 py-0.5 text-[12px] font-mono"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                color: 'rgba(255,255,255,0.58)',
-              }}
-            >
-              {m}
-            </span>
-          ))}
-        </div>
-      </Section>
+      <SectionBlock title="Methods">
+        <TagList items={item.methods} />
+      </SectionBlock>
 
-      <Section label="Why It Matters">
-        <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-          {item.impact}
-        </p>
-      </Section>
-    </div>
-  );
-}
-
-function Section({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <p className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: 'var(--os-text-3)' }}>
-        {label}
-      </p>
-      {children}
+      <SectionBlock title="Why It Matters">
+        <BodyText>{item.impact}</BodyText>
+      </SectionBlock>
     </div>
   );
 }

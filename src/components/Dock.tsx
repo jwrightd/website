@@ -28,11 +28,11 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
         initial={{ y: 80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, type: 'spring', stiffness: 280, damping: 28 }}
-        className="flex items-end gap-1.5 px-3 py-2.5 rounded-2xl"
+        className="flex items-end gap-1.5 rounded-[18px] px-3.5 py-3"
         style={{
-          background: 'rgba(28,28,30,0.92)',
+          background: 'linear-gradient(180deg, rgba(31,31,33,0.95) 0%, rgba(22,22,24,0.92) 100%)',
           border: '1px solid rgba(255,255,255,0.09)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.04) inset',
+          boxShadow: '0 20px 38px rgba(0,0,0,0.44), 0 1px 0 rgba(255,255,255,0.06) inset',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
         }}
@@ -61,11 +61,11 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 4 }}
                       transition={{ duration: 0.1 }}
-                      className="absolute -top-9 left-1/2 -translate-x-1/2 px-2 py-1 rounded-md text-[11.5px] font-medium text-white/85 whitespace-nowrap pointer-events-none"
+                      className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md border px-2 py-1 text-[11.5px] font-medium whitespace-nowrap text-white/82"
                       style={{
-                        background: '#1c1c1e',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                        background: 'rgba(24,24,26,0.96)',
+                        borderColor: 'rgba(255,255,255,0.08)',
+                        boxShadow: '0 8px 18px rgba(0,0,0,0.32)',
                       }}
                     >
                       {app.label}
@@ -74,7 +74,9 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
                 </AnimatePresence>
 
                 <motion.button
-                  animate={{ scale: isHovered ? 1.22 : 1, y: isHovered ? -7 : 0 }}
+                  aria-label={`${isOpen && !isMinimized ? 'Focus' : 'Open'} ${app.label}`}
+                  title={app.label}
+                  animate={{ scale: isHovered ? 1.18 : 1, y: isHovered ? -6 : 0 }}
                   transition={{ type: 'spring', stiffness: 520, damping: 32 }}
                   onHoverStart={() => setHoveredId(app.id)}
                   onHoverEnd={() => setHoveredId(null)}
@@ -83,7 +85,8 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
                     if (isOpen && !isMinimized) onFocus(app.id);
                     else onOpen(app.id);
                   }}
-                  className="w-11 h-11 rounded-xl flex items-center justify-center transition-colors duration-100"
+                  className="os-dock-button flex h-12 w-12 items-center justify-center rounded-xl"
+                  data-open={isOpen}
                   style={{
                     background: isOpen ? accent.iconBg : 'rgba(255,255,255,0.06)',
                     border: isOpen
@@ -92,7 +95,7 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
                   }}
                 >
                   <Icon
-                    size={20}
+                    size={21}
                     strokeWidth={1.6}
                     style={{ color: isOpen ? 'rgba(255,255,255,0.82)' : 'rgba(255,255,255,0.50)' }}
                   />
@@ -100,8 +103,8 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
 
                 {isOpen && (
                   <div
-                    className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full"
-                    style={{ background: accent.dot, boxShadow: `0 0 4px ${accent.dot}80` }}
+                    className="absolute -bottom-1.5 h-1.5 w-4 rounded-full"
+                    style={{ background: accent.dot, boxShadow: `0 0 8px ${accent.dot}55` }}
                   />
                 )}
               </div>

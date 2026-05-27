@@ -13,6 +13,7 @@
   --os-text-2:      rgba(255,255,255,0.48);
   --os-text-3:      rgba(255,255,255,0.26);
   --os-accent:      #4f8ef7;
+  --os-accent-rgb:  79, 142, 247;
   --os-green:       #32d74b;
   --os-yellow:      #ffd60a;
   --os-red:         #ff453a;
@@ -32,6 +33,116 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.os-shell-action {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 1px 0 rgba(0,0,0,0.18);
+  color: rgba(255,255,255,0.66);
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease,
+    transform 120ms ease;
+}
+
+.os-shell-action:hover {
+  border-color: rgba(255,255,255,0.16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.05) 100%);
+  color: rgba(255,255,255,0.84);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 8px 18px rgba(0,0,0,0.18);
+}
+
+.os-shell-action:active {
+  transform: translateY(1px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.03) 100%);
+}
+
+.os-shell-action:focus-visible,
+.os-dock-button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.os-dock-button {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 1px 0 rgba(0,0,0,0.18);
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 120ms ease;
+}
+
+.os-dock-button:hover {
+  border-color: rgba(255,255,255,0.15);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%);
+}
+
+.os-dock-button[data-open="true"] {
+  border-color: rgba(255,255,255,0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 12px 28px rgba(0,0,0,0.26);
+}
+
+.desktop-backdrop-breathe {
+  animation: desktop-backdrop-breathe 16s ease-in-out infinite;
+}
+
+.desktop-backdrop-drift {
+  animation: desktop-backdrop-drift 24s ease-in-out infinite alternate;
+}
+
+.desktop-backdrop-grid {
+  animation: desktop-backdrop-grid 28s linear infinite;
+}
+
+.desktop-selection-marquee {
+  border: 1px solid rgba(var(--os-accent-rgb), 0.5);
+  background:
+    linear-gradient(180deg, rgba(var(--os-accent-rgb), 0.18) 0%, rgba(var(--os-accent-rgb), 0.08) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0 0 1px rgba(var(--os-accent-rgb), 0.12),
+    0 12px 32px rgba(3, 8, 18, 0.22);
+}
+
+.desktop-selection-marquee[data-phase="fading"] {
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.desktop-icon-root[data-desktop-selected="true"] {
+  background: rgba(var(--os-accent-rgb), 0.09) !important;
+  box-shadow: inset 0 0 0 1px rgba(var(--os-accent-rgb), 0.18);
+}
+
+.desktop-icon-root[data-desktop-selected="true"] .desktop-icon-tile {
+  background: rgba(var(--os-accent-rgb), 0.18) !important;
+  border-color: rgba(var(--os-accent-rgb), 0.44) !important;
+  box-shadow:
+    0 0 0 1px rgba(var(--os-accent-rgb), 0.16),
+    0 10px 18px rgba(0,0,0,0.24) !important;
+}
+
+.desktop-icon-root[data-desktop-selected="true"] .desktop-icon-label {
+  color: rgba(255,255,255,0.88) !important;
+}
+
+.desktop-icon-root[data-desktop-selected="true"] .desktop-icon-dot {
+  box-shadow: 0 0 10px rgba(var(--os-accent-rgb), 0.55);
 }
 
 .boot-screen {
@@ -93,6 +204,38 @@ body {
 
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes desktop-backdrop-breathe {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.015);
+  }
+}
+
+@keyframes desktop-backdrop-drift {
+  from {
+    transform: skewX(-14deg) translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: skewX(-14deg) translate3d(-3%, 1.5%, 0);
+  }
+}
+
+@keyframes desktop-backdrop-grid {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-22px, -12px, 0);
   }
 }
 

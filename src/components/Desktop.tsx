@@ -11,6 +11,7 @@ import type { AppId } from '@/types';
 import BootScreen from './BootScreen';
 import DesktopBackdrop from './DesktopBackdrop';
 import DesktopIcon from './DesktopIcon';
+import DesktopInteractionLayer from './DesktopInteractionLayer';
 import Dock from './Dock';
 import MobileAppPanel from './MobileAppPanel';
 import QuickLauncher, { type QuickLauncherItem } from './QuickLauncher';
@@ -94,6 +95,7 @@ export default function Desktop() {
 
   const [launcherOpen, setLauncherOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(PROJECTS[0].id);
+  const [selectedDesktopIds, setSelectedDesktopIds] = useState<AppId[]>([]);
   const [mobileAppId, setMobileAppId] = useState<AppId | null>(null);
   const [bootComplete, setBootComplete] = useState(false);
 
@@ -213,10 +215,10 @@ export default function Desktop() {
     {
       id: 'action-open-interests',
       title: 'Open Interests',
-      subtitle: 'Show outside-of-work interests',
+      subtitle: 'Show chess, wrestling, and personal interests',
       group: 'Actions' as const,
       iconName: 'Trophy',
-      keywords: ['chess', 'outside work', 'personal'],
+      keywords: ['chess', 'wrestling', 'personal'],
       onSelect: () => openApp('interests'),
     },
     {
@@ -306,6 +308,15 @@ export default function Desktop() {
         style={{ background: '#0f0f11' }}
       >
         <DesktopBackdrop />
+        <DesktopInteractionLayer onSelectionAppsChange={setSelectedDesktopIds} />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[2]"
+          style={{
+            boxShadow:
+              'inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 80px 120px rgba(255,255,255,0.02), inset 0 -140px 180px rgba(0,0,0,0.34)',
+          }}
+        />
 
         <Taskbar
           focusedId={focusedId}
@@ -318,7 +329,7 @@ export default function Desktop() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.35 }}
-          className="absolute top-11 right-2 z-[600] flex flex-col gap-0.5 pt-3 pb-24"
+          className="absolute top-12 right-2 z-[600] flex flex-col gap-0.5 pt-3 pb-24"
         >
           {APPS.map((app) => (
             <DesktopIcon
@@ -328,6 +339,7 @@ export default function Desktop() {
               iconName={app.iconName}
               isOpen={windows[app.id]?.isOpen ?? false}
               isFocused={focusedId === app.id}
+              isSelected={selectedDesktopIds.includes(app.id)}
               onActivate={() => activateDesktopApp(app.id)}
             />
           ))}
@@ -344,7 +356,7 @@ export default function Desktop() {
           />
         </motion.div>
 
-        <div className="absolute inset-0 pt-9">
+        <div className="absolute inset-0 pt-10">
           <AnimatePresence>
             {APPS.map((app) => {
               const windowState = windows[app.id];
@@ -385,9 +397,9 @@ export default function Desktop() {
 
         <p
           className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 text-[10.5px]"
-          style={{ color: 'rgba(255,255,255,0.12)' }}
+          style={{ color: 'rgba(255,255,255,0.18)' }}
         >
-          Click any app, use {`Cmd/Ctrl + K`}, or start with Open Workspace or Recruiter Mode.
+          Open an app, press {`Cmd/Ctrl + K`}, or drag across empty desktop space.
         </p>
       </div>
 

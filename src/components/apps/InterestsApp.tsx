@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ArrowUpRight, Trophy } from 'lucide-react';
 import { PERSONAL_INTERESTS } from '@/data/interests';
 import type { PersonalInterest } from '@/types';
+import { BodyText, BulletList, LeadText, MetaGrid, MetaTile, SectionBlock } from './shared/AppContent';
 
 export default function InterestsApp() {
   const [selectedId, setSelectedId] = useState(PERSONAL_INTERESTS[0].id);
@@ -12,7 +13,7 @@ export default function InterestsApp() {
   return (
     <div className="flex h-full overflow-hidden">
       <div
-        className="flex w-[188px] shrink-0 flex-col"
+        className="flex w-[204px] shrink-0 flex-col"
         style={{ background: 'var(--os-sidebar)', borderRight: '1px solid var(--os-border)' }}
       >
         <div className="px-3 pt-3 pb-2">
@@ -28,7 +29,7 @@ export default function InterestsApp() {
             <button
               key={item.id}
               onClick={() => setSelectedId(item.id)}
-              className="w-full border-l-2 px-4 py-3 text-left transition-colors"
+              className="w-full border-l-2 px-4 py-3.5 text-left transition-colors"
               style={{
                 background: isSelected ? 'rgba(245,158,11,0.12)' : 'transparent',
                 borderLeftColor: isSelected ? item.accent : 'transparent',
@@ -94,9 +95,9 @@ export default function InterestsApp() {
 function InterestDetail({ interest }: { interest: PersonalInterest }) {
   return (
     <div className="flex-1 overflow-auto px-6 py-5">
-      <div className="flex flex-col gap-5">
-        <div>
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-5">
+          <div>
+            <div className="flex items-center gap-2">
             <div
               className="flex h-9 w-9 items-center justify-center rounded-lg border"
               style={{
@@ -116,47 +117,33 @@ function InterestDetail({ interest }: { interest: PersonalInterest }) {
             </div>
           </div>
           {interest.summary && (
-            <p className="mt-3 text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-              {interest.summary}
-            </p>
+            <div className="mt-3 max-w-[68ch]">
+              <LeadText>{interest.summary}</LeadText>
+            </div>
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <MetaCard label="Category" value={interest.category} />
-          <MetaCard label="Status" value={interest.status} accent={interest.accent} />
-        </div>
+        <MetaGrid>
+          <MetaTile label="Category" value={interest.category} />
+          <MetaTile label="Status" value={interest.status} accent={interest.accent} />
+        </MetaGrid>
 
-        <InfoSection title="Overview">
-          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-            {interest.overview}
-          </p>
-        </InfoSection>
+        <SectionBlock title="Overview">
+          <BodyText>{interest.overview}</BodyText>
+        </SectionBlock>
 
-        <InfoSection title="Recognition">
-          <div className="flex flex-col gap-2">
-            {interest.recognition.map((item) => (
-              <p key={item} className="text-[14px] leading-[1.7]" style={{ color: 'var(--os-text-2)' }}>
-                {item}
-              </p>
-            ))}
-          </div>
-        </InfoSection>
+        <SectionBlock title="Recognition">
+          <BulletList items={interest.recognition} accent={interest.accent} />
+        </SectionBlock>
 
         {interest.notes && interest.notes.length > 0 && (
-          <InfoSection title="Notes">
-            <div className="flex flex-col gap-2">
-              {interest.notes.map((item) => (
-                <p key={item} className="text-[13px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.48)' }}>
-                  {item}
-                </p>
-              ))}
-            </div>
-          </InfoSection>
+          <SectionBlock title="Notes">
+            <BulletList items={interest.notes} accent="rgba(255,255,255,0.34)" />
+          </SectionBlock>
         )}
 
         {interest.links && interest.links.length > 0 && (
-          <InfoSection title="Links">
+          <SectionBlock title="Links">
             <div className="flex flex-wrap gap-2">
               {interest.links.map((link) => (
                 <a
@@ -176,53 +163,9 @@ function InterestDetail({ interest }: { interest: PersonalInterest }) {
                 </a>
               ))}
             </div>
-          </InfoSection>
+          </SectionBlock>
         )}
       </div>
-    </div>
-  );
-}
-
-function InfoSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <h3 className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
-        {title}
-      </h3>
-      <div className="mt-2.5">{children}</div>
-    </div>
-  );
-}
-
-function MetaCard({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string;
-  accent?: string;
-}) {
-  return (
-    <div
-      className="rounded-lg border px-3.5 py-3"
-      style={{
-        borderColor: 'rgba(255,255,255,0.08)',
-        background: 'rgba(255,255,255,0.025)',
-      }}
-    >
-      <p className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>
-        {label}
-      </p>
-      <p className="mt-1 text-[13px] font-medium" style={{ color: accent ?? 'var(--os-text)' }}>
-        {value}
-      </p>
     </div>
   );
 }

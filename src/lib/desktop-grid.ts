@@ -1,0 +1,3 @@
+export const DESKTOP_GRID_SIZE = 46;
+export const DESKTOP_SELECTION_FADE_MS = 140;
+export const DESKTOP_SELECTION_DRAG_THRESHOLD = 6;

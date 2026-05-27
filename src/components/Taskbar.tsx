@@ -42,20 +42,37 @@ export default function Taskbar({
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-[9998] flex h-9 items-center px-4 select-none"
+      className="fixed top-0 left-0 right-0 z-[9998] flex h-10 items-center px-4 select-none"
       style={{
-        background: 'rgba(15,15,17,0.86)',
-        backdropFilter: 'blur(20px) saturate(160%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(160%)',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        background: 'linear-gradient(180deg, rgba(24,24,26,0.92) 0%, rgba(16,16,18,0.88) 100%)',
+        backdropFilter: 'blur(20px) saturate(165%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(165%)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 1px 0 rgba(255,255,255,0.04) inset',
       }}
     >
       <div className="flex min-w-0 items-center gap-4">
-        <span className="shrink-0 text-[13px] font-semibold tracking-wide text-white/88">JamesOS</span>
+        <span
+          className="inline-flex shrink-0 items-center gap-2 rounded-md border px-2 py-1 text-[12.5px] font-semibold tracking-wide text-white/88"
+          style={{
+            borderColor: 'rgba(255,255,255,0.08)',
+            background: 'rgba(255,255,255,0.035)',
+          }}
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-white/75" />
+          JamesOS
+        </span>
         {activeApp && (
           <>
             <div className="h-3.5 w-px shrink-0 bg-white/15" />
-            <span className="inline-flex min-w-0 items-center gap-2 truncate text-[12.5px] font-medium text-white/62">
+            <span
+              className="inline-flex min-w-0 items-center gap-2 truncate rounded-md border px-2 py-1 text-[12px] font-medium"
+              style={{
+                borderColor: 'rgba(255,255,255,0.07)',
+                background: 'rgba(255,255,255,0.03)',
+                color: 'rgba(255,255,255,0.68)',
+              }}
+            >
               <span
                 className="h-1.5 w-1.5 shrink-0 rounded-full"
                 style={{ background: activeAccent?.dot ?? '#4f8ef7' }}
@@ -69,20 +86,16 @@ export default function Taskbar({
       <div className="flex-1" />
 
       <div
-        className="mr-4 hidden items-center gap-1.5 rounded-lg border p-1 lg:flex"
+        className="mr-4 hidden items-center gap-1.5 rounded-[10px] border p-1 lg:flex"
         style={{
           borderColor: 'rgba(255,255,255,0.08)',
-          background: 'rgba(255,255,255,0.035)',
+          background: 'rgba(255,255,255,0.03)',
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.035)',
         }}
       >
         <button
           onClick={onOpenLauncher}
-          className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[11px] transition-colors hover:bg-white/6"
-          style={{
-            borderColor: 'rgba(255,255,255,0.1)',
-            background: 'rgba(255,255,255,0.045)',
-            color: 'rgba(255,255,255,0.58)',
-          }}
+          className="os-shell-action inline-flex items-center gap-1.5 rounded-[9px] px-2.5 py-1 text-[11px]"
         >
           <Search size={11} />
           Search
@@ -92,24 +105,14 @@ export default function Taskbar({
         </button>
         <button
           onClick={onOpenWorkspace}
-          className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[11px] transition-colors hover:bg-white/6"
-          style={{
-            borderColor: 'rgba(255,255,255,0.1)',
-            background: 'rgba(255,255,255,0.045)',
-            color: 'rgba(255,255,255,0.58)',
-          }}
+          className="os-shell-action inline-flex items-center gap-1.5 rounded-[9px] px-2.5 py-1 text-[11px]"
         >
           <FolderOpen size={11} />
           Open Workspace
         </button>
         <button
           onClick={onRecruiterMode}
-          className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[11px] transition-colors hover:bg-white/6"
-          style={{
-            borderColor: 'rgba(255,255,255,0.1)',
-            background: 'rgba(255,255,255,0.045)',
-            color: 'rgba(255,255,255,0.58)',
-          }}
+          className="os-shell-action inline-flex items-center gap-1.5 rounded-[9px] px-2.5 py-1 text-[11px]"
         >
           <Users size={11} />
           Recruiter Mode

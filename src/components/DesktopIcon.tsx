@@ -18,6 +18,7 @@ interface DesktopIconProps {
   iconName: string;
   isOpen: boolean;
   isFocused: boolean;
+  isSelected: boolean;
   onActivate: () => void;
 }
 
@@ -27,6 +28,7 @@ export default function DesktopIcon({
   iconName,
   isOpen,
   isFocused,
+  isSelected,
   onActivate,
 }: DesktopIconProps) {
   const Icon = ICON_MAP[iconName] ?? Cpu;
@@ -40,30 +42,40 @@ export default function DesktopIcon({
   return (
     <motion.button
       type="button"
+      data-desktop-icon="true"
+      data-app-id={id}
+      data-desktop-selected={isSelected ? 'true' : 'false'}
       aria-label={`${isOpen ? 'Focus' : 'Open'} ${label}`}
       title={label}
-      whileHover={{ scale: 1.05, y: -1 }}
+      whileHover={{ scale: 1.04, y: -2 }}
       whileTap={{ scale: 0.94 }}
       onClick={onActivate}
-      className="group flex w-16 flex-col items-center gap-1.5 rounded-lg px-1 py-1.5 select-none outline-none transition-colors focus-visible:bg-white/5"
+      className="group desktop-icon-root flex w-[70px] flex-col items-center gap-1.5 rounded-[10px] px-1.5 py-2 select-none outline-none transition-colors focus-visible:bg-white/5"
+      style={{
+        background: isFocused
+          ? 'rgba(255,255,255,0.05)'
+          : isOpen
+            ? 'rgba(255,255,255,0.025)'
+            : 'transparent',
+      }}
     >
       <div
-        className="flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-150 group-focus-visible:ring-1"
+        className="desktop-icon-tile flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-150 group-focus-visible:ring-1"
         style={{
           background: isFocused
-            ? 'rgba(255,255,255,0.08)'
+            ? 'rgba(255,255,255,0.1)'
             : isOpen
               ? accent.iconBg
-              : 'transparent',
+              : 'rgba(255,255,255,0.02)',
           border: isFocused
             ? `1px solid ${accent.dot}50`
             : isOpen
               ? '1px solid rgba(255,255,255,0.10)'
-              : '1px solid transparent',
+              : '1px solid rgba(255,255,255,0.03)',
           boxShadow: isFocused
-            ? `0 0 0 1px ${accent.dot}20, 0 4px 14px rgba(0,0,0,0.42)`
+            ? `0 0 0 1px ${accent.dot}20, 0 8px 18px rgba(0,0,0,0.28)`
             : isOpen
-              ? '0 2px 8px rgba(0,0,0,0.4)'
+              ? '0 5px 12px rgba(0,0,0,0.22)'
               : 'none',
         }}
       >
@@ -76,13 +88,13 @@ export default function DesktopIcon({
       </div>
 
       <span
-        className="text-[10.5px] font-medium text-center leading-tight"
+        className="desktop-icon-label text-[10.5px] font-medium text-center leading-tight"
         style={{
           color: isFocused
             ? 'rgba(255,255,255,0.82)'
             : isOpen
               ? 'rgba(255,255,255,0.72)'
-              : 'rgba(255,255,255,0.34)',
+              : 'rgba(255,255,255,0.4)',
           textShadow: '0 1px 3px rgba(0,0,0,0.9)',
         }}
       >
@@ -91,7 +103,7 @@ export default function DesktopIcon({
 
       {isOpen && (
         <div
-          className="w-1 h-1 rounded-full -mt-0.5"
+          className="desktop-icon-dot w-1 h-1 rounded-full -mt-0.5"
           style={{ background: accent.dot }}
         />
       )}

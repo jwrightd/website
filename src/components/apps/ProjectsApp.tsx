@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ExternalLink, FolderOpen, GitBranch, Link2 } from 'lucide-react';
 import { PROJECTS } from '@/data/projects';
 import type { Project, ProjectLink } from '@/types';
+import { BodyText, BulletList, LeadText, MetaGrid, MetaTile, SectionBlock, TagList } from './shared/AppContent';
 
 interface ProjectsAppProps {
   selectedId: string;
@@ -68,7 +69,7 @@ export default function ProjectsApp({
   return (
     <div className="flex h-full overflow-hidden">
       <div
-        className="flex w-[222px] shrink-0 flex-col overflow-y-auto"
+        className="flex w-[236px] shrink-0 flex-col overflow-y-auto"
         style={{
           background: 'var(--os-sidebar)',
           borderRight: '1px solid var(--os-border)',
@@ -87,7 +88,7 @@ export default function ProjectsApp({
             <button
               key={project.id}
               onClick={() => onSelectProject(project.id)}
-              className="w-full border-l-2 px-4 py-3 text-left transition-colors"
+              className="w-full border-l-2 px-4 py-3.5 text-left transition-colors"
               style={{
                 background: isSelected ? 'rgba(167,139,250,0.16)' : 'transparent',
                 borderLeftColor: isSelected ? '#4f8ef7' : 'transparent',
@@ -102,7 +103,7 @@ export default function ProjectsApp({
               <p className="mt-1 text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
                 {project.category}
               </p>
-              <p className="mt-1 line-clamp-2 text-[11.5px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
+              <p className="mt-1.5 line-clamp-2 text-[12px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.42)' }}>
                 {project.summary}
               </p>
             </button>
@@ -162,70 +163,49 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
               {project.status}
             </span>
           </div>
-          <p className="mt-2 text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-            {project.summary}
-          </p>
+          <div className="mt-2 max-w-[70ch]">
+            <LeadText>{project.summary}</LeadText>
+          </div>
         </div>
 
-        <div className={`${isMobile ? 'grid grid-cols-1 gap-2' : 'grid grid-cols-2 gap-3'}`}>
-          <MetaCard label="Category" value={project.category} />
-          <MetaCard label="Status" value={project.status} />
-        </div>
-
-        <DetailSection title="Overview">
-          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-            {project.overview}
-          </p>
-        </DetailSection>
-
-        <DetailSection title="Problem">
-          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-            {project.problem}
-          </p>
-        </DetailSection>
-
-        <DetailSection title="Approach">
-          <div className="flex flex-col gap-2">
-            {project.approach.map((item) => (
-              <p key={item} className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-                {item}
-              </p>
-            ))}
+        {isMobile ? (
+          <div className="grid grid-cols-1 gap-2">
+            <MetaTile label="Category" value={project.category} />
+            <MetaTile label="Status" value={project.status} />
           </div>
-        </DetailSection>
+        ) : (
+          <MetaGrid>
+            <MetaTile label="Category" value={project.category} />
+            <MetaTile label="Status" value={project.status} />
+          </MetaGrid>
+        )}
 
-        <DetailSection title="Technical Challenge">
-          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-            {project.technicalChallenge}
-          </p>
-        </DetailSection>
+        <SectionBlock title="Overview">
+          <BodyText>{project.overview}</BodyText>
+        </SectionBlock>
 
-        <DetailSection title="Result / Impact">
-          <p className="text-[14px] leading-[1.75]" style={{ color: 'var(--os-text-2)' }}>
-            {project.result}
-          </p>
-        </DetailSection>
+        <SectionBlock title="Problem">
+          <BodyText>{project.problem}</BodyText>
+        </SectionBlock>
 
-        <DetailSection title="Tech Stack">
-          <div className="flex flex-wrap gap-1.5">
-            {project.techStack.map((item) => (
-              <span
-                key={item}
-                className="rounded-md border px-2 py-1 text-[12px]"
-                style={{
-                  borderColor: 'rgba(255,255,255,0.08)',
-                  background: 'rgba(255,255,255,0.04)',
-                  color: 'rgba(255,255,255,0.64)',
-                }}
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </DetailSection>
+        <SectionBlock title="Approach">
+          <BulletList items={project.approach} accent="#4f8ef7" />
+        </SectionBlock>
+
+        <SectionBlock title="Technical Challenge">
+          <BodyText>{project.technicalChallenge}</BodyText>
+        </SectionBlock>
+
+        <SectionBlock title="Result / Impact">
+          <BodyText>{project.result}</BodyText>
+        </SectionBlock>
+
+        <SectionBlock title="Tech Stack">
+          <TagList items={project.techStack} />
+        </SectionBlock>
 
         {project.media && project.media.length > 0 && (
-          <DetailSection title="Images">
+          <SectionBlock title="Images">
             <div className="grid gap-2">
               {project.media.map((item) => (
                 <figure
@@ -256,7 +236,7 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
                       {item.alt}
                     </p>
                     {item.caption && (
-                      <p className="mt-1 text-[12px]" style={{ color: 'var(--os-text-3)' }}>
+                      <p className="mt-1 text-[12px] leading-[1.65]" style={{ color: 'var(--os-text-3)' }}>
                         {item.caption}
                       </p>
                     )}
@@ -264,48 +244,18 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
                 </figure>
               ))}
             </div>
-          </DetailSection>
+          </SectionBlock>
         )}
 
-        <DetailSection title="Links">
+        <SectionBlock title="Links">
           <div className="flex flex-wrap gap-2">
             {project.links.map((link) => (
               <ProjectLinkButton key={`${project.id}-${link.label}`} link={link} />
             ))}
           </div>
-        </DetailSection>
+        </SectionBlock>
       </div>
     </div>
-  );
-}
-
-function MetaCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div
-      className="rounded-lg border px-3 py-3"
-      style={{
-        borderColor: 'rgba(255,255,255,0.08)',
-        background: 'rgba(255,255,255,0.03)',
-      }}
-    >
-      <p className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>
-        {label}
-      </p>
-      <p className="mt-1 text-[12.5px] leading-[1.65]" style={{ color: 'var(--os-text-2)' }}>
-        {value}
-      </p>
-    </div>
-  );
-}
-
-function DetailSection({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section>
-      <h3 className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
-        {title}
-      </h3>
-      <div className="mt-2">{children}</div>
-    </section>
   );
 }
 
