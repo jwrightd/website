@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   title: 'James Wright — JamesOS',
   description: 'Mathematics and Computer Science student at Duke University working across machine learning, research engineering, and applied software.',
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
     apple: '/logo.png',
   },
 };
