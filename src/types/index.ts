@@ -82,6 +82,7 @@ export interface ResearchItem {
   methods: string[];
   status: 'Ongoing' | 'Published' | 'In Progress' | 'Exploratory';
   impact: string;
+  links?: ProjectLink[];
 }
 
 export interface Skill {

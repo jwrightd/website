@@ -6,6 +6,8 @@ import { PERSONAL_INTERESTS } from '@/data/interests';
 import type { PersonalInterest } from '@/types';
 import { BodyText, BulletList, LeadText, MetaGrid, MetaTile, SectionBlock } from './shared/AppContent';
 
+const INTERESTS_ACCENT = '#f59e0b';
+
 export default function InterestsApp() {
   const [selectedId, setSelectedId] = useState(PERSONAL_INTERESTS[0].id);
   const selected = PERSONAL_INTERESTS.find((item) => item.id === selectedId) ?? PERSONAL_INTERESTS[0];
@@ -35,12 +37,12 @@ export default function InterestsApp() {
                 background: isSelected ? 'rgba(245,158,11,0.1)' : undefined,
                 borderColor: isSelected ? 'rgba(245,158,11,0.18)' : undefined,
                 boxShadow: isSelected
-                  ? `inset 2px 0 0 ${item.accent}, inset 0 1px 0 rgba(255,255,255,0.035), 0 0 0 1px rgba(255,255,255,0.02)`
+                  ? `inset 2px 0 0 ${INTERESTS_ACCENT}, inset 0 1px 0 rgba(255,255,255,0.035), 0 0 0 1px rgba(255,255,255,0.02)`
                   : undefined,
               }}
             >
               <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full" style={{ background: item.accent }} />
+                <span className="h-1.5 w-1.5 rounded-full" style={{ background: INTERESTS_ACCENT }} />
                 <p
                   className="text-[13px] font-medium"
                   style={{ color: isSelected ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.62)' }}
@@ -109,7 +111,7 @@ function InterestDetail({ interest }: { interest: PersonalInterest }) {
                 borderColor: 'rgba(245,158,11,0.18)',
               }}
             >
-              <Trophy size={17} style={{ color: interest.accent }} />
+              <Trophy size={17} style={{ color: INTERESTS_ACCENT }} />
             </div>
             <div>
               <h2 className="text-[20px] font-semibold" style={{ color: 'var(--os-text)' }}>
@@ -129,7 +131,7 @@ function InterestDetail({ interest }: { interest: PersonalInterest }) {
 
         <MetaGrid>
           <MetaTile label="Category" value={interest.category} />
-          <MetaTile label="Status" value={interest.status} accent={interest.accent} />
+          <MetaTile label="Status" value={interest.status} accent={INTERESTS_ACCENT} />
         </MetaGrid>
 
         <SectionBlock title="Overview">
@@ -137,7 +139,7 @@ function InterestDetail({ interest }: { interest: PersonalInterest }) {
         </SectionBlock>
 
         <SectionBlock title="Recognition">
-          <BulletList items={interest.recognition} accent={interest.accent} />
+          <BulletList items={interest.recognition} accent={INTERESTS_ACCENT} />
         </SectionBlock>
 
         {interest.notes && interest.notes.length > 0 && (

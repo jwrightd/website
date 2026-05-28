@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { ArrowRight, FileText, FolderOpen, Mail, MonitorSmartphone } from 'lucide-react';
-import { JAMES_OS_README, PROFILE } from '@/data/profile';
+import { PROFILE } from '@/data/profile';
 import type { AppId } from '@/types';
-import { BodyText, LeadText, SectionBlock, SurfacePanel, TagList } from './shared/AppContent';
+import { BodyText, LeadText, SectionBlock } from './shared/AppContent';
 
 interface AboutAppProps {
   onOpen: (id: AppId) => void;
@@ -55,16 +55,6 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
 
         <SectionBlock title="Overview">
           <BodyText>{PROFILE.aboutSecondary}</BodyText>
-        </SectionBlock>
-
-        <SectionBlock title={JAMES_OS_README.label} description="This site is itself a small interactive portfolio system.">
-          <SurfacePanel>
-            <div className="flex flex-col gap-3">
-              <BodyText>{JAMES_OS_README.summary}</BodyText>
-              <BodyText>{JAMES_OS_README.description}</BodyText>
-              <TagList items={JAMES_OS_README.stack} />
-            </div>
-          </SurfacePanel>
         </SectionBlock>
       </div>
 

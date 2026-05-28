@@ -42,20 +42,20 @@ export const APPS: AppConfig[] = [
     defaultPosition: { x: 96, y: 52 },
   },
   {
-    id: 'interests',
-    label: 'Interests',
-    iconName: 'Trophy',
-    minSize: { width: 480, height: 320 },
-    defaultSize: { width: 660, height: 520 },
-    defaultPosition: { x: 118, y: 72 },
-  },
-  {
     id: 'contact',
     label: 'Contact',
     iconName: 'Mail',
     minSize: { width: 420, height: 260 },
     defaultSize: { width: 580, height: 420 },
     defaultPosition: { x: 130, y: 68 },
+  },
+  {
+    id: 'interests',
+    label: 'Interests',
+    iconName: 'Trophy',
+    minSize: { width: 480, height: 320 },
+    defaultSize: { width: 660, height: 520 },
+    defaultPosition: { x: 118, y: 72 },
   },
   {
     id: 'sysinfo',

@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { ExternalLink, GitBranch, Link2 } from 'lucide-react';
 import { PROFILE } from '@/data/profile';
 import { RESEARCH } from '@/data/research';
-import type { ResearchItem } from '@/types';
+import type { ProjectLink, ResearchItem } from '@/types';
 import { BodyText, LeadText, SectionBlock, TagList } from './shared/AppContent';
+
+const RESEARCH_ACCENT = '#4f8ef7';
 
 const STATUS_COLOR: Record<string, string> = {
   Ongoing:       '#32d74b',
@@ -52,7 +55,7 @@ export default function ResearchApp() {
               <div className="min-w-0">
                 <div className="mb-0.5 flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: dot }} />
-                  <span className="text-[10.5px]" style={{ color: dot }}>{item.status}</span>
+                  <span className="text-[10.5px]" style={{ color: 'var(--os-text-3)' }}>{item.status}</span>
                 </div>
                 <p
                   className="text-[12.5px] font-medium leading-tight truncate"
@@ -99,13 +102,12 @@ export default function ResearchApp() {
 }
 
 function EntryDetail({ item }: { item: ResearchItem }) {
-  const dot = STATUS_COLOR[item.status] ?? '#94a3b8';
   return (
     <div className="flex-1 overflow-auto px-6 py-5 flex flex-col gap-5">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <div className="w-2 h-2 rounded-full" style={{ background: dot }} />
-          <span className="text-[11px] font-medium" style={{ color: dot }}>{item.status}</span>
+          <div className="w-2 h-2 rounded-full" style={{ background: RESEARCH_ACCENT }} />
+          <span className="text-[11px] font-medium" style={{ color: RESEARCH_ACCENT }}>{item.status}</span>
         </div>
         <h2 className="text-[17px] font-bold leading-snug" style={{ color: 'var(--os-text)' }}>
           {item.title}
@@ -123,6 +125,37 @@ function EntryDetail({ item }: { item: ResearchItem }) {
       <SectionBlock title="Why It Matters">
         <BodyText>{item.impact}</BodyText>
       </SectionBlock>
+
+      {item.links && item.links.length > 0 ? (
+        <SectionBlock title="Links">
+          <div className="flex flex-wrap gap-2">
+            {item.links.map((link) => (
+              <ResearchLinkButton key={`${item.id}-${link.label}`} link={link} />
+            ))}
+          </div>
+        </SectionBlock>
+      ) : null}
     </div>
+  );
+}
+
+function ResearchLinkButton({ link }: { link: ProjectLink }) {
+  const Icon = link.kind === 'github' ? GitBranch : link.kind === 'live' ? Link2 : ExternalLink;
+
+  return (
+    <a
+      href={link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/6"
+      style={{
+        borderColor: 'rgba(255,255,255,0.09)',
+        background: 'rgba(255,255,255,0.03)',
+        color: 'rgba(255,255,255,0.68)',
+      }}
+    >
+      <Icon size={12} />
+      {link.label}
+    </a>
   );
 }
