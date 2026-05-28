@@ -329,7 +329,7 @@ export default function Desktop() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.35 }}
-          className="absolute top-12 right-2 z-[600] flex flex-col gap-0.5 pt-3 pb-24"
+          className="absolute top-12 right-5 z-[600] flex flex-col gap-0 pt-2.5 pb-20"
         >
           {APPS.map((app) => (
             <DesktopIcon

@@ -20,24 +20,30 @@ export default function WorkspaceStatus({ mountedApps }: WorkspaceStatusProps) {
       className="w-[260px] overflow-hidden rounded-[10px] border"
       style={{
         borderColor: 'rgba(255,255,255,0.08)',
-        background: 'linear-gradient(180deg, rgba(20,20,22,0.94) 0%, rgba(17,17,19,0.92) 100%)',
-        boxShadow: '0 16px 28px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.04) inset',
+        background: 'rgba(15,16,18,0.84)',
+        boxShadow: '0 18px 30px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.05) inset',
+        backdropFilter: 'blur(18px) saturate(130%)',
+        WebkitBackdropFilter: 'blur(18px) saturate(130%)',
       }}
     >
       <div
         className="border-b px-4 py-3"
-        style={{ borderColor: 'rgba(255,255,255,0.08)' }}
+        style={{
+          borderColor: 'rgba(255,255,255,0.08)',
+          background: 'rgba(255,255,255,0.025)',
+        }}
       >
         <div className="flex items-center justify-between gap-3">
-          <p className="text-[12.5px] font-medium" style={{ color: 'var(--os-text)' }}>
+          <p className="text-[12.5px] font-medium" style={{ color: 'rgba(255,255,255,0.82)' }}>
             Workspace status
           </p>
           <span
             className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-[10.5px]"
             style={{
-              color: 'rgba(255,255,255,0.44)',
+              color: 'rgba(255,255,255,0.78)',
               borderColor: 'rgba(255,255,255,0.08)',
-              background: 'rgba(255,255,255,0.03)',
+              background: 'rgba(255,255,255,0.04)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
             }}
           >
             <span className="h-1.5 w-1.5 rounded-full" style={{ background: '#32d74b' }} />
@@ -53,7 +59,7 @@ export default function WorkspaceStatus({ mountedApps }: WorkspaceStatusProps) {
             className="flex items-start justify-between gap-3 border-b py-2.5 last:border-b-0"
             style={{ borderColor: 'rgba(255,255,255,0.05)' }}
           >
-            <span className="text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
+            <span className="text-[11.5px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
               {label}
             </span>
             <span
@@ -61,10 +67,11 @@ export default function WorkspaceStatus({ mountedApps }: WorkspaceStatusProps) {
               style={{
                 color:
                   label === 'Current focus'
-                    ? 'rgba(167,139,250,0.92)'
+                    ? 'rgba(145,127,232,0.88)'
                     : label === 'Resume ready'
-                      ? 'rgba(50,215,75,0.84)'
-                      : 'rgba(255,255,255,0.74)',
+                      ? 'rgba(24,130,41,0.92)'
+                      : 'rgba(255,255,255,0.76)',
+                fontWeight: label === 'Current focus' ? 500 : 400,
               }}
             >
               {value}

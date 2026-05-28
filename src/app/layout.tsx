@@ -4,6 +4,11 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'James Wright — JamesOS',
   description: 'Mathematics and Computer Science student at Duke University working across machine learning, research engineering, and applied software.',
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({

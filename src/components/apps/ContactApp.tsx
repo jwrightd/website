@@ -98,10 +98,14 @@ export default function ContactApp({ isMobile = false }: ContactAppProps) {
             <button
               key={item.id}
               onClick={() => setSelectedId(item.id)}
-              className="w-full border-l-2 px-4 py-3 text-left"
+              data-active={isSelected ? 'true' : 'false'}
+              className="os-sidebar-tab mx-2 mb-1 w-auto rounded-[10px] px-4 py-3 text-left"
               style={{
-                background: isSelected ? 'rgba(79,142,247,0.14)' : 'transparent',
-                borderLeftColor: isSelected ? '#4f8ef7' : 'transparent',
+                background: isSelected ? 'rgba(79,142,247,0.12)' : undefined,
+                borderColor: isSelected ? 'rgba(79,142,247,0.18)' : undefined,
+                boxShadow: isSelected
+                  ? 'inset 2px 0 0 #4f8ef7, inset 0 1px 0 rgba(255,255,255,0.035), 0 0 0 1px rgba(255,255,255,0.02)'
+                  : undefined,
               }}
             >
               <div className="flex items-center gap-2">

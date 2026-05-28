@@ -36,10 +36,14 @@ export default function ResearchApp() {
             <button
               key={item.id}
               onClick={() => setSelectedId(item.id)}
-              className="w-full flex items-start gap-2.5 px-3 py-2.5 text-left transition-colors"
+              data-active={isSelected ? 'true' : 'false'}
+              className="os-sidebar-tab mx-2 mb-1 flex w-auto items-start gap-2.5 rounded-[10px] px-3 py-2.5 text-left"
               style={{
-                background: isSelected ? 'rgba(79,142,247,0.15)' : 'transparent',
-                borderLeft: `2px solid ${isSelected ? '#4f8ef7' : 'transparent'}`,
+                background: isSelected ? 'rgba(79,142,247,0.12)' : undefined,
+                borderColor: isSelected ? 'rgba(79,142,247,0.18)' : undefined,
+                boxShadow: isSelected
+                  ? 'inset 2px 0 0 #4f8ef7, inset 0 1px 0 rgba(255,255,255,0.035), 0 0 0 1px rgba(255,255,255,0.02)'
+                  : undefined,
               }}
             >
               <span className="text-[10px] font-mono mt-0.5 shrink-0" style={{ color: 'var(--os-text-3)' }}>

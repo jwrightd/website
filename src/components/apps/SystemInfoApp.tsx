@@ -41,10 +41,14 @@ export default function SystemInfoApp() {
           <button
             key={s}
             onClick={() => setActive(s)}
-            className="w-full text-left px-5 py-2.5 text-[13.5px] font-medium transition-colors"
+            data-active={active === s ? 'true' : 'false'}
+            className="os-sidebar-tab mx-2 mb-1 w-auto rounded-[10px] px-5 py-2.5 text-left text-[13.5px] font-medium"
             style={{
-              background: active === s ? 'rgba(79,142,247,0.15)' : 'transparent',
-              borderLeft: `2px solid ${active === s ? '#4f8ef7' : 'transparent'}`,
+              background: active === s ? 'rgba(79,142,247,0.12)' : undefined,
+              borderColor: active === s ? 'rgba(79,142,247,0.18)' : undefined,
+              boxShadow: active === s
+                ? 'inset 2px 0 0 #4f8ef7, inset 0 1px 0 rgba(255,255,255,0.035), 0 0 0 1px rgba(255,255,255,0.02)'
+                : undefined,
               color: active === s ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,0.48)',
             }}
           >

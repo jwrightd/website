@@ -28,11 +28,11 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
         initial={{ y: 80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, type: 'spring', stiffness: 280, damping: 28 }}
-        className="flex items-end gap-1.5 rounded-[18px] px-3.5 py-3"
+        className="flex items-end gap-2 rounded-[20px] px-4 py-3.5"
         style={{
-          background: 'linear-gradient(180deg, rgba(31,31,33,0.95) 0%, rgba(22,22,24,0.92) 100%)',
-          border: '1px solid rgba(255,255,255,0.09)',
-          boxShadow: '0 20px 38px rgba(0,0,0,0.44), 0 1px 0 rgba(255,255,255,0.06) inset',
+          background: 'rgba(15,16,18,0.84)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 22px 42px rgba(0,0,0,0.34), 0 1px 0 rgba(255,255,255,0.05) inset',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
         }}
@@ -61,10 +61,10 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 4 }}
                       transition={{ duration: 0.1 }}
-                      className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md border px-2 py-1 text-[11.5px] font-medium whitespace-nowrap text-white/82"
+                      className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 rounded-md border px-2.5 py-1 text-[12px] font-medium whitespace-nowrap text-white/86"
                       style={{
                         background: 'rgba(24,24,26,0.96)',
-                        borderColor: 'rgba(255,255,255,0.08)',
+                        borderColor: 'rgba(255,255,255,0.1)',
                         boxShadow: '0 8px 18px rgba(0,0,0,0.32)',
                       }}
                     >
@@ -85,25 +85,25 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
                     if (isOpen && !isMinimized) onFocus(app.id);
                     else onOpen(app.id);
                   }}
-                  className="os-dock-button flex h-12 w-12 items-center justify-center rounded-xl"
+                  className="os-dock-button flex h-[54px] w-[54px] items-center justify-center rounded-[14px]"
                   data-open={isOpen}
                   style={{
-                    background: isOpen ? accent.iconBg : 'rgba(255,255,255,0.06)',
+                    background: isOpen ? accent.iconBg : 'rgba(255,255,255,0.085)',
                     border: isOpen
-                      ? `1px solid ${accent.dot}30`
-                      : '1px solid rgba(255,255,255,0.08)',
+                      ? `1px solid ${accent.dot}38`
+                      : '1px solid rgba(255,255,255,0.11)',
                   }}
                 >
                   <Icon
-                    size={21}
+                    size={24}
                     strokeWidth={1.6}
-                    style={{ color: isOpen ? 'rgba(255,255,255,0.82)' : 'rgba(255,255,255,0.50)' }}
+                    style={{ color: isOpen ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.66)' }}
                   />
                 </motion.button>
 
                 {isOpen && (
                   <div
-                    className="absolute -bottom-1.5 h-1.5 w-4 rounded-full"
+                    className="absolute -bottom-1.5 h-1.5 w-[18px] rounded-full"
                     style={{ background: accent.dot, boxShadow: `0 0 8px ${accent.dot}55` }}
                   />
                 )}

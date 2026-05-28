@@ -235,9 +235,7 @@ export default function Window({
       <div
         className="relative flex h-10 shrink-0 select-none items-center gap-2.5 px-3.5"
         style={{
-          background: isFocused
-            ? 'linear-gradient(180deg, rgba(37,37,39,0.98) 0%, rgba(31,31,33,0.98) 100%)'
-            : 'linear-gradient(180deg, rgba(31,31,33,0.96) 0%, rgba(27,27,29,0.96) 100%)',
+          background: isFocused ? 'rgba(19,20,23,0.94)' : 'rgba(16,17,20,0.9)',
           borderBottom: '1px solid var(--os-border)',
           touchAction: 'none',
           cursor: 'grab',
@@ -292,14 +290,15 @@ export default function Window({
           <span
             className="pointer-events-none inline-flex items-center gap-2 rounded-md border px-2.5 py-1 text-[12px] font-medium"
             style={{
-              borderColor: isFocused ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.04)',
-              background: isFocused ? 'rgba(255,255,255,0.045)' : 'rgba(255,255,255,0.012)',
-              color: isFocused ? 'rgba(255,255,255,0.76)' : 'rgba(255,255,255,0.36)',
+              borderColor: isFocused ? 'rgba(255,255,255,0.11)' : 'rgba(255,255,255,0.06)',
+              background: isFocused ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
+              color: isFocused ? 'rgba(255,255,255,0.86)' : 'rgba(255,255,255,0.62)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
             }}
           >
             <span
               className="h-1.5 w-1.5 rounded-full"
-              style={{ background: accent?.dot ?? '#4f8ef7', opacity: isFocused ? 1 : 0.5 }}
+              style={{ background: accent?.dot ?? '#4f8ef7', opacity: isFocused ? 1 : 0.72 }}
             />
             <span className="truncate">{app.label}</span>
           </span>

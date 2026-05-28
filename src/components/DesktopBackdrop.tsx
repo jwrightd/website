@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { DESKTOP_GRID_SIZE } from '@/lib/desktop-grid';
 
 export default function DesktopBackdrop() {
@@ -24,43 +25,48 @@ export default function DesktopBackdrop() {
       />
 
       <div
-        className="pointer-events-none absolute inset-y-[10%] right-[6%] w-[46%] opacity-80"
+        className="desktop-backdrop-drift pointer-events-none absolute inset-y-[-10%] right-[-14%] w-[68%] opacity-45"
         style={{
           background:
-            'linear-gradient(180deg, rgba(255,255,255,0.028) 0%, rgba(255,255,255,0.006) 100%)',
-          border: '1px solid rgba(255,255,255,0.05)',
-          borderRadius: 14,
-          boxShadow: '0 0 0 1px rgba(255,255,255,0.02) inset',
-        }}
-      >
-        <div
-          className="absolute inset-x-[8%] top-[12%] bottom-[12%]"
-          style={{
-            borderLeft: '1px solid rgba(255,255,255,0.05)',
-            borderRight: '1px solid rgba(255,255,255,0.05)',
-          }}
-        />
-        <div
-          className="absolute inset-y-[16%] left-[32%] right-[32%]"
-          style={{
-            borderLeft: '1px solid rgba(255,255,255,0.04)',
-            borderRight: '1px solid rgba(255,255,255,0.04)',
-          }}
-        />
-        <div
-          className="absolute left-[10%] right-[10%] top-1/2 h-px -translate-y-1/2"
-          style={{ background: 'rgba(255,255,255,0.06)' }}
-        />
-      </div>
-
-      <div
-        className="desktop-backdrop-drift pointer-events-none absolute inset-y-[-8%] right-[-10%] w-[60%] opacity-55"
-        style={{
-          background:
-            'linear-gradient(112deg, rgba(255,255,255,0) 8%, rgba(79,142,247,0.12) 30%, rgba(255,255,255,0.014) 58%, rgba(255,255,255,0) 78%)',
-          transform: 'skewX(-14deg)',
+            'linear-gradient(112deg, rgba(79,142,247,0) 10%, rgba(79,142,247,0.08) 34%, rgba(255,255,255,0.012) 54%, rgba(79,142,247,0.03) 68%, rgba(79,142,247,0) 86%)',
+          transform: 'skewX(-12deg)',
+          filter: 'blur(18px)',
         }}
       />
+
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div
+          className="absolute h-[42vw] w-[42vw] max-h-[560px] max-w-[560px] min-h-[280px] min-w-[280px] rounded-full opacity-75"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(79,142,247,0.22) 0%, rgba(79,142,247,0.09) 28%, rgba(79,142,247,0.03) 52%, rgba(79,142,247,0) 76%)',
+            filter: 'blur(22px)',
+          }}
+        />
+        <div
+          className="relative h-[42vw] w-[42vw] max-h-[560px] max-w-[560px] min-h-[280px] min-w-[280px] opacity-[0.5]"
+          style={{
+            mixBlendMode: 'lighten',
+            WebkitMaskImage:
+              'radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 54%, rgba(0,0,0,0.82) 68%, rgba(0,0,0,0.22) 84%, rgba(0,0,0,0) 100%)',
+            maskImage:
+              'radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 54%, rgba(0,0,0,0.82) 68%, rgba(0,0,0,0.22) 84%, rgba(0,0,0,0) 100%)',
+          }}
+        >
+          <Image
+            src="/logo.png"
+            alt=""
+            fill
+            priority
+            sizes="(max-width: 768px) 64vw, 42vw"
+            style={{
+              objectFit: 'contain',
+              filter:
+                'brightness(1.16) contrast(1.3) saturate(1.12) drop-shadow(0 0 52px rgba(79,142,247,0.2))',
+            }}
+          />
+        </div>
+      </div>
 
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.2]"

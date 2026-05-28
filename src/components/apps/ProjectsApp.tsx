@@ -88,10 +88,14 @@ export default function ProjectsApp({
             <button
               key={project.id}
               onClick={() => onSelectProject(project.id)}
-              className="w-full border-l-2 px-4 py-3.5 text-left transition-colors"
+              data-active={isSelected ? 'true' : 'false'}
+              className="os-sidebar-tab mx-2 mb-1 w-auto rounded-[10px] px-4 py-3.5 text-left"
               style={{
-                background: isSelected ? 'rgba(167,139,250,0.16)' : 'transparent',
-                borderLeftColor: isSelected ? '#4f8ef7' : 'transparent',
+                background: isSelected ? 'rgba(167,139,250,0.12)' : undefined,
+                borderColor: isSelected ? 'rgba(167,139,250,0.18)' : undefined,
+                boxShadow: isSelected
+                  ? 'inset 2px 0 0 #4f8ef7, inset 0 1px 0 rgba(255,255,255,0.035), 0 0 0 1px rgba(255,255,255,0.02)'
+                  : undefined,
               }}
             >
               <p

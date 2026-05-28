@@ -29,10 +29,14 @@ export default function InterestsApp() {
             <button
               key={item.id}
               onClick={() => setSelectedId(item.id)}
-              className="w-full border-l-2 px-4 py-3.5 text-left transition-colors"
+              data-active={isSelected ? 'true' : 'false'}
+              className="os-sidebar-tab mx-2 mb-1 w-auto rounded-[10px] px-4 py-3.5 text-left"
               style={{
-                background: isSelected ? 'rgba(245,158,11,0.12)' : 'transparent',
-                borderLeftColor: isSelected ? item.accent : 'transparent',
+                background: isSelected ? 'rgba(245,158,11,0.1)' : undefined,
+                borderColor: isSelected ? 'rgba(245,158,11,0.18)' : undefined,
+                boxShadow: isSelected
+                  ? `inset 2px 0 0 ${item.accent}, inset 0 1px 0 rgba(255,255,255,0.035), 0 0 0 1px rgba(255,255,255,0.02)`
+                  : undefined,
               }}
             >
               <div className="flex items-center gap-2">
