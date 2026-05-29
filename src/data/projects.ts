@@ -39,9 +39,9 @@ export const PROJECTS: Project[] = [
     name: 'MINGL',
     category: 'Research package',
     status: 'bioRxiv preprint',
-    summary: 'scverse-compatible Python package for probabilistic cell-type classification in multiplexed spatial proteomics.',
+    summary: 'Implemented a scverse-compatible Python package for probabilistic cell-type classification in multiplexed spatial proteomics.',
     overview:
-      'MINGL is a research package for probabilistic cell-type classification in multiplexed tissue imaging. It is built to fit into a real lab workflow rather than live only in notebooks.',
+      'MINGL is a research package for probabilistic cell-type classification in multiplexed tissue imaging. My contribution centered on implementing package tooling that fit into a real lab workflow rather than live only in notebooks.',
     problem:
       'Cell-type classification in multiplexed spatial proteomics often depends on manual gating or brittle heuristics, which makes uncertainty harder to represent and slows down research iteration.',
     approach: [
@@ -52,7 +52,7 @@ export const PROJECTS: Project[] = [
     technicalChallenge:
       'The technical challenge was turning statistically grounded modeling into reusable package tooling without sacrificing interpretability or downstream usability.',
     result:
-      'MINGL shipped as a usable research package and contributed to a bioRxiv preprint with James listed as a named co-author.',
+      'Implemented and shipped MINGL as a usable research package, and contributed to the bioRxiv preprint as a named co-author.',
     techStack: ['Python', 'Gaussian Mixture Models', 'scverse', 'Spatial proteomics'],
     links: [
       { label: 'GitHub', href: 'https://github.com/HickeyLab/Mingl', kind: 'github' },

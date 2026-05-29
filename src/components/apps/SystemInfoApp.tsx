@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { ACHIEVEMENTS } from '@/data/achievements';
 import { EXPERIENCE } from '@/data/experience';
@@ -18,7 +19,6 @@ const SYSTEM_INFO = [
   { label: 'GPA', value: '4.0' },
   { label: 'Current', value: PROFILE.recruiterHeadline },
   { label: 'Focus', value: PROFILE.currentFocus },
-  { label: 'Stack', value: JAMES_OS_README.stack.join(' · ') },
   { label: 'Resume', value: `Updated ${PROFILE.lastUpdated}` },
 ] as const;
 
@@ -63,10 +63,19 @@ export default function SystemInfoApp() {
           style={{ borderBottom: '1px solid var(--os-border)' }}
         >
           <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center text-[16px] font-black text-white shrink-0"
-            style={{ background: 'linear-gradient(145deg,#2563eb,#6d28d9)' }}
+            className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border"
+            style={{
+              borderColor: 'rgba(255,255,255,0.08)',
+              background: 'rgba(255,255,255,0.04)',
+            }}
           >
-            J
+            <Image
+              src="/logo.png"
+              alt="JamesOS logo"
+              fill
+              sizes="48px"
+              className="object-cover"
+            />
           </div>
           <div>
             <p className="text-[15px] font-bold" style={{ color: 'var(--os-text)' }}>JamesOS</p>

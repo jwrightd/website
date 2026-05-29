@@ -117,7 +117,10 @@ export default function ContactApp({ isMobile = false }: ContactAppProps) {
                   {item.label}
                 </span>
               </div>
-              <p className="mt-1 pl-[21px] text-[11px]" style={{ color: 'var(--os-text-3)' }}>
+              <p
+                className="mt-1 pl-[21px] text-[11px] leading-[1.4] break-all"
+                style={{ color: 'var(--os-text-3)' }}
+              >
                 {item.address}
               </p>
             </button>
@@ -139,11 +142,14 @@ export default function ContactApp({ isMobile = false }: ContactAppProps) {
           style={{ borderBottom: '1px solid var(--os-border)', background: 'rgba(255,255,255,0.015)' }}
         >
           <div className="flex items-center justify-between gap-4">
-            <div>
+            <div className="min-w-0">
               <p className="text-[13px] font-medium" style={{ color: 'var(--os-text)' }}>
                 {selected.subject}
               </p>
-              <p className="mt-0.5 text-[11px]" style={{ color: 'var(--os-text-3)' }}>
+              <p
+                className="mt-0.5 text-[11px] leading-[1.4] break-all"
+                style={{ color: 'var(--os-text-3)' }}
+              >
                 {selected.address}
               </p>
             </div>
@@ -181,7 +187,7 @@ function ContactDetail({
         <p className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>
           Address
         </p>
-        <p className="mt-1 text-[13.5px]" style={{ color: 'var(--os-text)' }}>
+        <p className="mt-1 text-[13.5px] leading-[1.55] break-all" style={{ color: 'var(--os-text)' }}>
           {selected.address}
         </p>
       </div>

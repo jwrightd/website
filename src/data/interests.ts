@@ -7,7 +7,7 @@ export const PERSONAL_INTERESTS: PersonalInterest[] = [
     category: 'Personal interest',
     status: 'Active',
     overview:
-      "I started learning the Royal Game when I was 4 or 5. I think the beauty created on the chessboard is like no other, and I've continued to explore it over the past decade.",
+      "I started learning the Royal Game when I was 4 or 5. I think the beauty created on the chessboard is like no other, and I have continued to explore it over the past decade.",
     recognition: [
       'USCF Candidate Master',
       '6x State Champion (team and individual)',
@@ -44,12 +44,11 @@ export const PERSONAL_INTERESTS: PersonalInterest[] = [
     category: 'Personal interest',
     status: 'Active',
     overview:
-      'Wrestling has been a major part of life alongside more than 10 years of wrestling and martial arts experience. It has included varsity competition, a Liberty District title, and a state qualification.',
+      'For over 10 years, wrestling and martial arts have been a major part of my life.',
     recognition: [
       'Varsity Wrestling',
       'Liberty District Champion',
       'State Qualifier',
-      '10+ years of wrestling and martial arts experience',
     ],
     accent: '#32d74b',
   },

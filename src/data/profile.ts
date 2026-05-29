@@ -20,7 +20,7 @@ export const PROFILE = {
   resumeLabel: 'resume.pdf',
   resumeAvailable: true,
   aboutSummary:
-    'Mathematics and Computer Science student at Duke University building across machine learning, data systems, and applied software.',
+    'Mathematics and Computer Science student at Duke University, building across machine learning, data systems, and applied software.',
   aboutSecondary:
     'Current work spans Duke Impact Investment Group, Duke Applied Machine Learning, and the Hickey Lab, with experience in cyberdefense tooling, voice interfaces, longitudinal Alzheimer’s modeling, spatial proteomics, and computer vision.',
 } as const;
