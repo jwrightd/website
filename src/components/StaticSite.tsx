@@ -1,4 +1,5 @@
 import { Briefcase, FileText, GitBranch, Mail, MapPin } from 'lucide-react';
+import Image from 'next/image';
 
 import { ACHIEVEMENTS } from '@/data/achievements';
 import { EDUCATION } from '@/data/education';
@@ -117,31 +118,49 @@ export default function StaticSite() {
       <main id="main" className="mx-auto max-w-[1100px] px-6 pb-24">
         {/* Hero */}
         <section id="top" className="pt-14 pb-10" aria-labelledby="hero-name">
-          <p className="text-[12.5px] font-semibold" style={{ color: 'var(--os-accent)' }}>
-            {RECRUITER_PATH}
-          </p>
-          <h1
-            id="hero-name"
-            className="mt-3 text-[44px] font-semibold leading-[1.05] tracking-[-0.02em] sm:text-[56px]"
-            style={{ color: 'rgba(255,255,255,0.95)' }}
-          >
-            James Wright
-          </h1>
-          <p className="mt-4 max-w-[760px] text-[16.5px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.7)' }}>
-            {POSITIONING}
-          </p>
-          <p className="mt-3 max-w-[720px] text-[14.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            {TAGLINE}
-          </p>
-          <div className="mt-4 flex flex-col gap-1.5 text-[13px]" style={{ color: 'rgba(255,255,255,0.42)' }}>
-            <p className="flex items-center gap-1.5">
-              <MapPin size={14} aria-hidden="true" />
-              {PROFILE.location}
-            </p>
-            <p>{PROFILE.availability}</p>
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+            <div
+              className="relative mx-auto h-28 w-28 shrink-0 overflow-hidden rounded-xl border sm:mx-0 sm:h-32 sm:w-32"
+              style={cardStyle}
+            >
+              <Image
+                src={PROFILE.profilePhotoSrc}
+                alt={PROFILE.profilePhotoAlt}
+                fill
+                priority
+                sizes="(max-width: 640px) 112px, 128px"
+                className="object-cover"
+              />
+            </div>
+
+            <div className="min-w-0 flex-1 text-center sm:text-left">
+              <p className="text-[12.5px] font-semibold" style={{ color: 'var(--os-accent)' }}>
+                {RECRUITER_PATH}
+              </p>
+              <h1
+                id="hero-name"
+                className="mt-3 text-[44px] font-semibold leading-[1.05] tracking-[-0.02em] sm:text-[56px]"
+                style={{ color: 'rgba(255,255,255,0.95)' }}
+              >
+                James Wright
+              </h1>
+              <p className="mt-4 max-w-[760px] text-[16.5px] leading-[1.6] sm:mx-0 mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                {POSITIONING}
+              </p>
+              <p className="mt-3 max-w-[720px] text-[14.5px] leading-[1.7] sm:mx-0 mx-auto" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                {TAGLINE}
+              </p>
+              <div className="mt-4 flex flex-col gap-1.5 text-[13px] sm:items-start items-center" style={{ color: 'rgba(255,255,255,0.42)' }}>
+                <p className="flex items-center gap-1.5">
+                  <MapPin size={14} aria-hidden="true" />
+                  {PROFILE.location}
+                </p>
+                <p>{PROFILE.availability}</p>
+              </div>
+            </div>
           </div>
 
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="mt-7 flex flex-wrap justify-center gap-3 sm:justify-start">
             {HERO_CTAS.map((cta) => {
               const isPrimary = cta.tone === 'primary';
               const href = cta.id === 'resume' ? PROFILE.resumeHref : (cta.anchor ?? '#');

@@ -17,8 +17,8 @@ const PATH_STEPS = [
 const LENS_HIGHLIGHTS: Record<AudienceLens, string[]> = {
   systems: [
     'Saynario — shipped voice product with demo video and public repo',
-    '15M+ row parquet search pipeline at Duke Impact Investment Group',
-    'STINGAR cyberdefense engineering at Duke Code+',
+    '1,000+ ICD-10 codes mapped with an AI pipeline on DIIG’s 15M+ row dataset',
+    'Code+ summer SWE — LLM honeypot and threat analysis tooling on STINGAR',
     'DataCrawl — multi-agent financial dataset pipeline',
   ],
   quant: [

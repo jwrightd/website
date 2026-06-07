@@ -65,6 +65,8 @@ export const PROJECTS: Project[] = [
     result:
       'Implemented and shipped MINGL as a usable research package, and contributed to the bioRxiv preprint as a named co-author.',
     techStack: ['Python', 'Gaussian Mixture Models', 'scverse', 'Spatial proteomics'],
+    myContribution:
+      'Implemented the scverse-compatible package: GMM classification, 13 tool functions, 13 plotting functions, and lab workflow integration.',
     links: [
       { label: 'Lab repo (HickeyLab)', href: 'https://github.com/HickeyLab/Mingl', kind: 'github' },
       { label: 'bioRxiv', href: 'https://www.biorxiv.org/content/10.64898/2026.03.24.713296v1', kind: 'paper' },
@@ -103,6 +105,8 @@ export const PROJECTS: Project[] = [
     result:
       'Trajectory-only Neural CDE models reached validation MAE of ~13–16 on next-visit ADAS-13 over 100 epochs. Adding ADNIMERGE tabular features (MMSE) cut error to ~7 MAE — the best-performing configuration in current benchmarking.',
     techStack: ['PyTorch', 'torchcde', 'pandas', 'AWS S3', 'MRI', 'ADNI'],
+    myContribution:
+      'AWS data backbone, MRI trajectory feature pipeline, Neural CDE benchmarking, and ADNIMERGE MMSE ablation experiments.',
     links: [{ label: 'Team repo (collaborative)', href: 'https://github.com/AshCher51/multimodal-ncde', kind: 'github' }],
     media: [
       {
@@ -143,6 +147,8 @@ export const PROJECTS: Project[] = [
     result:
       'Reached 90%+ move detection accuracy across arbitrary board angles and turned live games into structured digital records.',
     techStack: ['Python', 'Roboflow', 'OpenCV', 'YOLOv11', 'Tkinter'],
+    myContribution:
+      'YOLOv11 training pipeline, OpenCV board localization, and real-time game-state integration for TJHSST senior research.',
     links: [{ label: 'Team repo (hackathon)', href: 'https://github.com/Aarushvinod/ChessVision', kind: 'github' }],
     media: [
       {
@@ -178,6 +184,8 @@ export const PROJECTS: Project[] = [
     result:
       'Won a HackDuke 2026 award and demonstrated full pipeline execution from a plain-English request to validated output files.',
     techStack: ['Python', 'TypeScript', 'React', 'FastAPI', 'LangGraph', 'Firebase', 'Gemini'],
+    myContribution:
+      'Gemini orchestrator design, LangGraph/FastAPI pipeline wiring, and validation subagent coordination.',
     links: [{ label: 'Team repo (hackathon)', href: 'https://github.com/Aarushvinod/DataCrawl', kind: 'github' }],
     media: [
       {
@@ -213,6 +221,8 @@ export const PROJECTS: Project[] = [
     result:
       'Reduced user carbon footprints by surfacing per-action carbon estimates across browsing sessions.',
     techStack: ['React.js', 'Python', 'HTML', 'CSS', 'Firebase', 'FastAPI', 'NumPy', 'Crawl4AI', 'Gemini'],
+    myContribution:
+      'Gemini function-calling estimation pipeline, Firebase auth/storage, and Chrome extension integration.',
     links: [{ label: 'Team repo (hackathon)', href: 'https://github.com/Aarushvinod/CarbonWise', kind: 'github' }],
     media: [
       {
@@ -248,6 +258,8 @@ export const PROJECTS: Project[] = [
     result:
       'Achieved 99.5% accuracy with fine-tuned BERT on WELFake — outperforming the classical embedding pipelines built earlier in the project.',
     techStack: ['Python', 'BERT', 'scikit-learn', 'Gensim', 'NLTK', 'pandas'],
+    myContribution:
+      'BERT fine-tuning, preprocessing/lemmatization workflow, and benchmark evaluation against classical embedding baselines.',
     links: [{ label: 'Team repo (course)', href: 'https://github.com/8301Joseph/FakeNewsDetection', kind: 'github' }],
     media: [],
   },

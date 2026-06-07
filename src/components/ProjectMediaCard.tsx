@@ -170,6 +170,16 @@ export default function ProjectMediaCard({
             </button>
             {expanded ? (
               <div className="mt-3 flex flex-col gap-3 border-t pt-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                {project.myContribution ? (
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                      My contribution
+                    </p>
+                    <p className="mt-1 text-[12.5px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.56)' }}>
+                      {project.myContribution}
+                    </p>
+                  </div>
+                ) : null}
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: 'rgba(255,255,255,0.38)' }}>
                     Problem

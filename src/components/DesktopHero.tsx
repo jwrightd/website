@@ -15,7 +15,9 @@ import {
   type ProofPoint,
 } from '@/data/highlights';
 import { PROFILE } from '@/data/profile';
+import { formatAnimatedStat } from '@/lib/format-stat';
 import type { AppId } from '@/types';
+import HeroPhotoStack from './HeroPhotoStack';
 
 function useCountUp(target: number | null, durationMs = 1100) {
   const [value, setValue] = useState(0);
@@ -45,10 +47,7 @@ function useCountUp(target: number | null, durationMs = 1100) {
 function ProofRow({ point }: { point: ProofPoint }) {
   const stat = point.statId ? STATS.find((s) => s.id === point.statId) : null;
   const animated = useCountUp(stat?.value ?? null, 950);
-  const value =
-    stat && stat.value != null
-      ? `${stat.prefix ?? ''}${animated.toFixed(stat.decimals ?? 0)}${stat.suffix ?? ''}`
-      : (stat?.display ?? point.label);
+  const value = stat ? formatAnimatedStat(stat, animated) : point.label;
 
   return (
     <div className="grid grid-cols-[82px_1fr] gap-2.5 border-t py-2 first:border-t-0" style={{ borderColor: 'rgba(255,255,255,0.065)' }}>
@@ -102,10 +101,7 @@ function HeroMetric({ statId }: { statId: string }) {
   const animated = useCountUp(stat?.value ?? null, 900);
   if (!stat) return null;
 
-  const rendered =
-    stat.value == null
-      ? stat.display
-      : `${stat.prefix ?? ''}${animated.toFixed(stat.decimals ?? 0)}${stat.suffix ?? ''}`;
+  const rendered = formatAnimatedStat(stat, animated);
 
   return (
     <div className="min-w-0">
@@ -146,7 +142,7 @@ export default function DesktopHero({
     [lens]
   );
   const metricIds = lens === 'systems'
-    ? ['pipeline', 'hackathons', 'cv', 'universities']
+    ? ['icd10', 'hackathons', 'cv', 'biorxiv']
     : ['gpa', 'biorxiv', 'lichess', 'elo'];
 
   return (
@@ -155,7 +151,7 @@ export default function DesktopHero({
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.15, duration: 0.45, ease: 'easeOut' }}
-      className="pointer-events-auto absolute left-1/2 top-[58px] z-[20] w-[min(840px,calc(100vw-400px))] -translate-x-1/2"
+      className="pointer-events-auto absolute left-1/2 top-[58px] z-[20] w-[min(920px,calc(100vw-360px))] -translate-x-1/2"
     >
       <div
         className="relative max-h-[calc(100vh-172px)] overflow-y-auto rounded-2xl border px-6 py-5 shadow-[0_26px_60px_rgba(0,0,0,0.38)] backdrop-blur-xl"
@@ -178,8 +174,8 @@ export default function DesktopHero({
           <X size={14} />
         </button>
 
-        <div className="flex flex-wrap items-start justify-between gap-5">
-          <div className="max-w-[520px]">
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(300px,380px)] lg:items-stretch">
+          <div className="min-w-0">
             <p className="text-[12px] font-semibold" style={{ color: 'var(--os-accent)' }}>
               {RECRUITER_PATH}
             </p>
@@ -206,11 +202,18 @@ export default function DesktopHero({
                 </button>
               ))}
             </div>
+            <div
+              className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3 rounded-xl border px-4 py-3 sm:max-w-[420px]"
+              style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.025)' }}
+            >
+              {metricIds.map((id) => (
+                <HeroMetric key={id} statId={id} />
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-3 rounded-xl border px-4 py-3" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.025)' }}>
-            {metricIds.map((id) => (
-              <HeroMetric key={id} statId={id} />
-            ))}
+
+          <div className="flex min-h-[300px] w-full shrink-0 items-center justify-center lg:min-h-0 lg:justify-end">
+            <HeroPhotoStack />
           </div>
         </div>
 

@@ -79,6 +79,8 @@ export interface Project {
   techStack: string[];
   links: ProjectLink[];
   media?: ProjectMedia[];
+  /** Personal scope on collaborative repos — shown in case studies. */
+  myContribution?: string;
 }
 
 export interface Experience {
