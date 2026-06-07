@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { ExternalLink, FolderOpen, GitBranch, Link2 } from 'lucide-react';
 import { PROJECTS } from '@/data/projects';
+import { getProjectProofTone } from '@/lib/badges';
 import type { Project, ProjectLink } from '@/types';
 import { BodyText, BulletList, LeadText, MetaGrid, MetaTile, SectionBlock, TagList } from './shared/AppContent';
 
@@ -53,7 +54,7 @@ export default function ProjectsApp({
                     {project.name}
                   </p>
                   <p className="mt-0.5 text-[11px]" style={{ color: 'var(--os-text-3)' }}>
-                    {project.category}
+                    {project.proof}
                   </p>
                 </button>
               );
@@ -107,8 +108,8 @@ export default function ProjectsApp({
               <p className="mt-1 text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
                 {project.category}
               </p>
-              <p className="mt-1.5 line-clamp-2 text-[12px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.42)' }}>
-                {project.summary}
+              <p className="mt-1.5 line-clamp-2 text-[12px] leading-[1.55]" style={{ color: isSelected ? 'rgba(255,255,255,0.58)' : 'rgba(255,255,255,0.42)' }}>
+                {project.proof}
               </p>
             </button>
           );
@@ -148,28 +149,56 @@ export default function ProjectsApp({
 }
 
 function ProjectDetail({ project, isMobile = false }: { project: Project; isMobile?: boolean }) {
+  const preview = project.media?.[0];
+  const proofTone = getProjectProofTone(project.proofTone);
+
   return (
     <div className={`flex-1 overflow-auto ${isMobile ? 'px-4 py-4' : 'px-6 py-5'}`}>
       <div className="flex flex-col gap-5">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-[20px] font-semibold" style={{ color: 'var(--os-text)' }}>
-              {project.name}
-            </h2>
-            <span
-              className="rounded-md border px-2 py-0.5 text-[11.5px]"
+        <div className={`grid gap-4 ${preview && !isMobile ? 'grid-cols-[1fr_240px]' : 'grid-cols-1'}`}>
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-[21px] font-semibold tracking-[-0.01em]" style={{ color: 'var(--os-text)' }}>
+                {project.name}
+              </h2>
+              <span
+                className="rounded-md border px-2 py-0.5 text-[11.5px] font-semibold"
+                style={{
+                  borderColor: proofTone.border,
+                  background: proofTone.bg,
+                  color: proofTone.fg,
+                }}
+              >
+                {project.proof}
+              </span>
+            </div>
+            <p className="mt-3 max-w-[70ch] text-[14px] font-medium leading-[1.65]" style={{ color: 'rgba(255,255,255,0.74)' }}>
+              {project.outcome}
+            </p>
+            <div className="mt-2 max-w-[70ch]">
+              <LeadText>{project.summary}</LeadText>
+            </div>
+          </div>
+          {preview && !isMobile ? (
+            <figure
+              className="overflow-hidden rounded-xl border"
               style={{
-                borderColor: 'rgba(167,139,250,0.18)',
-                background: 'rgba(167,139,250,0.08)',
-                color: 'rgba(201,183,255,0.92)',
+                borderColor: 'rgba(255,255,255,0.08)',
+                background: 'rgba(255,255,255,0.025)',
               }}
             >
-              {project.status}
-            </span>
-          </div>
-          <div className="mt-2 max-w-[70ch]">
-            <LeadText>{project.summary}</LeadText>
-          </div>
+              <div className="relative aspect-[16/10]">
+                <Image
+                  src={preview.src}
+                  alt={preview.alt}
+                  fill
+                  sizes="240px"
+                  className="object-cover opacity-[0.85]"
+                />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.22))' }} />
+              </div>
+            </figure>
+          ) : null}
         </div>
 
         {isMobile ? (
@@ -271,11 +300,11 @@ function ProjectLinkButton({ link }: { link: ProjectLink }) {
       href={link.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors hover:bg-white/6"
+      className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12px] font-semibold transition-colors hover:bg-white/8"
       style={{
-        borderColor: 'rgba(255,255,255,0.09)',
-        background: 'rgba(255,255,255,0.03)',
-        color: 'rgba(255,255,255,0.68)',
+        borderColor: 'rgba(79,142,247,0.22)',
+        background: 'rgba(79,142,247,0.08)',
+        color: '#c7d9ff',
       }}
     >
       <Icon size={12} />

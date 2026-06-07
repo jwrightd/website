@@ -18,9 +18,9 @@ const buildInitialState = (): Record<AppId, WindowState> => {
   for (const app of APPS) {
     state[app.id] = {
       id: app.id,
-      isOpen: app.id === 'about',
+      isOpen: false,
       isMinimized: false,
-      zIndex: app.id === 'about' ? 101 : zIndex++,
+      zIndex: zIndex++,
       position: { ...app.defaultPosition },
       size: { ...app.defaultSize },
     };

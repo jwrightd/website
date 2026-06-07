@@ -1,15 +1,18 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { APPS } from '@/data/apps';
+import { POSITIONING, STATS } from '@/data/highlights';
 import { PROFILE } from '@/data/profile';
 import { PROJECTS } from '@/data/projects';
 import { useWindowManager } from '@/hooks/useWindowManager';
+import { setSimpleView } from '@/lib/view-mode';
 import type { AppId } from '@/types';
 
 import BootScreen from './BootScreen';
 import DesktopBackdrop from './DesktopBackdrop';
+import DesktopHero from './DesktopHero';
 import DesktopIcon from './DesktopIcon';
 import DesktopInteractionLayer from './DesktopInteractionLayer';
 import Dock from './Dock';
@@ -18,6 +21,9 @@ import QuickLauncher, { type QuickLauncherItem } from './QuickLauncher';
 import Taskbar from './Taskbar';
 import Window from './Window';
 import WorkspaceStatus from './WorkspaceStatus';
+
+const BOOT_STORAGE_KEY = 'jamesos:booted';
+const RECRUITER_PROMPT_STORAGE_KEY = 'jamesos:recruiter-prompt-dismissed';
 
 import AboutApp from './apps/AboutApp';
 import ContactApp from './apps/ContactApp';
@@ -97,7 +103,60 @@ export default function Desktop() {
   const [selectedProjectId, setSelectedProjectId] = useState(PROJECTS[0].id);
   const [selectedDesktopIds, setSelectedDesktopIds] = useState<AppId[]>([]);
   const [mobileAppId, setMobileAppId] = useState<AppId | null>(null);
-  const [bootComplete, setBootComplete] = useState(false);
+  const [showBoot, setShowBoot] = useState(true);
+  const [showRecruiterPrompt, setShowRecruiterPrompt] = useState(true);
+  const [heroDismissed, setHeroDismissed] = useState(false);
+
+  useEffect(() => {
+    let frame = 0;
+    try {
+      if (sessionStorage.getItem(BOOT_STORAGE_KEY) === '1') {
+        document.documentElement.classList.add('booted');
+      }
+      const shouldHideBoot = sessionStorage.getItem(BOOT_STORAGE_KEY) === '1';
+      const shouldHideRecruiterPrompt = sessionStorage.getItem(RECRUITER_PROMPT_STORAGE_KEY) === '1';
+      frame = requestAnimationFrame(() => {
+        if (shouldHideBoot) setShowBoot(false);
+        if (shouldHideRecruiterPrompt) setShowRecruiterPrompt(false);
+      });
+    } catch {
+      /* ignore */
+    }
+
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  const finishBoot = useCallback(() => {
+    setShowBoot(false);
+    try {
+      sessionStorage.setItem(BOOT_STORAGE_KEY, '1');
+      document.documentElement.classList.add('booted');
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const enterSimpleView = useCallback(() => {
+    setSimpleView(true);
+    window.scrollTo({ top: 0 });
+  }, []);
+
+  const dismissRecruiterPrompt = useCallback(() => {
+    setShowRecruiterPrompt(false);
+    try {
+      sessionStorage.setItem(RECRUITER_PROMPT_STORAGE_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const openRecruiterFastPath = useCallback(() => {
+    dismissRecruiterPrompt();
+    activateRecruiterMode();
+  }, [activateRecruiterMode, dismissRecruiterPrompt]);
+
+  const anyWindowOpen = Object.values(windows).some((windowState) => windowState.isOpen);
+  const heroVisible = !heroDismissed && !anyWindowOpen;
 
   const openProject = (projectId: string) => {
     setSelectedProjectId(projectId);
@@ -284,7 +343,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'Users',
       keywords: ['essentials', 'interview', 'overview'],
-      onSelect: activateRecruiterMode,
+      onSelect: openRecruiterFastPath,
     },
     {
       id: 'action-arrange-windows',
@@ -297,14 +356,10 @@ export default function Desktop() {
     },
   ];
 
-  if (!bootComplete) {
-    return <BootScreen onComplete={() => setBootComplete(true)} />;
-  }
-
   return (
-    <>
+    <div className="os-shell-overlay fixed inset-0 z-40">
       <div
-        className="relative hidden h-screen w-screen overflow-hidden select-none md:block"
+        className="relative hidden h-full w-full overflow-hidden select-none md:block"
         style={{ background: '#0f0f11' }}
       >
         <DesktopBackdrop />
@@ -322,12 +377,69 @@ export default function Desktop() {
           focusedId={focusedId}
           onOpenLauncher={() => setLauncherOpen(true)}
           onOpenWorkspace={openWorkspace}
-          onRecruiterMode={activateRecruiterMode}
+          onRecruiterMode={openRecruiterFastPath}
+          onSimpleView={enterSimpleView}
         />
+
+        <AnimatePresence>
+          {heroVisible ? (
+            <DesktopHero
+              onOpenApp={activateDesktopApp}
+              onRecruiterMode={openRecruiterFastPath}
+              onSimpleView={enterSimpleView}
+              onDismiss={() => setHeroDismissed(true)}
+            />
+          ) : null}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showRecruiterPrompt && !showBoot && heroVisible ? (
+            <motion.div
+              initial={{ opacity: 0, x: -8, y: 3 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              exit={{ opacity: 0, x: -6, y: 3 }}
+              transition={{ delay: 0.95, duration: 0.24, ease: 'easeOut' }}
+              className="absolute left-7 top-14 z-[650] rounded-[12px] border px-2.5 py-2 shadow-[0_10px_24px_rgba(0,0,0,0.24)] backdrop-blur-xl"
+              style={{
+                borderColor: 'rgba(255,255,255,0.085)',
+                background: 'rgba(15,16,18,0.78)',
+              }}
+              role="region"
+              aria-label="Recruiter fast path"
+            >
+              <div className="flex items-center gap-2.5">
+                <div
+                  className="h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={{ background: 'var(--os-accent)' }}
+                />
+                <span className="text-[11.5px] font-medium" style={{ color: 'rgba(255,255,255,0.68)' }}>
+                  Recruiter fast path
+                </span>
+                <button
+                  type="button"
+                  onClick={openRecruiterFastPath}
+                  className="rounded-md px-2 py-1 text-[11px] font-semibold"
+                  style={{ background: 'var(--os-accent)', color: '#08101f' }}
+                >
+                  Open
+                </button>
+                <button
+                  type="button"
+                  onClick={dismissRecruiterPrompt}
+                  aria-label="Dismiss recruiter fast path"
+                  className="grid h-5 w-5 place-items-center rounded-md text-[13px]"
+                  style={{ color: 'rgba(255,255,255,0.36)' }}
+                >
+                  ×
+                </button>
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
 
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 0.86 }}
           transition={{ delay: 0.9, duration: 0.35 }}
           className="absolute top-12 right-5 z-[600] flex flex-col gap-0 pt-2.5 pb-20"
         >
@@ -347,8 +459,8 @@ export default function Desktop() {
 
         <motion.div
           initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.05, duration: 0.3 }}
+          animate={{ opacity: 0.74, y: 0 }}
+          transition={{ delay: 1.15, duration: 0.3 }}
           className="absolute bottom-20 left-7"
         >
           <WorkspaceStatus
@@ -409,8 +521,11 @@ export default function Desktop() {
         onCloseApp={() => setMobileAppId(null)}
         selectedProjectId={selectedProjectId}
         onSelectProject={setSelectedProjectId}
+        onSimpleView={enterSimpleView}
       />
-    </>
+
+      <AnimatePresence>{showBoot ? <BootScreen onComplete={finishBoot} /> : null}</AnimatePresence>
+    </div>
   );
 }
 
@@ -420,12 +535,14 @@ function MobileLayout({
   onCloseApp,
   selectedProjectId,
   onSelectProject,
+  onSimpleView,
 }: {
   activeAppId: AppId | null;
   onOpenApp: (id: AppId) => void;
   onCloseApp: () => void;
   selectedProjectId: string;
   onSelectProject: (id: string) => void;
+  onSimpleView: () => void;
 }) {
   return (
     <div
@@ -447,9 +564,13 @@ function MobileLayout({
         <span className="text-[15px] font-semibold" style={{ color: 'rgba(255,255,255,0.88)' }}>
           JamesOS
         </span>
-        <span className="text-[12px]" style={{ color: 'rgba(255,255,255,0.32)' }}>
-          {PROFILE.name}
-        </span>
+        <button
+          onClick={onSimpleView}
+          className="rounded-md border px-2.5 py-1 text-[11.5px]"
+          style={{ borderColor: 'rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.6)' }}
+        >
+          Simple view
+        </button>
       </div>
 
       <div className="flex flex-col gap-5 px-4 pt-6 pb-24">
@@ -457,12 +578,25 @@ function MobileLayout({
           <p className="text-[28px] font-semibold leading-tight" style={{ color: 'rgba(255,255,255,0.88)' }}>
             {PROFILE.name}
           </p>
-          <p className="mt-1 text-[14px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
-            {PROFILE.subtitle}
+          <p className="mt-2 text-[13px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.52)' }}>
+            {POSITIONING}
           </p>
-          <p className="mt-3 text-[13.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.58)' }}>
-            Reach the important surfaces fast: resume, projects, and contact stay one tap away.
-          </p>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            {STATS.slice(0, 4).map((stat) => (
+              <div
+                key={stat.id}
+                className="rounded-lg border px-3 py-2.5"
+                style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)' }}
+              >
+                <p className="text-[18px] font-semibold leading-none" style={{ color: 'rgba(255,255,255,0.9)' }}>
+                  {stat.display}
+                </p>
+                <p className="mt-1 text-[10.5px] leading-[1.4]" style={{ color: 'rgba(255,255,255,0.42)' }}>
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-3 gap-2.5">

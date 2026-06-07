@@ -6,6 +6,9 @@ export const PROJECTS: Project[] = [
     name: 'Saynario',
     category: 'Voice product',
     status: 'HackPrinceton Winner',
+    outcome: 'Won HackPrinceton Best Use of ElevenLabs with a shipped voice roleplay loop.',
+    proof: 'Winner · live voice product',
+    proofTone: 'winner',
     summary: 'Voice-first language learning app that turns each completed conversation into a personalized next scenario.',
     overview:
       'Saynario is a voice-first language learning app built around live roleplay rather than static drills. Each conversation feeds the next one, so practice stays adaptive instead of resetting back to generic prompts.',
@@ -39,6 +42,9 @@ export const PROJECTS: Project[] = [
     name: 'MINGL',
     category: 'Research package',
     status: 'bioRxiv preprint',
+    outcome: 'Implemented a scverse-compatible research package and contributed as a named bioRxiv co-author.',
+    proof: 'Published · named co-author',
+    proofTone: 'published',
     summary: 'Implemented a scverse-compatible Python package for probabilistic cell-type classification in multiplexed spatial proteomics.',
     overview:
       'MINGL is a research package for probabilistic cell-type classification in multiplexed tissue imaging. My contribution centered on implementing package tooling that fit into a real lab workflow rather than live only in notebooks.',
@@ -71,6 +77,9 @@ export const PROJECTS: Project[] = [
     name: 'ADNI Multimodal NCDE',
     category: 'Multimodal ML research',
     status: 'Ongoing research',
+    outcome: 'Built a Neural CDE forecasting pipeline for irregular Alzheimer’s progression data.',
+    proof: 'Neural CDE · MRI trajectories',
+    proofTone: 'research',
     summary: 'Longitudinal Alzheimer’s disease forecasting pipeline for predicting next-visit ADAS13 scores.',
     overview:
       'This project models Alzheimer’s progression as a multimodal longitudinal prediction problem, combining clinical history with MRI-derived trajectory features.',
@@ -100,6 +109,9 @@ export const PROJECTS: Project[] = [
     name: 'ChessVision',
     category: 'Computer vision system',
     status: 'Prototype',
+    outcome: 'Reached 90%+ move detection accuracy for real-time over-the-board chess digitization.',
+    proof: '90%+ CV accuracy',
+    proofTone: 'vision',
     summary: 'Real-time over-the-board chess digitizer with 90%+ move detection accuracy across arbitrary board angles.',
     overview:
       'ChessVision captures physical chess games and converts them into a live digital record. The system links camera perception with chess-specific state tracking so real games can be logged in real time.',
@@ -128,7 +140,10 @@ export const PROJECTS: Project[] = [
     id: 'datacrawl',
     name: 'DataCrawl',
     category: 'Data infrastructure',
-    status: 'Pipeline tooling',
+    status: 'HackDuke 2026 Winner',
+    outcome: 'Won HackDuke with a prompt-to-dataset agent pipeline for validated financial data acquisition.',
+    proof: 'Winner · agent pipeline',
+    proofTone: 'winner',
     summary: 'Prompt-to-dataset pipeline for turning plain-English financial requests into validated structured files.',
     overview:
       'DataCrawl automates financial dataset acquisition from plain-English requests. Instead of starting with brittle one-off scripts, it treats acquisition as an orchestrated pipeline from prompt to validated file output.',
@@ -158,6 +173,9 @@ export const PROJECTS: Project[] = [
     name: 'CO2Ldown',
     category: 'Website + Chrome extension',
     status: 'Sustainability tooling',
+    outcome: 'Built a browser-extension and web workflow for per-action carbon estimates across sessions.',
+    proof: 'Extension · emissions tracking',
+    proofTone: 'sustainability',
     summary:
       'Joint website and Chrome extension that surfaces per-action carbon estimates across browsing sessions.',
     overview:
@@ -182,6 +200,9 @@ export const PROJECTS: Project[] = [
     name: 'Chess Engine Development',
     category: 'Chess engine',
     status: 'Lichess deployment',
+    outcome: 'Deployed self-built Python and C++ engines that reached an estimated 1500 Elo on Lichess.',
+    proof: '~1500 Elo · C++/Python',
+    proofTone: 'engine',
     summary:
       'Self-built chess engines in Python and C++ that reached an estimated 1500 Elo rating on Lichess.org.',
     overview:

@@ -53,6 +53,9 @@ export interface Project {
   name: string;
   category: string;
   status: string;
+  outcome: string;
+  proof: string;
+  proofTone: 'winner' | 'published' | 'research' | 'systems' | 'vision' | 'engine' | 'sustainability';
   summary: string;
   overview: string;
   problem: string;

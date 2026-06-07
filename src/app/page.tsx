@@ -1,5 +1,11 @@
-import Desktop from "@/components/Desktop";
+import Desktop from '@/components/Desktop';
+import StaticSite from '@/components/StaticSite';
 
 export default function Home() {
-  return <Desktop />;
+  return (
+    <>
+      <StaticSite />
+      <Desktop />
+    </>
+  );
 }

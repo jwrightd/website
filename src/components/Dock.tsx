@@ -26,8 +26,8 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[9999]">
       <motion.div
         initial={{ y: 80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.6, type: 'spring', stiffness: 280, damping: 28 }}
+        animate={{ y: 0, opacity: 0.9 }}
+        transition={{ delay: 0.85, type: 'spring', stiffness: 280, damping: 28 }}
         className="flex items-end gap-2 rounded-[20px] px-4 py-3.5"
         style={{
           background: 'rgba(15,16,18,0.84)',
