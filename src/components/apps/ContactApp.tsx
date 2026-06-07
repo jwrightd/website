@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ArrowUpRight, Briefcase, FileText, GitBranch, Mail, Copy, Check } from 'lucide-react';
+import { toast } from 'sonner';
 import { CONTACT_METHODS, PROFILE } from '@/data/profile';
 import type { ContactMethod } from '@/types';
 
@@ -29,9 +30,15 @@ export default function ContactApp({ isMobile = false }: ContactAppProps) {
     try {
       await navigator.clipboard.writeText(selected.copyValue);
       setCopied(true);
+      toast('Email copied', {
+        description: selected.copyValue,
+      });
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
       setCopied(false);
+      toast('Could not copy email', {
+        description: 'Use the visible email address or mail link.',
+      });
     }
   };
 
@@ -197,6 +204,13 @@ function ContactDetail({
           href={selected.href}
           target={selected.href.startsWith('http') ? '_blank' : undefined}
           rel={selected.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+          onClick={() => {
+            if (selected.href.startsWith('http')) {
+              toast(`${selected.label} opened`, {
+                description: selected.address,
+              });
+            }
+          }}
           className="inline-flex items-center gap-1.5 rounded-md border px-3.5 py-2 text-[13px] font-medium transition-colors hover:bg-white/6"
           style={{
             borderColor: 'rgba(255,255,255,0.1)',

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Check, Copy, Download, ExternalLink } from 'lucide-react';
+import { toast } from 'sonner';
 import { ACHIEVEMENTS } from '@/data/achievements';
 import { EDUCATION } from '@/data/education';
 import { EXPERIENCE } from '@/data/experience';
@@ -20,9 +21,15 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
     try {
       await navigator.clipboard.writeText(PROFILE.email);
       setCopied(true);
+      toast('Email copied', {
+        description: PROFILE.email,
+      });
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
       setCopied(false);
+      toast('Could not copy email', {
+        description: 'Use the visible email address or contact window.',
+      });
     }
   };
 
@@ -44,6 +51,11 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
           <a
             href={PROFILE.resumeHref}
             download
+            onClick={() => {
+              toast('Resume download started', {
+                description: PROFILE.resumeLabel,
+              });
+            }}
             className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors hover:bg-white/6"
             style={{
               borderColor: 'rgba(255,255,255,0.1)',
@@ -58,6 +70,11 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
             href={PROFILE.resumeHref}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => {
+              toast('Resume opened', {
+                description: PROFILE.resumeLabel,
+              });
+            }}
             className="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors hover:bg-white/6"
             style={{
               borderColor: 'rgba(255,255,255,0.1)',

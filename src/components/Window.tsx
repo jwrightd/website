@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useDragControls } from 'framer-motion';
+import { motion, useDragControls, useReducedMotion } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
 import { APP_ACCENTS, APPS } from '@/data/apps';
 import { WINDOW_CHROME_HEIGHT, getDesktopWorkspaceBounds } from '@/lib/window-layouts';
@@ -64,7 +64,9 @@ export default function Window({
 }: WindowProps) {
   const app = APPS.find((item) => item.id === id)!;
   const accent = APP_ACCENTS[id];
+  const appIndex = Math.max(0, APPS.findIndex((item) => item.id === id));
   const dragControls = useDragControls();
+  const prefersReducedMotion = useReducedMotion();
   const [resizeState, setResizeState] = useState<ResizeState | null>(null);
   const onResizeRef = useRef(onResize);
   const onFocusRef = useRef(onFocus);
@@ -184,10 +186,14 @@ export default function Window({
       dragListener={false}
       dragMomentum={false}
       dragElastic={0}
-      initial={{ opacity: 0, scale: 0.96, y: 16 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.94, y: 8 }}
-      transition={{ type: 'spring', stiffness: 420, damping: 36 }}
+      initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 16 }}
+      animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+      exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 8 }}
+      transition={
+        prefersReducedMotion
+          ? { duration: 0.001 }
+          : { type: 'spring', stiffness: 420, damping: 36, delay: Math.min(appIndex * 0.018, 0.12) }
+      }
       onPointerDown={onFocus}
       onDragEnd={handleDragEnd}
       style={{
@@ -202,7 +208,7 @@ export default function Window({
         touchAction: 'none',
         filter: isFocused ? 'none' : 'saturate(0.84) brightness(0.88)',
         boxShadow: isFocused
-          ? `0 0 0 1px rgba(255,255,255,0.09), 0 0 0 1px ${accent?.dot ?? '#4f8ef7'}30 inset, 0 28px 68px rgba(0,0,0,0.62), 0 12px 22px rgba(0,0,0,0.26), 0 1px 0 rgba(255,255,255,0.06) inset`
+          ? `0 0 0 1px rgba(255,255,255,0.12), 0 0 0 1px ${accent?.dot ?? '#4f8ef7'}46 inset, 0 0 36px ${accent?.dot ?? '#4f8ef7'}12, 0 28px 68px rgba(0,0,0,0.62), 0 12px 22px rgba(0,0,0,0.26), 0 1px 0 rgba(255,255,255,0.07) inset`
           : '0 0 0 1px rgba(255,255,255,0.045), 0 12px 24px rgba(0,0,0,0.34), 0 1px 0 rgba(255,255,255,0.025) inset',
       }}
     >

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Command } from 'cmdk';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Briefcase,
@@ -21,6 +21,7 @@ import {
   WandSparkles,
   type LucideProps,
 } from 'lucide-react';
+import { useEffect, useMemo, useRef } from 'react';
 
 const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
   Briefcase,
@@ -57,36 +58,7 @@ interface QuickLauncherProps {
   items: QuickLauncherItem[];
 }
 
-const GROUP_ORDER: Record<QuickLauncherItem['group'], number> = {
-  Actions: 0,
-  Apps: 1,
-  Projects: 2,
-};
-
-function getScore(item: QuickLauncherItem, query: string) {
-  if (!query) {
-    return 0;
-  }
-
-  const haystack = [item.title, item.subtitle, ...(item.keywords ?? [])].join(' ').toLowerCase();
-  if (!haystack.includes(query)) {
-    return Number.NEGATIVE_INFINITY;
-  }
-
-  if (item.title.toLowerCase().startsWith(query)) {
-    return 4;
-  }
-
-  if (item.title.toLowerCase().includes(query)) {
-    return 3;
-  }
-
-  if (item.subtitle.toLowerCase().includes(query)) {
-    return 2;
-  }
-
-  return 1;
-}
+const GROUP_ORDER: QuickLauncherItem['group'][] = ['Actions', 'Apps', 'Projects'];
 
 export default function QuickLauncher({
   open,
@@ -123,69 +95,29 @@ function QuickLauncherPanel({
   items: QuickLauncherItem[];
   onOpenChange: (open: boolean) => void;
 }) {
-  const [query, setQuery] = useState('');
-  const [selectedIdx, setSelectedIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const listRef = useRef<HTMLDivElement>(null);
+  const groupedItems = useMemo(
+    () =>
+      GROUP_ORDER.map((group) => ({
+        group,
+        items: items
+          .filter((item) => item.group === group)
+          .sort((left, right) => left.title.localeCompare(right.title)),
+      })).filter(({ items }) => items.length > 0),
+    [items]
+  );
 
   useEffect(() => {
     window.setTimeout(() => inputRef.current?.focus(), 40);
   }, []);
 
-  const filtered = useMemo(() => {
-    const trimmedQuery = query.trim().toLowerCase();
-
-    return items
-      .map((item) => ({ item, score: getScore(item, trimmedQuery) }))
-      .filter(({ score }) => score > Number.NEGATIVE_INFINITY)
-      .sort((left, right) => {
-        if (right.score !== left.score) {
-          return right.score - left.score;
-        }
-
-        if (GROUP_ORDER[left.item.group] !== GROUP_ORDER[right.item.group]) {
-          return GROUP_ORDER[left.item.group] - GROUP_ORDER[right.item.group];
-        }
-
-        return left.item.title.localeCompare(right.item.title);
-      })
-      .map(({ item }) => item);
-  }, [items, query]);
-  const boundedSelectedIdx = filtered.length
-    ? Math.min(selectedIdx, filtered.length - 1)
-    : 0;
-
-  useEffect(() => {
-    if (!filtered.length) {
-      return;
-    }
-
-    itemRefs.current[boundedSelectedIdx]?.scrollIntoView({
-      block: 'nearest',
-      inline: 'nearest',
+  const scrollSelectedIntoView = () => {
+    window.requestAnimationFrame(() => {
+      listRef.current
+        ?.querySelector('[cmdk-item][data-selected="true"]')
+        ?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     });
-  }, [boundedSelectedIdx, filtered]);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!filtered.length) {
-      return;
-    }
-
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      setSelectedIdx((current) => (current + 1) % filtered.length);
-    }
-
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      setSelectedIdx((current) => (current - 1 + filtered.length) % filtered.length);
-    }
-
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      filtered[boundedSelectedIdx]?.onSelect();
-      onOpenChange(false);
-    }
   };
 
   const runItem = (item: QuickLauncherItem) => {
@@ -219,85 +151,81 @@ function QuickLauncherPanel({
           boxShadow: '0 28px 80px rgba(0,0,0,0.58)',
         }}
       >
-        <div className="flex items-center gap-3 border-b px-4 py-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-          <Search size={15} className="shrink-0 text-white/32" />
-          <input
-            ref={inputRef}
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-              setSelectedIdx(0);
-            }}
-            onKeyDown={handleKeyDown}
-            placeholder="Search apps, projects, and actions"
-            className="flex-1 bg-transparent text-[14px] text-white outline-none placeholder:text-white/26"
-          />
-          <kbd className="rounded border px-1.5 py-0.5 font-mono text-[10px]" style={{ borderColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.25)' }}>
-            ESC
-          </kbd>
-        </div>
+        <Command
+          loop
+          label="JamesOS command launcher"
+          className="quick-command-palette"
+          onKeyDownCapture={(event) => {
+            if (event.key === 'Escape') {
+              event.preventDefault();
+              onOpenChange(false);
+              return;
+            }
 
-        <div className="max-h-[420px] overflow-y-auto py-2">
-          {filtered.length === 0 ? (
-            <p className="px-4 py-10 text-center text-[13px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
-              No matches for “{query}”
-            </p>
-          ) : (
-            filtered.map((item, index) => {
-              const previousGroup = filtered[index - 1]?.group;
-              const showGroupLabel = index === 0 || previousGroup !== item.group;
-              const Icon = ICON_MAP[item.iconName] ?? WandSparkles;
-              const isSelected = index === boundedSelectedIdx;
-
-              return (
-                <div key={item.id}>
-                  {showGroupLabel && (
-                    <div className="px-4 pb-1 pt-2 text-[11px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                      {item.group}
-                    </div>
-                  )}
-                  <button
-                    ref={(node) => {
-                      itemRefs.current[index] = node;
-                    }}
-                    onClick={() => runItem(item)}
-                    onMouseEnter={() => setSelectedIdx(index)}
-                    className="flex w-full items-center gap-3 px-4 py-2.5 text-left"
-                    style={{ background: isSelected ? 'rgba(255,255,255,0.06)' : 'transparent' }}
-                  >
-                    <div
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border"
-                      style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)' }}
-                    >
-                      <Icon size={15} className="text-white/72" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[13px] font-medium" style={{ color: 'rgba(255,255,255,0.84)' }}>
-                        {item.title}
-                      </p>
-                      <p className="truncate text-[11.5px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
-                        {item.subtitle}
-                      </p>
-                    </div>
-                    {isSelected && (
-                      <span className="font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.24)' }}>
-                        ↵
-                      </span>
-                    )}
-                  </button>
-                </div>
-              );
-            })
-          )}
-        </div>
-
-        <div
-          className="flex items-center justify-between border-t px-4 py-2 text-[11px]"
-          style={{ borderColor: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.24)' }}
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+              scrollSelectedIntoView();
+            }
+          }}
         >
-          <span>Use arrow keys to move</span>
-          <span>Press Enter to run</span>
-        </div>
+          <div className="flex items-center gap-3 border-b px-4 py-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+            <Search size={15} className="shrink-0 text-white/32" />
+            <Command.Input
+              ref={inputRef}
+              placeholder="Search apps, projects, and actions"
+              className="flex-1 bg-transparent text-[14px] text-white outline-none placeholder:text-white/26"
+              onValueChange={scrollSelectedIntoView}
+            />
+            <kbd className="rounded border px-1.5 py-0.5 font-mono text-[10px]" style={{ borderColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.25)' }}>
+              ESC
+            </kbd>
+          </div>
+
+          <Command.List ref={listRef} className="max-h-[420px] overflow-y-auto py-2">
+            <Command.Empty className="px-4 py-10 text-center text-[13px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              No matching command
+            </Command.Empty>
+
+            {groupedItems.map(({ group, items }) => (
+              <Command.Group
+                key={group}
+                heading={group}
+                className="quick-command-group"
+              >
+                {items.map((item) => {
+                  const Icon = ICON_MAP[item.iconName] ?? WandSparkles;
+
+                  return (
+                    <Command.Item
+                      key={item.id}
+                      value={`${item.title} ${item.subtitle}`}
+                      keywords={[item.id, item.group, ...(item.keywords ?? [])]}
+                      onSelect={() => runItem(item)}
+                      className="quick-command-item flex w-full cursor-default items-center gap-3 px-4 py-2.5 text-left"
+                    >
+                      <div
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border"
+                        style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)' }}
+                      >
+                        <Icon size={15} className="text-white/72" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-[13px] font-medium" style={{ color: 'rgba(255,255,255,0.84)' }}>
+                          {item.title}
+                        </p>
+                        <p className="truncate text-[11.5px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
+                          {item.subtitle}
+                        </p>
+                      </div>
+                      <span className="text-[10.5px]" style={{ color: 'rgba(255,255,255,0.24)' }}>
+                        Enter
+                      </span>
+                    </Command.Item>
+                  );
+                })}
+              </Command.Group>
+            ))}
+          </Command.List>
+        </Command>
       </motion.div>
     </>
   );

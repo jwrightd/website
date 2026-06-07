@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ACHIEVEMENTS } from '@/data/achievements';
 import { EDUCATION } from '@/data/education';
 import { EXPERIENCE } from '@/data/experience';
-import { HERO_CTAS, POSITIONING, STATS, TAGLINE } from '@/data/highlights';
+import { HERO_CTAS, POSITIONING, PROOF_GROUPS, STATS, TAGLINE } from '@/data/highlights';
 import { PROFILE } from '@/data/profile';
 import { PROJECTS } from '@/data/projects';
 import { RESEARCH } from '@/data/research';
@@ -13,10 +13,22 @@ import { getProjectProofTone, getStatusTone } from '@/lib/badges';
 import type { Project } from '@/types';
 
 import { EnterJamesOSButton } from './StaticSiteControls';
+import SimpleProofMatrix, { type ProofMatrixRow } from './SimpleProofMatrix';
+import SimpleProofFlow from './SimpleProofFlow';
 
 const cardStyle = {
   borderColor: 'rgba(255,255,255,0.08)',
   background: 'rgba(255,255,255,0.025)',
+} as const;
+
+const SIGNAL_LABELS = {
+  winner: 'Product / Systems',
+  published: 'Research / ML',
+  research: 'Quant / ML',
+  systems: 'Systems',
+  vision: 'Computer Vision',
+  sustainability: 'Product / Sustainability',
+  engine: 'Quant / Search',
 } as const;
 
 function SectionHeading({ id, kicker, title }: { id: string; kicker: string; title: string }) {
@@ -112,6 +124,22 @@ function ProjectProofCard({ project }: { project: Project }) {
 export default function StaticSite() {
   const languages = SKILLS.find((group) => group.category === 'Languages');
   const tools = SKILLS.find((group) => group.category === 'Libraries & Tools');
+  const proofProjects = PROJECTS.map((project) => ({
+    id: project.id,
+    name: project.name,
+    proof: project.proof,
+    outcome: project.outcome,
+    href: project.links[0]?.href,
+  }));
+  const proofRows: ProofMatrixRow[] = PROJECTS.map((project) => ({
+    id: project.id,
+    name: project.name,
+    signal: SIGNAL_LABELS[project.proofTone],
+    outcome: project.outcome,
+    stack: project.techStack,
+    proof: project.proof,
+    href: project.links[0]?.href,
+  }));
 
   return (
     <div id="simple-site" style={{ background: 'var(--os-bg)', color: 'var(--os-text)' }}>
@@ -233,6 +261,15 @@ export default function StaticSite() {
               </p>
             </div>
           </div>
+        </section>
+
+        <section className="py-8" aria-label="Recruiter signal map">
+          <SimpleProofFlow groups={PROOF_GROUPS} stats={STATS} projects={proofProjects} />
+        </section>
+
+        <section className="py-8" aria-labelledby="proof-matrix-h">
+          <SectionHeading id="proof-matrix-h" kicker="Proof" title="Proof matrix" />
+          <SimpleProofMatrix rows={proofRows} />
         </section>
 
         {/* About */}

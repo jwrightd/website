@@ -204,6 +204,28 @@ html.booted .boot-screen {
     inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
+.quick-command-palette [cmdk-group-heading] {
+  padding: 8px 16px 4px;
+  color: rgba(255,255,255,0.3);
+  font-size: 11px;
+}
+
+.quick-command-item {
+  scroll-margin-block: 8px;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+}
+
+.quick-command-item[aria-selected="true"],
+.quick-command-item[data-selected="true"] {
+  background: rgba(255,255,255,0.06);
+}
+
+.quick-command-item:focus-visible {
+  outline: none;
+}
+
 .project-proof-card {
   position: relative;
   isolation: isolate;
@@ -234,6 +256,51 @@ html.booted .boot-screen {
 
 .project-proof-card:hover::after {
   opacity: 1;
+}
+
+.simple-proof-flow {
+  border-color: rgba(255,255,255,0.08);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.018)),
+    rgba(10, 12, 16, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 10px 30px rgba(0,0,0,0.18);
+}
+
+.simple-proof-node {
+  transition:
+    border-color 150ms ease,
+    background 150ms ease;
+}
+
+.simple-proof-node:hover {
+  border-color: rgba(255,255,255,0.13) !important;
+  background: rgba(255,255,255,0.045) !important;
+}
+
+.simple-proof-chip:hover {
+  border-color: rgba(255,255,255,0.14) !important;
+  background: rgba(255,255,255,0.055) !important;
+}
+
+.simple-proof-chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(var(--os-accent-rgb), 0.42);
+}
+
+.simple-proof-table {
+  border-color: rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.025);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.035);
+}
+
+.simple-proof-row {
+  transition: background 140ms ease;
+}
+
+.simple-proof-row:hover {
+  background: rgba(255,255,255,0.028);
 }
 
 .desktop-backdrop-breathe {

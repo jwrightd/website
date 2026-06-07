@@ -1,7 +1,28 @@
+'use client';
+
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { DESKTOP_GRID_SIZE } from '@/lib/desktop-grid';
+import { isSimpleView, VIEW_MODE_EVENT } from '@/lib/view-mode';
+
+const DesktopConstellation = dynamic(() => import('./DesktopConstellation'), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function DesktopBackdrop() {
+  const [showConstellation, setShowConstellation] = useState(false);
+
+  useEffect(() => {
+    const syncViewMode = () => setShowConstellation(!isSimpleView());
+
+    syncViewMode();
+    window.addEventListener(VIEW_MODE_EVENT, syncViewMode);
+
+    return () => window.removeEventListener(VIEW_MODE_EVENT, syncViewMode);
+  }, []);
+
   return (
     <>
       <div
@@ -33,6 +54,8 @@ export default function DesktopBackdrop() {
           filter: 'blur(18px)',
         }}
       />
+
+      {showConstellation ? <DesktopConstellation /> : null}
 
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
         <div

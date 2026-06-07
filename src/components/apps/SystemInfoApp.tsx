@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ACHIEVEMENTS } from '@/data/achievements';
 import { EXPERIENCE } from '@/data/experience';
 import { JAMES_OS_README, PROFILE } from '@/data/profile';
@@ -20,6 +21,13 @@ const SYSTEM_INFO = [
   { label: 'Current', value: PROFILE.recruiterHeadline },
   { label: 'Focus', value: PROFILE.currentFocus },
   { label: 'Resume', value: `Updated ${PROFILE.lastUpdated}` },
+] as const;
+
+const SYSTEM_CHECK_LINES = [
+  'boot: JamesOS shell ready',
+  'index: resume, projects, research, contact',
+  'signal: FAANG systems + Quant/ML proof loaded',
+  'access: Cmd/Ctrl+K, Simple View, Recruiter Mode',
 ] as const;
 
 export default function SystemInfoApp() {
@@ -105,9 +113,12 @@ export default function SystemInfoApp() {
 
 function SystemSection() {
   return (
-    <SurfacePanel>
-      <KeyValueRows rows={SYSTEM_INFO} />
-    </SurfacePanel>
+    <div className="flex flex-col gap-4">
+      <SurfacePanel>
+        <KeyValueRows rows={SYSTEM_INFO} />
+      </SurfacePanel>
+      <TerminalCheck />
+    </div>
   );
 }
 
@@ -115,6 +126,7 @@ function StackSection() {
   const allSkills = SKILLS.flatMap((s) => s.items);
   return (
     <div className="flex flex-col gap-4">
+      <FileTree />
       {SKILLS.map((s) => (
         <SectionBlock key={s.category} title={s.category}>
           <TagList items={s.items} />
@@ -124,6 +136,74 @@ function StackSection() {
         {allSkills.length} toolchain entries indexed
       </p>
     </div>
+  );
+}
+
+function TerminalCheck() {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <SurfacePanel className="overflow-hidden px-0 py-0">
+      <div
+        className="flex items-center gap-1.5 border-b px-4 py-2"
+        style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.018)' }}
+      >
+        <span className="h-2 w-2 rounded-full" style={{ background: '#ff453a' }} />
+        <span className="h-2 w-2 rounded-full" style={{ background: '#ffd60a' }} />
+        <span className="h-2 w-2 rounded-full" style={{ background: '#32d74b' }} />
+        <span className="ml-2 font-mono text-[10.5px]" style={{ color: 'var(--os-text-3)' }}>
+          system-check
+        </span>
+      </div>
+      <div className="px-4 py-3 font-mono text-[11.5px] leading-[1.75]">
+        {SYSTEM_CHECK_LINES.map((line, index) => (
+          <motion.p
+            key={line}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.08, duration: 0.24, ease: 'easeOut' }}
+            style={{ color: index === 2 ? '#c7d9ff' : 'rgba(255,255,255,0.58)' }}
+          >
+            <span style={{ color: 'rgba(255,255,255,0.28)' }}>$</span> {line}
+          </motion.p>
+        ))}
+      </div>
+    </SurfacePanel>
+  );
+}
+
+function FileTree() {
+  const nodes = [
+    {
+      label: 'jamesos/',
+      children: [
+        { label: 'resume.pdf', meta: PROFILE.lastUpdated },
+        { label: 'projects/', meta: 'outcome-first cards' },
+        { label: 'research/', meta: 'MINGL + ADNI' },
+        { label: 'stack/', meta: `${SKILLS.length} groups` },
+      ],
+    },
+  ];
+
+  return (
+    <SectionBlock title="Repository Map">
+      <SurfacePanel className="py-3">
+        <div className="font-mono text-[11.5px] leading-[1.8]">
+          {nodes.map((node) => (
+            <div key={node.label}>
+              <p style={{ color: 'rgba(255,255,255,0.72)' }}>{node.label}</p>
+              {node.children.map((child, index) => (
+                <p key={child.label} className="pl-4" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.24)' }}>{index === node.children.length - 1 ? '└─' : '├─'}</span>{' '}
+                  {child.label}
+                  <span style={{ color: 'rgba(255,255,255,0.28)' }}>  {child.meta}</span>
+                </p>
+              ))}
+            </div>
+          ))}
+        </div>
+      </SurfacePanel>
+    </SectionBlock>
   );
 }
 

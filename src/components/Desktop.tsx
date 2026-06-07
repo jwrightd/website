@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
 import { APPS } from '@/data/apps';
 import { POSITIONING, STATS } from '@/data/highlights';
 import { PROFILE } from '@/data/profile';
@@ -150,9 +151,26 @@ export default function Desktop() {
     }
   }, []);
 
+  const openWorkspaceWithNotice = useCallback(() => {
+    openWorkspace();
+    toast('Workspace opened', {
+      description: 'Resume, projects, and contact are arranged for scanning.',
+    });
+  }, [openWorkspace]);
+
+  const arrangeWindowsWithNotice = useCallback(() => {
+    arrangeWindows();
+    toast('Windows arranged', {
+      description: 'Open windows were placed into a clean layout.',
+    });
+  }, [arrangeWindows]);
+
   const openRecruiterFastPath = useCallback(() => {
     dismissRecruiterPrompt();
     activateRecruiterMode();
+    toast('Recruiter Mode activated', {
+      description: 'Resume, projects, and contact are ready.',
+    });
   }, [activateRecruiterMode, dismissRecruiterPrompt]);
 
   const anyWindowOpen = Object.values(windows).some((windowState) => windowState.isOpen);
@@ -179,13 +197,22 @@ export default function Desktop() {
 
   const openResumeInNewTab = () => {
     openExternal(PROFILE.resumeHref);
+    toast('Resume opened', {
+      description: PROFILE.resumeLabel,
+    });
   };
 
   const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(PROFILE.email);
+      toast('Email copied', {
+        description: PROFILE.email,
+      });
     } catch {
       openExternal(`mailto:${PROFILE.email}`);
+      toast('Email client opened', {
+        description: PROFILE.email,
+      });
     }
   };
 
@@ -215,7 +242,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'FolderOpen',
       keywords: ['workspace', 'explore', 'start'],
-      onSelect: openWorkspace,
+      onSelect: openWorkspaceWithNotice,
     },
     {
       id: 'action-open-about',
@@ -233,7 +260,12 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'FileText',
       keywords: ['cv', 'pdf'],
-      onSelect: () => openApp('resume'),
+      onSelect: () => {
+        openApp('resume');
+        toast('Resume opened', {
+          description: 'Resume window focused in JamesOS.',
+        });
+      },
     },
     {
       id: 'action-open-projects',
@@ -296,7 +328,12 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'Download',
       keywords: ['pdf', 'resume file'],
-      onSelect: triggerResumeDownload,
+      onSelect: () => {
+        triggerResumeDownload();
+        toast('Resume download started', {
+          description: PROFILE.resumeLabel,
+        });
+      },
     },
     {
       id: 'action-open-resume-tab',
@@ -325,7 +362,12 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'GitBranch',
       keywords: ['code', 'repositories'],
-      onSelect: () => openExternal(PROFILE.githubUrl),
+      onSelect: () => {
+        openExternal(PROFILE.githubUrl);
+        toast('GitHub opened', {
+          description: PROFILE.githubDisplay,
+        });
+      },
     },
     {
       id: 'action-open-linkedin',
@@ -334,7 +376,12 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'Briefcase',
       keywords: ['professional', 'network'],
-      onSelect: () => openExternal(PROFILE.linkedinUrl),
+      onSelect: () => {
+        openExternal(PROFILE.linkedinUrl);
+        toast('LinkedIn opened', {
+          description: PROFILE.linkedinDisplay,
+        });
+      },
     },
     {
       id: 'action-recruiter-mode',
@@ -352,7 +399,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'WandSparkles',
       keywords: ['layout', 'organize', 'tile'],
-      onSelect: arrangeWindows,
+      onSelect: arrangeWindowsWithNotice,
     },
   ];
 
@@ -376,7 +423,7 @@ export default function Desktop() {
         <Taskbar
           focusedId={focusedId}
           onOpenLauncher={() => setLauncherOpen(true)}
-          onOpenWorkspace={openWorkspace}
+          onOpenWorkspace={openWorkspaceWithNotice}
           onRecruiterMode={openRecruiterFastPath}
           onSimpleView={enterSimpleView}
         />
@@ -494,7 +541,7 @@ export default function Desktop() {
                   <AppContent
                     id={app.id}
                     onOpen={openApp}
-                    onOpenWorkspace={openWorkspace}
+                    onOpenWorkspace={openWorkspaceWithNotice}
                     selectedProjectId={selectedProjectId}
                     onSelectProject={setSelectedProjectId}
                   />
@@ -506,6 +553,19 @@ export default function Desktop() {
 
         <Dock windows={windows} onOpen={openApp} onFocus={focusApp} />
         <QuickLauncher open={launcherOpen} onOpenChange={setLauncherOpen} items={quickLauncherItems} />
+        <Toaster
+          position="top-right"
+          duration={2600}
+          gap={8}
+          toastOptions={{
+            style: {
+              border: '1px solid rgba(255,255,255,0.09)',
+              background: 'rgba(24,24,26,0.96)',
+              color: 'rgba(255,255,255,0.84)',
+              boxShadow: '0 16px 42px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.04)',
+            },
+          }}
+        />
 
         <p
           className="pointer-events-none absolute bottom-1.5 left-1/2 -translate-x-1/2 text-[10.5px]"
