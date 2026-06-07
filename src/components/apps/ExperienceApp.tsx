@@ -8,7 +8,6 @@ import { BodyText, BulletList, SectionBlock, SurfacePanel } from './shared/AppCo
 const STATUS: Record<string, { dot: string; label: string }> = {
   Active: { dot: '#32d74b', label: 'Active' },
   Completed: { dot: '#4f8ef7', label: 'Completed' },
-  Incoming: { dot: '#ffd60a', label: 'Incoming' },
   'On Hold': { dot: '#ffd60a', label: 'On Hold' },
 };
 

@@ -12,6 +12,8 @@ import { SKILLS } from '@/data/skills';
 import EditorialSectionLabel from './EditorialSectionLabel';
 import SimpleAmbientGrainLayer from './SimpleAmbientGrainLayer';
 import SimpleProjectShowcase from './SimpleProjectShowcase';
+import SimpleQuantSection from './SimpleQuantSection';
+import SimpleSiteHeader from './SimpleSiteHeader';
 import { EnterJamesOSButton } from './StaticSiteControls';
 import SimpleRecruiterBrief from './SimpleRecruiterBrief';
 import SimpleSectionReveal from './SimpleSectionReveal';
@@ -57,63 +59,7 @@ export default function StaticSite() {
         Skip to content
       </a>
 
-      {/* Top bar */}
-      <header
-        className="sticky top-0 z-10 border-b backdrop-blur"
-        style={{ borderColor: 'rgba(255,255,255,0.07)', background: 'rgba(15,15,17,0.82)' }}
-      >
-        <div className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-6">
-          <a href="#top" className="text-[14px] font-semibold tracking-tight" style={{ color: 'rgba(255,255,255,0.82)' }}>
-            James Wright
-          </a>
-          <nav className="flex flex-wrap items-center justify-end gap-2" aria-label="Quick links">
-            <a
-              href={PROFILE.resumeHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border px-3 py-1.5 text-[12.5px]"
-              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
-            >
-              Resume
-            </a>
-            <a
-              href="#projects"
-              className="rounded-md border px-3 py-1.5 text-[12.5px]"
-              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
-            >
-              Projects
-            </a>
-            <a
-              href={PROFILE.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border px-3 py-1.5 text-[12.5px]"
-              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
-            >
-              GitHub
-            </a>
-            <a
-              href={PROFILE.linkedinUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-md border px-3 py-1.5 text-[12.5px]"
-              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
-            >
-              LinkedIn
-            </a>
-            <a
-              href="#contact"
-              className="rounded-md border px-3 py-1.5 text-[12.5px]"
-              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
-            >
-              Contact
-            </a>
-            <EnterJamesOSButton className="rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors">
-              <span style={{ color: '#bcd4ff' }}>Enter JamesOS →</span>
-            </EnterJamesOSButton>
-          </nav>
-        </div>
-      </header>
+      <SimpleSiteHeader />
 
       <main id="main" className="mx-auto max-w-[1100px] px-6 pb-24">
         {/* Hero */}
@@ -230,8 +176,15 @@ export default function StaticSite() {
         </SimpleSectionReveal>
 
         <SimpleSectionReveal>
+          <section id="quant" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="quant-h">
+            <SectionHeading id="quant-h" index="02" label="Quant / ML" title="Quant-relevant work" />
+            <SimpleQuantSection />
+          </section>
+        </SimpleSectionReveal>
+
+        <SimpleSectionReveal>
           <section id="resume" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="resume-h">
-            <SectionHeading id="resume-h" index="02" label="Resume" title="Resume access" />
+            <SectionHeading id="resume-h" index="03" label="Resume" title="Resume access" />
             <div className="rounded-xl border px-5 py-5" style={cardStyle}>
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -270,7 +223,7 @@ export default function StaticSite() {
         {/* About */}
         <SimpleSectionReveal>
           <section id="about" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="about-h">
-            <SectionHeading id="about-h" index="03" label="About" title="Overview" />
+            <SectionHeading id="about-h" index="04" label="About" title="Overview" />
             <p className="max-w-[820px] text-[15px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.72)' }}>
               {PROFILE.aboutSummary}
             </p>
@@ -283,7 +236,7 @@ export default function StaticSite() {
         {/* Experience */}
         <SimpleSectionReveal>
           <section id="experience" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="experience-h">
-            <SectionHeading id="experience-h" index="04" label="Experience" title="Where I've worked" />
+            <SectionHeading id="experience-h" index="05" label="Experience" title="Where I've worked" />
             <div className="flex flex-col gap-4">
               {EXPERIENCE.map((role) => (
                 <article key={role.pid} className="rounded-xl border px-5 py-5" style={cardStyle}>
@@ -317,7 +270,7 @@ export default function StaticSite() {
         {/* Projects */}
         <SimpleSectionReveal>
           <section id="projects" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="projects-h">
-            <SectionHeading id="projects-h" index="05" label="Projects" title="Selected work" />
+            <SectionHeading id="projects-h" index="06" label="Projects" title="Selected work" />
             <SimpleProjectShowcase projects={PROJECTS} />
           </section>
         </SimpleSectionReveal>
@@ -325,7 +278,7 @@ export default function StaticSite() {
         {/* Skills */}
         <SimpleSectionReveal>
           <section id="skills" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="skills-h">
-            <SectionHeading id="skills-h" index="06" label="Skills" title="Technical stack" />
+            <SectionHeading id="skills-h" index="07" label="Skills" title="Technical stack" />
             <div className="flex flex-col gap-5">
               {SKILLS.map((group) => (
                 <div key={group.category}>
@@ -347,7 +300,7 @@ export default function StaticSite() {
         <SimpleSectionReveal>
           <section className="grid gap-8 border-t py-10 md:grid-cols-2" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
             <div aria-labelledby="education-h">
-              <SectionHeading id="education-h" index="07" label="Background" title="Education" />
+              <SectionHeading id="education-h" index="08" label="Background" title="Education" />
               <div className="flex flex-col gap-3">
                 {EDUCATION.map((entry) => (
                   <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
@@ -384,7 +337,7 @@ export default function StaticSite() {
               </div>
             </div>
             <div aria-labelledby="achievements-h">
-              <SectionHeading id="achievements-h" index="08" label="Recognition" title="Achievements" />
+              <SectionHeading id="achievements-h" index="09" label="Recognition" title="Achievements" />
               <div className="flex flex-col gap-3">
                 {ACHIEVEMENTS.map((entry) => (
                   <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
@@ -404,7 +357,7 @@ export default function StaticSite() {
         {/* Contact */}
         <SimpleSectionReveal>
           <section id="contact" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="contact-h">
-            <SectionHeading id="contact-h" index="09" label="Contact" title="Get in touch" />
+            <SectionHeading id="contact-h" index="10" label="Contact" title="Get in touch" />
             <div className="flex flex-wrap gap-3">
               <a
                 href={`mailto:${PROFILE.email}`}

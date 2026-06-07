@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState, type CSSProperties, type MouseEventHandler } from 'react';
 import { getProjectProofTone } from '@/lib/badges';
 import type { Project } from '@/types';
@@ -127,7 +128,9 @@ export default function ProjectMediaCard({
         </div>
 
         <h3 className="mt-3 text-[16px] font-semibold" style={{ color: 'rgba(255,255,255,0.91)' }}>
-          {project.name}
+          <Link href={`/projects/${project.id}`} className="transition-colors hover:text-white">
+            {project.name}
+          </Link>
         </h3>
         <p className="mt-2 text-[13px] font-medium leading-[1.6]" style={{ color: 'rgba(255,255,255,0.66)' }}>
           {project.outcome}
@@ -234,9 +237,16 @@ export default function ProjectMediaCard({
           </div>
         ) : null}
 
-        {project.links.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-3 border-t pt-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-            {project.links.slice(0, 3).map((link) => (
+        <div className="mt-4 flex flex-wrap gap-3 border-t pt-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <Link
+            href={`/projects/${project.id}`}
+            className="inline-flex items-center gap-1 text-[12px] font-semibold"
+            style={{ color: '#c7d9ff' }}
+          >
+            Full case study
+            <ArrowUpRight size={12} aria-hidden="true" />
+          </Link>
+          {project.links.slice(0, 3).map((link) => (
               <a
                 key={`${project.id}-${link.href}`}
                 href={link.href}
@@ -249,8 +259,7 @@ export default function ProjectMediaCard({
                 <ArrowUpRight size={12} aria-hidden="true" />
               </a>
             ))}
-          </div>
-        ) : null}
+        </div>
       </div>
     </motion.article>
   );

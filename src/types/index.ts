@@ -88,7 +88,7 @@ export interface Experience {
   role: string;
   organization: string;
   location?: string;
-  status: 'Active' | 'Completed' | 'On Hold' | 'Incoming';
+  status: 'Active' | 'Completed' | 'On Hold';
   focus: string;
   period: string;
   highlights?: string[];

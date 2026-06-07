@@ -8,9 +8,11 @@ import { setSimpleView } from '@/lib/view-mode';
 export function EnterJamesOSButton({
   className,
   children,
+  onActivate,
 }: {
   className?: string;
   children: ReactNode;
+  onActivate?: () => void;
 }) {
   return (
     <button
@@ -18,6 +20,7 @@ export function EnterJamesOSButton({
       onClick={() => {
         setSimpleView(false);
         window.scrollTo({ top: 0 });
+        onActivate?.();
       }}
       className={className}
     >
