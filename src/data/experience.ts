@@ -3,17 +3,17 @@ import type { Experience } from '@/types';
 export const EXPERIENCE: Experience[] = [
   {
     pid: '001',
-    role: 'Incoming Software Engineer',
+    role: 'Software Engineer',
     organization: 'Duke University, Code+',
     location: 'Durham, NC',
-    status: 'Incoming',
+    status: 'Active',
     focus:
-      'Summer 2026 software engineering experience building LLM-driven honeypot prototyping and threat analysis tools for STINGAR, an AI-powered cyberdefense platform used across 70+ partner universities.',
-    period: 'May 2026 – August 2026',
+      'Building LLM-driven honeypot prototyping and threat analysis tools for STINGAR, an AI-powered cyberdefense platform deployed across 70+ partner universities.',
+    period: 'May 2026 – Present',
     highlights: [
       'LLM-driven honeypot prototyping',
       'Threat analysis tooling for STINGAR',
-      'AI-powered cyberdefense platform used across 70+ partner universities',
+      'Cyberdefense platform engineering on a university-scale deployment',
     ],
   },
   {

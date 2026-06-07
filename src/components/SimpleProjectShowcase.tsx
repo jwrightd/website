@@ -1,7 +1,7 @@
 'use client';
 
 import { useMotionValue, useReducedMotion } from 'framer-motion';
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useEffect, useMemo, useState, type MouseEvent } from 'react';
 import { getProjectProofTone } from '@/lib/badges';
 import type { Project } from '@/types';
 import CursorMediaPreview, { type CursorPreviewItem } from './CursorMediaPreview';
@@ -27,6 +27,16 @@ export default function SimpleProjectShowcase({ projects }: SimpleProjectShowcas
   const prefersReducedMotion = useReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+
+  const { featured, additional } = useMemo(() => {
+    const selected = projects.filter((project) => project.featured);
+    const flagship = selected.length > 0 ? selected : projects.slice(0, 4);
+    const flagshipIds = new Set(flagship.map((project) => project.id));
+    return {
+      featured: flagship,
+      additional: projects.filter((project) => !flagshipIds.has(project.id)),
+    };
+  }, [projects]);
 
   useEffect(() => {
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -72,23 +82,37 @@ export default function SimpleProjectShowcase({ projects }: SimpleProjectShowcas
 
   const visible = Boolean(preview && previewEnabled && !prefersReducedMotion);
 
+  const renderCard = (project: Project) => (
+    <ProjectMediaCard
+      key={project.id}
+      project={project}
+      expandable
+      onPreviewEnter={(event) => showPreview(project, event)}
+      onPreviewMove={(event) => {
+        if (visible) updatePosition(event);
+      }}
+      onPreviewLeave={() => setPreview(null)}
+    />
+  );
+
   return (
     <div className="simple-project-showcase">
-      <FeaturedProjectDeck projects={projects} />
+      <FeaturedProjectDeck projects={featured} />
 
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectMediaCard
-            key={project.id}
-            project={project}
-            onPreviewEnter={(event) => showPreview(project, event)}
-            onPreviewMove={(event) => {
-              if (visible) updatePosition(event);
-            }}
-            onPreviewLeave={() => setPreview(null)}
-          />
-        ))}
+        {featured.map((project) => renderCard(project))}
       </div>
+
+      {additional.length > 0 ? (
+        <div className="mt-8 border-t pt-8" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <p className="text-[12.5px] font-semibold" style={{ color: 'rgba(255,255,255,0.52)' }}>
+            Additional work
+          </p>
+          <div className="mt-3 grid gap-4 md:grid-cols-2">
+            {additional.map((project) => renderCard(project))}
+          </div>
+        </div>
+      ) : null}
 
       <CursorMediaPreview item={preview} x={x} y={y} visible={visible} />
     </div>

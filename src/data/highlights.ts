@@ -13,12 +13,12 @@ export const LENS_OPTIONS: AudienceLensOption[] = [
   {
     id: 'systems',
     label: 'SWE / Systems',
-    description: 'Scale, shipped systems, demos, GitHub proof',
+    description: 'Shipped products, pipelines, and platform work',
   },
   {
     id: 'quant',
     label: 'Quant / ML',
-    description: 'Math, ML research, chess, data pipelines',
+    description: 'Math, modeling, research, and data rigor',
   },
 ];
 
@@ -33,15 +33,16 @@ export interface Stat {
   decimals?: number;
   label: string;
   audience: StatAudience;
+  featured?: boolean;
 }
 
 /** One-line positioning shown directly under the name. */
 export const POSITIONING =
-  'Mathematics + Computer Science @ Duke · Incoming SWE @ Duke Code+ (STINGAR) · ML / research engineer';
+  'Duke Mathematics + Computer Science · Software engineer & ML researcher';
 
 /** Short tagline used for meta descriptions and the boot/wake line. */
 export const TAGLINE =
-  'Building shipped systems and research-grade ML — targeting software engineering and quantitative roles.';
+  'Shipped voice products, research-grade ML, and large-scale data systems — open to SWE and ML internships, Summer 2026.';
 
 /** "By the numbers" — high-signal proof points, scannable in seconds. */
 export const STATS: Stat[] = [
@@ -52,22 +53,16 @@ export const STATS: Stat[] = [
     display: '4.0',
     label: 'GPA · Mathematics + CS, Duke',
     audience: 'quant',
+    featured: true,
   },
   {
     id: 'pipeline',
     value: 15,
     suffix: 'M+',
     display: '15M+',
-    label: 'Row patient-data search pipeline',
+    label: 'Row parquet search pipeline I built',
     audience: 'swe',
-  },
-  {
-    id: 'universities',
-    value: 70,
-    suffix: '+',
-    display: '70+',
-    label: 'Universities on the STINGAR platform',
-    audience: 'swe',
+    featured: true,
   },
   {
     id: 'hackathons',
@@ -76,6 +71,23 @@ export const STATS: Stat[] = [
     display: '2×',
     label: 'Hackathon wins · HackPrinceton, HackDuke',
     audience: 'both',
+    featured: true,
+  },
+  {
+    id: 'biorxiv',
+    value: null,
+    display: 'bioRxiv',
+    label: 'Named co-author preprint · MINGL',
+    audience: 'quant',
+    featured: true,
+  },
+  {
+    id: 'universities',
+    value: 70,
+    suffix: '+',
+    display: '70+',
+    label: 'Partner universities on STINGAR (platform I work on)',
+    audience: 'swe',
   },
   {
     id: 'cv',
@@ -101,14 +113,10 @@ export const STATS: Stat[] = [
     label: 'Lichess rapid worldwide · USCF Candidate Master',
     audience: 'quant',
   },
-  {
-    id: 'biorxiv',
-    value: null,
-    display: 'bioRxiv',
-    label: 'Named co-author preprint · MINGL',
-    audience: 'quant',
-  },
 ];
+
+export const FEATURED_STATS = STATS.filter((stat) => stat.featured);
+export const MORE_STATS = STATS.filter((stat) => !stat.featured);
 
 export interface HeroCta {
   id: string;
@@ -141,16 +149,16 @@ export interface ProofGroup {
   points: ProofPoint[];
 }
 
-export const RECRUITER_PATH = 'Start with Resume \u2192 Projects \u2192 Contact';
+export const RECRUITER_PATH = 'Resume \u2192 Projects \u2192 Contact';
 
 export const PROOF_GROUPS: ProofGroup[] = [
   {
     id: 'systems',
     label: 'SWE / systems',
     points: [
-      { id: 'universities', statId: 'universities', label: '70+ universities', detail: 'STINGAR cyberdefense platform reach' },
-      { id: 'pipeline', statId: 'pipeline', label: '15M+ row pipeline', detail: 'patient-data search and case discovery' },
-      { id: 'hackathons', statId: 'hackathons', label: '2x hackathon winner', detail: 'HackPrinceton + HackDuke shipped builds' },
+      { id: 'pipeline', statId: 'pipeline', label: '15M+ row pipeline', detail: 'parquet search and case discovery at DIIG' },
+      { id: 'stingar', label: 'STINGAR @ Code+', detail: 'cyberdefense platform engineering on a 70+ university deployment' },
+      { id: 'hackathons', statId: 'hackathons', label: '2× hackathon winner', detail: 'Saynario + DataCrawl shipped builds' },
       { id: 'cv', statId: 'cv', label: '90%+ CV accuracy', detail: 'real-time chess move detection' },
     ],
   },
@@ -161,7 +169,7 @@ export const PROOF_GROUPS: ProofGroup[] = [
       { id: 'gpa', statId: 'gpa', label: '4.0 GPA', detail: 'Mathematics + Computer Science at Duke' },
       { id: 'biorxiv', statId: 'biorxiv', label: 'bioRxiv co-author', detail: 'MINGL spatial proteomics package' },
       { id: 'research', label: 'Neural CDE forecasting', detail: 'irregular longitudinal Alzheimer’s data' },
-      { id: 'chess', statId: 'lichess', label: 'CM / Top-100 Lichess', detail: 'competitive chess signal and calculation depth' },
+      { id: 'chess', statId: 'lichess', label: 'CM / Top-100 Lichess', detail: 'competitive chess and search depth' },
     ],
   },
 ];

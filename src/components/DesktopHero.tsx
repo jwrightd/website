@@ -146,7 +146,7 @@ export default function DesktopHero({
     [lens]
   );
   const metricIds = lens === 'systems'
-    ? ['universities', 'pipeline', 'hackathons', 'cv']
+    ? ['pipeline', 'hackathons', 'cv', 'universities']
     : ['gpa', 'biorxiv', 'lichess', 'elo'];
 
   return (

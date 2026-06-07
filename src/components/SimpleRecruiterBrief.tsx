@@ -9,21 +9,23 @@ import {
 } from '@/data/highlights';
 
 const PATH_STEPS = [
-  { label: 'Resume', href: '#resume', detail: 'credentials' },
-  { label: 'Projects', href: '#projects', detail: 'proof' },
-  { label: 'Contact', href: '#contact', detail: 'next step' },
+  { label: 'Resume', href: '#resume' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Contact', href: '#contact' },
 ] as const;
 
-const LENS_NOTES: Record<AudienceLens, string[]> = {
+const LENS_HIGHLIGHTS: Record<AudienceLens, string[]> = {
   systems: [
-    'Start with shipped products: Saynario, DataCrawl, ChessVision, and the STINGAR-oriented platform work.',
-    'Look for end-to-end ownership: demos, public repos, data pipelines, real users, and production-shaped systems.',
-    'Best route: Resume for scope, Projects for implementation depth, Contact when you want the short version.',
+    'Saynario — shipped voice product with demo video and public repo',
+    '15M+ row parquet search pipeline at Duke Impact Investment Group',
+    'STINGAR cyberdefense engineering at Duke Code+',
+    'DataCrawl — multi-agent financial dataset pipeline',
   ],
   quant: [
-    'Start with math/ML signal: ADNI Neural CDE forecasting, MINGL, chess engines, and competitive chess.',
-    'Look for modeling judgment: longitudinal data, probabilistic tooling, search, evaluation, and research translation.',
-    'Best route: Research for technical depth, Projects for code/proof, Resume for the credential summary.',
+    'MINGL — GMM-based spatial proteomics package, bioRxiv co-author',
+    'ADNI Neural CDE forecasting on irregular longitudinal clinical + MRI data',
+    '4.0 GPA in Mathematics + Computer Science at Duke',
+    'USCF Candidate Master · Top 100 Lichess rapid',
   ],
 };
 
@@ -37,7 +39,7 @@ export default function SimpleRecruiterBrief() {
       <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-start">
         <div>
           <h3 className="text-[15px] font-semibold tracking-[-0.01em]" style={{ color: 'rgba(255,255,255,0.88)' }}>
-            Read this portfolio through a lens
+            Highlights by focus
           </h3>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {PATH_STEPS.map((step, index) => (
@@ -47,14 +49,10 @@ export default function SimpleRecruiterBrief() {
                 className="simple-path-step inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12.5px] font-medium"
               >
                 <span style={{ color: 'rgba(255,255,255,0.86)' }}>{step.label}</span>
-                <span style={{ color: 'rgba(255,255,255,0.38)' }}>{step.detail}</span>
                 {index < PATH_STEPS.length - 1 ? <ArrowRight size={12} aria-hidden="true" /> : null}
               </a>
             ))}
           </div>
-          <p className="mt-3 max-w-[680px] text-[13px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.5)' }}>
-            The numbers above are the quick hook. Use this lens to decide what to open first; the project cards below carry the proof.
-          </p>
         </div>
 
         <div className="rounded-xl border p-1" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(8,10,14,0.38)' }}>
@@ -92,8 +90,8 @@ export default function SimpleRecruiterBrief() {
             {activeOption.description}
           </p>
         </div>
-        <ul className="grid gap-2">
-          {LENS_NOTES[lens].map((note) => (
+        <ul className="grid gap-2 sm:grid-cols-2">
+          {LENS_HIGHLIGHTS[lens].map((note) => (
             <li
               key={note}
               className="rounded-lg border px-3 py-2.5 text-[13px] leading-[1.6]"

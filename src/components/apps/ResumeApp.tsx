@@ -143,7 +143,7 @@ export default function ResumeApp({ isMobile = false }: ResumeAppProps) {
             <div className="flex flex-col gap-3">
               {SKILLS.map((group) => (
                 <div key={group.category} className={`${isMobile ? 'flex flex-col gap-1' : 'flex gap-4'}`}>
-                  <span className="w-20 shrink-0 text-[12px]" style={{ color: 'var(--os-text-3)' }}>
+                  <span className="w-28 shrink-0 text-[12px]" style={{ color: 'var(--os-text-3)' }}>
                     {group.category}
                   </span>
                   <p className="text-[13.5px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.62)' }}>

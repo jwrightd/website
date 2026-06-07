@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { POSITIONING } from '@/data/highlights';
 
-export const alt = 'James Wright, Math + CS at Duke, incoming SWE at Duke Code+';
+export const alt = 'James Wright, Math + CS at Duke, SWE at Duke Code+';
 export const size = {
   width: 1200,
   height: 630,
@@ -35,10 +35,10 @@ export default function OpenGraphImage() {
               }}
             />
             <div style={{ fontSize: 28, fontWeight: 650, color: 'rgba(255,255,255,0.78)' }}>
-              JamesOS
+              jameswright.dev
             </div>
           </div>
-          <div style={{ fontSize: 24, color: 'rgba(255,255,255,0.48)' }}>jameswright.dev</div>
+          <div style={{ fontSize: 24, color: 'rgba(255,255,255,0.48)' }}>Duke Math + CS · Code+</div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>

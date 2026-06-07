@@ -13,7 +13,7 @@ const STATUS: Record<string, { dot: string; label: string }> = {
 };
 
 export default function ExperienceApp() {
-  const active = EXPERIENCE.filter((entry) => entry.status === 'Active' || entry.status === 'Incoming').length;
+  const active = EXPERIENCE.filter((entry) => entry.status === 'Active').length;
   const [selectedPid, setSelectedPid] = useState(EXPERIENCE[0]?.pid ?? '');
 
   return (
@@ -27,7 +27,7 @@ export default function ExperienceApp() {
             Experience
           </p>
           <p className="mt-0.5 text-[11.5px]" style={{ color: 'var(--os-text-3)' }}>
-            {EXPERIENCE.length} roles · {active} current or incoming
+            {EXPERIENCE.length} roles · {active} active
           </p>
         </div>
         <span className="text-[11px]" style={{ color: 'var(--os-text-3)' }}>

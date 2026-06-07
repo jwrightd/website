@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'JamesOS',
-    short_name: 'JamesOS',
-    description: 'Interactive OS-style portfolio for James Wright.',
+    name: 'James Wright',
+    short_name: 'James Wright',
+    description: 'Portfolio for James Wright — Duke Math + CS, software engineer and ML researcher.',
     start_url: '/',
     display: 'standalone',
     background_color: '#0f0f11',

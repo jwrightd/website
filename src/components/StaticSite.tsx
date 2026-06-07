@@ -1,14 +1,12 @@
-import { ArrowUpRight, Briefcase, FileText, GitBranch, Mail, MapPin } from 'lucide-react';
+import { Briefcase, FileText, GitBranch, Mail, MapPin } from 'lucide-react';
 
 import { ACHIEVEMENTS } from '@/data/achievements';
 import { EDUCATION } from '@/data/education';
 import { EXPERIENCE } from '@/data/experience';
-import { HERO_CTAS, POSITIONING, STATS, TAGLINE } from '@/data/highlights';
+import { FEATURED_STATS, HERO_CTAS, MORE_STATS, POSITIONING, RECRUITER_PATH, TAGLINE } from '@/data/highlights';
 import { PROFILE } from '@/data/profile';
 import { PROJECTS } from '@/data/projects';
-import { RESEARCH } from '@/data/research';
 import { SKILLS } from '@/data/skills';
-import { getStatusTone } from '@/lib/badges';
 
 import EditorialSectionLabel from './EditorialSectionLabel';
 import SimpleAmbientGrainLayer from './SimpleAmbientGrainLayer';
@@ -50,8 +48,6 @@ function Tag({ children }: { children: React.ReactNode }) {
 }
 
 export default function StaticSite() {
-  const languages = SKILLS.find((group) => group.category === 'Languages');
-  const tools = SKILLS.find((group) => group.category === 'Libraries & Tools');
 
   return (
     <div id="simple-site" style={{ background: 'var(--os-bg)', color: 'var(--os-text)' }}>
@@ -67,9 +63,9 @@ export default function StaticSite() {
       >
         <div className="mx-auto flex h-14 max-w-[1100px] items-center justify-between px-6">
           <a href="#top" className="text-[14px] font-semibold tracking-tight" style={{ color: 'rgba(255,255,255,0.82)' }}>
-            James Wright · Recruiter Brief
+            James Wright
           </a>
-          <nav className="flex items-center gap-2" aria-label="Quick links">
+          <nav className="flex flex-wrap items-center justify-end gap-2" aria-label="Quick links">
             <a
               href={PROFILE.resumeHref}
               target="_blank"
@@ -85,6 +81,24 @@ export default function StaticSite() {
               style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
             >
               Projects
+            </a>
+            <a
+              href={PROFILE.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md border px-3 py-1.5 text-[12.5px]"
+              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
+            >
+              GitHub
+            </a>
+            <a
+              href={PROFILE.linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-md border px-3 py-1.5 text-[12.5px]"
+              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
+            >
+              LinkedIn
             </a>
             <a
               href="#contact"
@@ -104,7 +118,7 @@ export default function StaticSite() {
         {/* Hero */}
         <section id="top" className="pt-14 pb-10" aria-labelledby="hero-name">
           <p className="text-[12.5px] font-semibold" style={{ color: 'var(--os-accent)' }}>
-            Recruiter Brief · Resume → Projects → Contact
+            {RECRUITER_PATH}
           </p>
           <h1
             id="hero-name"
@@ -119,10 +133,13 @@ export default function StaticSite() {
           <p className="mt-3 max-w-[720px] text-[14.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.5)' }}>
             {TAGLINE}
           </p>
-          <p className="mt-4 flex items-center gap-1.5 text-[13px]" style={{ color: 'rgba(255,255,255,0.42)' }}>
-            <MapPin size={14} aria-hidden="true" />
-            {PROFILE.location}
-          </p>
+          <div className="mt-4 flex flex-col gap-1.5 text-[13px]" style={{ color: 'rgba(255,255,255,0.42)' }}>
+            <p className="flex items-center gap-1.5">
+              <MapPin size={14} aria-hidden="true" />
+              {PROFILE.location}
+            </p>
+            <p>{PROFILE.availability}</p>
+          </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
             {HERO_CTAS.map((cta) => {
@@ -151,7 +168,7 @@ export default function StaticSite() {
         {/* By the numbers */}
         <section className="py-8" aria-label="By the numbers">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {STATS.map((stat) => (
+            {FEATURED_STATS.map((stat) => (
               <div key={stat.id} className="rounded-xl border px-4 py-4" style={cardStyle}>
                 <p className="text-[26px] font-semibold leading-none tracking-[-0.01em]" style={{ color: 'rgba(255,255,255,0.92)' }}>
                   {stat.display}
@@ -162,11 +179,33 @@ export default function StaticSite() {
               </div>
             ))}
           </div>
+          {MORE_STATS.length > 0 ? (
+            <details className="mt-3">
+              <summary
+                className="cursor-pointer list-none text-[12.5px] font-medium [&::-webkit-details-marker]:hidden"
+                style={{ color: 'rgba(255,255,255,0.46)' }}
+              >
+                More signal
+              </summary>
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {MORE_STATS.map((stat) => (
+                  <div key={stat.id} className="rounded-xl border px-4 py-3" style={cardStyle}>
+                    <p className="text-[20px] font-semibold leading-none tracking-[-0.01em]" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                      {stat.display}
+                    </p>
+                    <p className="mt-2 text-[11.5px] leading-[1.45]" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </details>
+          ) : null}
         </section>
 
         <SimpleSectionReveal>
           <section className="py-8" aria-labelledby="signal-h">
-            <SectionHeading id="signal-h" index="01" label="Signal" title="Reading lens" />
+            <SectionHeading id="signal-h" index="01" label="Highlights" title="By focus area" />
             <SimpleRecruiterBrief />
           </section>
         </SimpleSectionReveal>
@@ -264,88 +303,24 @@ export default function StaticSite() {
           </section>
         </SimpleSectionReveal>
 
-        {/* Research */}
-        <SimpleSectionReveal>
-          <section id="research" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="research-h">
-            <SectionHeading id="research-h" index="06" label="Research" title="Open questions I'm working on" />
-            <div className="grid gap-4 md:grid-cols-2">
-              {RESEARCH.map((item) => {
-                const tone = getStatusTone(item.status);
-                return (
-                  <article key={item.id} className="rounded-xl border px-5 py-5" style={cardStyle}>
-                    <span
-                      className="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em]"
-                      style={{ color: tone.fg, background: tone.bg, borderColor: tone.border }}
-                    >
-                      {item.status}
-                    </span>
-                    <h3 className="mt-3 text-[16px] font-semibold" style={{ color: 'rgba(255,255,255,0.9)' }}>
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-[13px] italic leading-[1.7]" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                      {item.question}
-                    </p>
-                    <p className="mt-2 text-[13px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                      {item.impact}
-                    </p>
-                    {item.links && item.links.length > 0 ? (
-                      <div className="mt-3 flex flex-wrap gap-3">
-                        {item.links.map((link) => (
-                          <a
-                            key={link.href}
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[12.5px] font-medium"
-                            style={{ color: '#bcd4ff' }}
-                          >
-                            {link.label}
-                            <ArrowUpRight size={13} aria-hidden="true" />
-                          </a>
-                        ))}
-                      </div>
-                    ) : null}
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        </SimpleSectionReveal>
-
         {/* Skills */}
         <SimpleSectionReveal>
           <section id="skills" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="skills-h">
-            <SectionHeading id="skills-h" index="07" label="Skills" title="Tools of the trade" />
-            {languages ? (
-              <div className="mb-5">
-                <p className="mb-2 text-[12.5px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                  Languages
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {languages.items.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-md border px-2.5 py-1.5 text-[13px] font-medium"
-                      style={{ borderColor: 'rgba(79,142,247,0.28)', background: 'rgba(79,142,247,0.1)', color: '#cfe0ff' }}
-                    >
-                      {item}
-                    </span>
-                  ))}
+            <SectionHeading id="skills-h" index="06" label="Skills" title="Technical stack" />
+            <div className="flex flex-col gap-5">
+              {SKILLS.map((group) => (
+                <div key={group.category}>
+                  <p className="mb-2 text-[12.5px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                    {group.category}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {group.items.map((item) => (
+                      <Tag key={item}>{item}</Tag>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ) : null}
-            {tools ? (
-              <div>
-                <p className="mb-2 text-[12.5px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                  Libraries &amp; Tools
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {tools.items.map((item) => (
-                    <Tag key={item}>{item}</Tag>
-                  ))}
-                </div>
-              </div>
-            ) : null}
+              ))}
+            </div>
           </section>
         </SimpleSectionReveal>
 
@@ -353,7 +328,7 @@ export default function StaticSite() {
         <SimpleSectionReveal>
           <section className="grid gap-8 border-t py-10 md:grid-cols-2" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
             <div aria-labelledby="education-h">
-              <SectionHeading id="education-h" index="08" label="Background" title="Education" />
+              <SectionHeading id="education-h" index="07" label="Background" title="Education" />
               <div className="flex flex-col gap-3">
                 {EDUCATION.map((entry) => (
                   <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
@@ -366,12 +341,31 @@ export default function StaticSite() {
                     <p className="mt-1 text-[12px]" style={{ color: 'rgba(255,255,255,0.38)' }}>
                       {entry.location} · {entry.period}
                     </p>
+                    {entry.coursework && entry.coursework.length > 0 ? (
+                      <div className="mt-2">
+                        <p className="text-[12px] font-medium" style={{ color: 'rgba(255,255,255,0.58)' }}>
+                          Coursework
+                        </p>
+                        <ul className="mt-1.5 flex flex-col gap-1">
+                          {entry.coursework.map((course) => (
+                            <li
+                              key={course}
+                              className="flex items-start gap-2 text-[12px] leading-[1.5]"
+                              style={{ color: 'rgba(255,255,255,0.46)' }}
+                            >
+                              <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full" style={{ background: 'rgba(255,255,255,0.28)' }} />
+                              {course}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
                   </div>
                 ))}
               </div>
             </div>
             <div aria-labelledby="achievements-h">
-              <SectionHeading id="achievements-h" index="09" label="Recognition" title="Achievements" />
+              <SectionHeading id="achievements-h" index="08" label="Recognition" title="Achievements" />
               <div className="flex flex-col gap-3">
                 {ACHIEVEMENTS.map((entry) => (
                   <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
@@ -391,7 +385,7 @@ export default function StaticSite() {
         {/* Contact */}
         <SimpleSectionReveal>
           <section id="contact" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="contact-h">
-            <SectionHeading id="contact-h" index="10" label="Contact" title="Get in touch" />
+            <SectionHeading id="contact-h" index="09" label="Contact" title="Get in touch" />
             <div className="flex flex-wrap gap-3">
               <a
                 href={`mailto:${PROFILE.email}`}
@@ -439,7 +433,7 @@ export default function StaticSite() {
       <footer className="border-t py-8" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
         <div className="mx-auto flex max-w-[1100px] flex-col items-center gap-3 px-6 text-center">
           <p className="text-[12.5px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
-            © {new Date().getFullYear()} James Wright · Built as JamesOS
+            © {new Date().getFullYear()} James Wright · {PROFILE.email}
           </p>
           <EnterJamesOSButton className="rounded-md border px-3 py-1.5 text-[12.5px] font-medium">
             <span style={{ color: '#bcd4ff' }}>Launch the interactive experience →</span>

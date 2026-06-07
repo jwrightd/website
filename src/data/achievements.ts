@@ -8,8 +8,8 @@ export const ACHIEVEMENTS: AchievementEntry[] = [
   },
   {
     id: 'hackduke-2026',
-    label: 'HackDuke 2026',
-    detail: 'Award-winning build for DataCrawl.',
+    label: 'HackDuke Code for Good 2026',
+    detail: 'Winning build for DataCrawl — multi-agent financial dataset pipeline.',
   },
   {
     id: 'mingl-preprint',

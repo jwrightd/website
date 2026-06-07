@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { useState, type CSSProperties, type MouseEventHandler } from 'react';
 import { getProjectProofTone } from '@/lib/badges';
@@ -16,6 +16,7 @@ interface ProjectMediaSurfaceProps {
 
 interface ProjectMediaCardProps {
   project: Project;
+  expandable?: boolean;
   onPreviewEnter?: MouseEventHandler<HTMLElement>;
   onPreviewMove?: MouseEventHandler<HTMLElement>;
   onPreviewLeave?: MouseEventHandler<HTMLElement>;
@@ -28,12 +29,14 @@ export function ProjectMediaSurface({
   className,
 }: ProjectMediaSurfaceProps) {
   const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
   const media = project.media?.[0];
   const isVideo = media?.type === 'video';
+  const showFallback = !media || failed;
 
   return (
     <div className={`project-media-surface relative aspect-[16/10] overflow-hidden ${className ?? ''}`}>
-      {media ? (
+      {media && !failed ? (
         <>
           {!loaded ? <div className="project-media-skeleton absolute inset-0" /> : null}
           {isVideo ? (
@@ -45,6 +48,7 @@ export function ProjectMediaSurface({
               playsInline
               autoPlay
               onLoadedData={() => setLoaded(true)}
+              onError={() => setFailed(true)}
               className="h-full w-full object-cover opacity-90"
             />
           ) : (
@@ -55,25 +59,30 @@ export function ProjectMediaSurface({
               priority={priority}
               sizes={sizes}
               onLoad={() => setLoaded(true)}
+              onError={() => setFailed(true)}
               className="object-cover opacity-90"
             />
           )}
         </>
-      ) : (
-        <div className="project-media-placeholder flex h-full flex-col justify-between p-4">
-          <span className="font-mono text-[11px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
-            /projects/{project.id}
-          </span>
-          <div>
-            <p className="text-[13px] font-semibold" style={{ color: 'rgba(255,255,255,0.72)' }}>
-              Visual slot ready
-            </p>
-            <p className="mt-1 text-[11.5px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.38)' }}>
-              Add a screenshot or short loop to make this project feel as tactile as the shipped work.
-            </p>
-          </div>
+      ) : showFallback ? (
+        <div
+          className="project-media-placeholder flex h-full flex-col justify-end p-4"
+          style={{
+            background:
+              'linear-gradient(145deg, rgba(79,142,247,0.14) 0%, rgba(255,255,255,0.03) 48%, rgba(15,15,17,0.92) 100%)',
+          }}
+        >
+          <p className="font-mono text-[11px]" style={{ color: 'rgba(255,255,255,0.34)' }}>
+            {project.category}
+          </p>
+          <p className="mt-2 text-[15px] font-semibold" style={{ color: 'rgba(255,255,255,0.78)' }}>
+            {project.name}
+          </p>
+          <p className="mt-1 line-clamp-2 text-[11.5px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.42)' }}>
+            {project.proof}
+          </p>
         </div>
-      )}
+      ) : null}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/35" />
     </div>
   );
@@ -81,10 +90,12 @@ export function ProjectMediaSurface({
 
 export default function ProjectMediaCard({
   project,
+  expandable = false,
   onPreviewEnter,
   onPreviewMove,
   onPreviewLeave,
 }: ProjectMediaCardProps) {
+  const [expanded, setExpanded] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const tone = getProjectProofTone(project.proofTone);
   const badges = project.badges ?? [project.proof];
@@ -126,7 +137,7 @@ export default function ProjectMediaCard({
         </p>
 
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {project.techStack.slice(0, 4).map((tech) => (
+          {(expanded ? project.techStack : project.techStack.slice(0, 4)).map((tech) => (
             <span
               key={`${project.id}-${tech}`}
               className="rounded-md border px-2 py-1 text-[11px]"
@@ -140,6 +151,78 @@ export default function ProjectMediaCard({
             </span>
           ))}
         </div>
+
+        {expandable ? (
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => setExpanded((open) => !open)}
+              aria-expanded={expanded}
+              className="inline-flex items-center gap-1.5 text-[12px] font-semibold"
+              style={{ color: '#c7d9ff' }}
+            >
+              {expanded ? 'Hide case study' : 'Read case study'}
+              <ChevronDown
+                size={14}
+                aria-hidden="true"
+                style={{ transform: expanded ? 'rotate(180deg)' : undefined, transition: 'transform 150ms ease' }}
+              />
+            </button>
+            {expanded ? (
+              <div className="mt-3 flex flex-col gap-3 border-t pt-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                    Problem
+                  </p>
+                  <p className="mt-1 text-[12.5px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.56)' }}>
+                    {project.problem}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                    Approach
+                  </p>
+                  <ul className="mt-1 flex flex-col gap-1.5">
+                    {project.approach.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-[12.5px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.56)' }}>
+                        <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: 'var(--os-accent)' }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                    Result
+                  </p>
+                  <p className="mt-1 text-[12.5px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.56)' }}>
+                    {project.result}
+                  </p>
+                </div>
+                {project.media && project.media.length > 1 ? (
+                  <div className="flex flex-col gap-3">
+                    {project.media.slice(1).map((item) => (
+                      <figure
+                        key={item.src}
+                        className="overflow-hidden rounded-lg border"
+                        style={{ borderColor: 'rgba(255,255,255,0.08)' }}
+                      >
+                        <div className="relative aspect-[16/10]">
+                          <Image src={item.src} alt={item.alt} fill sizes="(max-width: 768px) 100vw, 520px" className="object-cover" />
+                        </div>
+                        {item.caption ? (
+                          <figcaption className="px-3 py-2 text-[11.5px] leading-[1.5]" style={{ color: 'rgba(255,255,255,0.44)' }}>
+                            {item.caption}
+                          </figcaption>
+                        ) : null}
+                      </figure>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
 
         {project.links.length > 0 ? (
           <div className="mt-4 flex flex-wrap gap-3 border-t pt-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>

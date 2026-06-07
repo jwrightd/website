@@ -5,7 +5,7 @@ import './globals.css';
 
 const SITE_URL = 'https://jameswright.dev';
 const DESCRIPTION =
-  'James Wright — Mathematics + Computer Science @ Duke, incoming SWE at Duke Code+ (STINGAR). ML and research engineer building shipped systems and published research.';
+  'James Wright — Duke Math + CS, software engineer & ML researcher. Shipped systems, bioRxiv research, and large-scale data pipelines. Seeking SWE/ML internships Summer 2026.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: '%s — James Wright',
   },
   description: DESCRIPTION,
-  applicationName: 'JamesOS',
+  applicationName: 'James Wright',
   authors: [{ name: 'James Wright', url: SITE_URL }],
   creator: 'James Wright',
   keywords: [
@@ -24,14 +24,14 @@ export const metadata: Metadata = {
     'machine learning engineer',
     'quantitative',
     'research engineer',
-    'JamesOS',
     'portfolio',
+    'internship',
   ],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     url: SITE_URL,
-    siteName: 'JamesOS',
+    siteName: 'James Wright',
     title: 'James Wright — Software & ML Engineer',
     description: DESCRIPTION,
     locale: 'en_US',
@@ -56,7 +56,7 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const VIEW_MODE_BOOTSTRAP = `(function(){try{var d=document.documentElement;d.classList.add('js');var s=sessionStorage;if(s.getItem('jamesos:simple')==='1'){d.classList.add('simple-view');}if(s.getItem('jamesos:booted')==='1'){d.classList.add('booted');}}catch(e){}})();`;
+const VIEW_MODE_BOOTSTRAP = `(function(){try{var d=document.documentElement;d.classList.add('js');var s=sessionStorage;if(s.getItem('jamesos:simple')!=='0'){d.classList.add('simple-view');}if(s.getItem('jamesos:booted')==='1'){d.classList.add('booted');}}catch(e){}})();`;
 
 const personJsonLd = {
   '@context': 'https://schema.org',

@@ -113,6 +113,7 @@ export interface EducationEntry {
   location: string;
   program: string;
   period: string;
+  coursework?: string[];
 }
 
 export interface AchievementEntry {
