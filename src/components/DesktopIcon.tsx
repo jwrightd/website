@@ -20,6 +20,7 @@ interface DesktopIconProps {
   isFocused: boolean;
   isSelected: boolean;
   onActivate: () => void;
+  onPreview?: () => void;
 }
 
 export default function DesktopIcon({
@@ -30,6 +31,7 @@ export default function DesktopIcon({
   isFocused,
   isSelected,
   onActivate,
+  onPreview,
 }: DesktopIconProps) {
   const Icon = ICON_MAP[iconName] ?? Cpu;
   const accent = APP_ACCENTS[id] ?? APP_ACCENTS.sysinfo;
@@ -49,6 +51,7 @@ export default function DesktopIcon({
       title={label}
       whileHover={{ scale: 1.04, y: -2 }}
       whileTap={{ scale: 0.94 }}
+      onPointerEnter={onPreview}
       onClick={onActivate}
       className="group desktop-icon-root flex w-[76px] flex-col items-center gap-1.5 rounded-[12px] px-1.5 py-2 select-none outline-none transition-colors focus-visible:bg-white/5"
       style={{

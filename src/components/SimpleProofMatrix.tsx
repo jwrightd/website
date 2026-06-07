@@ -10,22 +10,32 @@ import {
 } from '@tanstack/react-table';
 import { ArrowUpDown, ArrowUpRight } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import type { AudienceLens } from '@/data/highlights';
 
 export interface ProofMatrixRow {
   id: string;
   name: string;
   signal: string;
   outcome: string;
-  stack: string[];
   proof: string;
   href?: string;
+  proofLabel?: string;
 }
 
 interface SimpleProofMatrixProps {
   rows: ProofMatrixRow[];
+  lens?: AudienceLens;
 }
 
-export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
+function rowMatchesLens(row: ProofMatrixRow, lens: AudienceLens) {
+  if (lens === 'systems') {
+    return /Systems|Product|Computer Vision/i.test(row.signal);
+  }
+
+  return /Quant|Research|ML|Search/i.test(row.signal);
+}
+
+export default function SimpleProofMatrix({ rows, lens = 'systems' }: SimpleProofMatrixProps) {
   const [sorting, setSorting] = useState<SortingState>([{ id: 'signal', desc: false }]);
   const columns = useMemo<ColumnDef<ProofMatrixRow>[]>(
     () => [
@@ -54,21 +64,11 @@ export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
       },
       {
         accessorKey: 'outcome',
-        header: 'Outcome',
+        header: 'Why it matters',
         enableSorting: false,
         cell: ({ getValue }) => (
-          <p className="max-w-[360px] text-[12.5px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.58)' }}>
+          <p className="max-w-[420px] text-[12.5px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.58)' }}>
             {getValue<string>()}
-          </p>
-        ),
-      },
-      {
-        id: 'stack',
-        header: 'Stack',
-        enableSorting: false,
-        cell: ({ row }) => (
-          <p className="max-w-[220px] text-[11.5px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.38)' }}>
-            {row.original.stack.slice(0, 4).join(', ')}
           </p>
         ),
       },
@@ -85,7 +85,7 @@ export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
               className="inline-flex items-center gap-1 text-[12px] font-semibold"
               style={{ color: '#c7d9ff' }}
             >
-              Link
+              {row.original.proofLabel ?? 'Link'}
               <ArrowUpRight size={12} aria-hidden="true" />
             </a>
           ) : (
@@ -97,7 +97,7 @@ export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
     ],
     []
   );
-  // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table intentionally powers this isolated proof matrix.
+  // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table intentionally powers this isolated recruiter scan.
   const table = useReactTable({
     data: rows,
     columns,
@@ -110,7 +110,7 @@ export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
   return (
     <div className="simple-proof-table overflow-hidden rounded-xl border">
       <div className="hidden overflow-x-auto md:block">
-        <table className="w-full min-w-[880px] border-collapse text-left">
+        <table className="w-full min-w-[720px] border-collapse text-left">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -142,11 +142,15 @@ export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="simple-proof-row">
+              <tr
+                key={row.id}
+                className="simple-proof-row"
+                data-lens-match={rowMatchesLens(row.original, lens) ? 'true' : 'false'}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="border-b px-4 py-3 align-top last:border-b"
+                    className="border-b px-4 py-3.5 align-top last:border-b"
                     style={{ borderColor: 'rgba(255,255,255,0.045)' }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -160,7 +164,12 @@ export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
 
       <div className="grid gap-0 md:hidden">
         {rows.map((row) => (
-          <article key={row.id} className="border-b px-4 py-4 last:border-b-0" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <article
+            key={row.id}
+            className="simple-proof-row border-b px-4 py-4 last:border-b-0"
+            data-lens-match={rowMatchesLens(row, lens) ? 'true' : 'false'}
+            style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+          >
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="text-[14px] font-semibold" style={{ color: 'rgba(255,255,255,0.88)' }}>
@@ -178,7 +187,7 @@ export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
                   className="inline-flex shrink-0 items-center gap-1 text-[12px] font-semibold"
                   style={{ color: '#c7d9ff' }}
                 >
-                  Proof
+                  {row.proofLabel ?? 'Proof'}
                   <ArrowUpRight size={12} aria-hidden="true" />
                 </a>
               ) : null}
@@ -187,7 +196,7 @@ export default function SimpleProofMatrix({ rows }: SimpleProofMatrixProps) {
               {row.outcome}
             </p>
             <p className="mt-2 text-[11.5px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.36)' }}>
-              {row.stack.slice(0, 5).join(', ')}
+              {row.proof}
             </p>
           </article>
         ))}

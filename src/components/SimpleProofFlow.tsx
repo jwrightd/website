@@ -3,7 +3,7 @@
 import { ArrowUpRight } from 'lucide-react';
 import { animate, motion, useInView, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ProofGroup, Stat } from '@/data/highlights';
+import type { AudienceLens, ProofGroup, Stat } from '@/data/highlights';
 
 interface ProofProject {
   id: string;
@@ -17,6 +17,7 @@ interface SimpleProofFlowProps {
   groups: ProofGroup[];
   stats: Stat[];
   projects: ProofProject[];
+  lens?: AudienceLens;
 }
 
 function formatStat(value: number, stat: Stat) {
@@ -56,11 +57,15 @@ function AnimatedStat({ stat }: { stat?: Stat }) {
   );
 }
 
-export default function SimpleProofFlow({ groups, stats, projects }: SimpleProofFlowProps) {
+export default function SimpleProofFlow({ groups, stats, projects, lens = 'systems' }: SimpleProofFlowProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const prefersReducedMotion = useReducedMotion();
   const statsById = useMemo(() => new Map(stats.map((stat) => [stat.id, stat])), [stats]);
+  const orderedGroups = useMemo(
+    () => [...groups].sort((a, b) => (a.id === lens ? -1 : b.id === lens ? 1 : 0)),
+    [groups, lens]
+  );
   const visibleProjects = projects.slice(0, 5);
 
   const shouldAnimate = inView && !prefersReducedMotion;
@@ -102,7 +107,7 @@ export default function SimpleProofFlow({ groups, stats, projects }: SimpleProof
               Signal map
             </h2>
             <p className="mt-1 max-w-[620px] text-[13.5px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.52)' }}>
-              The same work is framed two ways: shipped systems for software teams, math/research signal for quant and ML roles.
+              The same work is framed two ways: shipped systems for SWE teams, math and ML signal for quant roles.
             </p>
           </div>
           <a
@@ -120,51 +125,55 @@ export default function SimpleProofFlow({ groups, stats, projects }: SimpleProof
         </div>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {groups.map((group, groupIndex) => (
-            <motion.div
-              key={group.id}
-              className="rounded-lg border px-4 py-4"
-              style={{
-                borderColor: 'rgba(255,255,255,0.08)',
-                background: group.id === 'systems' ? 'rgba(79,142,247,0.055)' : 'rgba(167,139,250,0.045)',
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-              transition={{ delay: groupIndex * 0.08, duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h3 className="text-[13px] font-semibold" style={{ color: 'rgba(255,255,255,0.82)' }}>
-                {group.label}
-              </h3>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {group.points.map((point, pointIndex) => {
-                  const stat = point.statId ? statsById.get(point.statId) : undefined;
-                  return (
-                    <motion.div
-                      key={point.id}
-                      className="simple-proof-node rounded-md border px-3 py-3"
-                      style={{
-                        borderColor: 'rgba(255,255,255,0.07)',
-                        background: 'rgba(8,10,14,0.32)',
-                      }}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 + pointIndex * 0.05, duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <p className="text-[18px] font-semibold leading-none" style={{ color: 'rgba(255,255,255,0.92)' }}>
-                        {stat ? <AnimatedStat stat={stat} /> : point.label}
-                      </p>
-                      <p className="mt-2 text-[12.5px] font-medium leading-[1.45]" style={{ color: 'rgba(255,255,255,0.64)' }}>
-                        {point.label}
-                      </p>
-                      <p className="mt-1 text-[12px] leading-[1.5]" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                        {point.detail}
-                      </p>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.div>
-          ))}
+          {orderedGroups.map((group, groupIndex) => {
+            const active = group.id === lens;
+            return (
+              <motion.div
+                key={group.id}
+                className="rounded-lg border px-4 py-4"
+                data-lens-match={active ? 'true' : 'false'}
+                style={{
+                  borderColor: active ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.065)',
+                  background: group.id === 'systems' ? 'rgba(79,142,247,0.055)' : 'rgba(167,139,250,0.045)',
+                }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+                transition={{ delay: groupIndex * 0.08, duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <h3 className="text-[13px] font-semibold" style={{ color: 'rgba(255,255,255,0.82)' }}>
+                  {group.label}
+                </h3>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {group.points.map((point, pointIndex) => {
+                    const stat = point.statId ? statsById.get(point.statId) : undefined;
+                    return (
+                      <motion.div
+                        key={point.id}
+                        className="simple-proof-node rounded-md border px-3 py-3"
+                        style={{
+                          borderColor: 'rgba(255,255,255,0.07)',
+                          background: 'rgba(8,10,14,0.32)',
+                        }}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 + pointIndex * 0.05, duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        <p className="text-[18px] font-semibold leading-none" style={{ color: 'rgba(255,255,255,0.92)' }}>
+                          {stat ? <AnimatedStat stat={stat} /> : point.label}
+                        </p>
+                        <p className="mt-2 text-[12.5px] font-medium leading-[1.45]" style={{ color: 'rgba(255,255,255,0.64)' }}>
+                          {point.label}
+                        </p>
+                        <p className="mt-1 text-[12px] leading-[1.5]" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                          {point.detail}
+                        </p>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2 border-t pt-4" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>

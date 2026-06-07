@@ -42,10 +42,22 @@ export interface ProjectLink {
   kind: 'github' | 'demo' | 'devpost' | 'writeup' | 'paper' | 'live';
 }
 
+export type ProjectBadge =
+  | 'Winner'
+  | 'Published'
+  | 'Research'
+  | 'Data Pipeline'
+  | 'Computer Vision'
+  | 'Chess Engine'
+  | 'Sustainability'
+  | 'Systems';
+
 export interface ProjectMedia {
   src: string;
   alt: string;
   caption?: string;
+  type?: 'image' | 'video';
+  poster?: string;
 }
 
 export interface Project {
@@ -56,6 +68,8 @@ export interface Project {
   outcome: string;
   proof: string;
   proofTone: 'winner' | 'published' | 'research' | 'systems' | 'vision' | 'engine' | 'sustainability';
+  badges?: ProjectBadge[];
+  featured?: boolean;
   summary: string;
   overview: string;
   problem: string;

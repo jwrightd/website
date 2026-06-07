@@ -1,6 +1,26 @@
 import type { AppId } from '@/types';
 
-export type StatAudience = 'faang' | 'quant' | 'both';
+export type StatAudience = 'swe' | 'quant' | 'both';
+export type AudienceLens = 'systems' | 'quant';
+
+export interface AudienceLensOption {
+  id: AudienceLens;
+  label: string;
+  description: string;
+}
+
+export const LENS_OPTIONS: AudienceLensOption[] = [
+  {
+    id: 'systems',
+    label: 'SWE / Systems',
+    description: 'Scale, shipped systems, demos, GitHub proof',
+  },
+  {
+    id: 'quant',
+    label: 'Quant / ML',
+    description: 'Math, ML research, chess, data pipelines',
+  },
+];
 
 export interface Stat {
   id: string;
@@ -39,7 +59,7 @@ export const STATS: Stat[] = [
     suffix: 'M+',
     display: '15M+',
     label: 'Row patient-data search pipeline',
-    audience: 'faang',
+    audience: 'swe',
   },
   {
     id: 'universities',
@@ -47,7 +67,7 @@ export const STATS: Stat[] = [
     suffix: '+',
     display: '70+',
     label: 'Universities on the STINGAR platform',
-    audience: 'faang',
+    audience: 'swe',
   },
   {
     id: 'hackathons',
@@ -63,7 +83,7 @@ export const STATS: Stat[] = [
     suffix: '%+',
     display: '90%+',
     label: 'Real-time chess move-detection accuracy',
-    audience: 'faang',
+    audience: 'swe',
   },
   {
     id: 'elo',
@@ -126,7 +146,7 @@ export const RECRUITER_PATH = 'Start with Resume \u2192 Projects \u2192 Contact'
 export const PROOF_GROUPS: ProofGroup[] = [
   {
     id: 'systems',
-    label: 'FAANG / systems',
+    label: 'SWE / systems',
     points: [
       { id: 'universities', statId: 'universities', label: '70+ universities', detail: 'STINGAR cyberdefense platform reach' },
       { id: 'pipeline', statId: 'pipeline', label: '15M+ row pipeline', detail: 'patient-data search and case discovery' },
@@ -140,7 +160,7 @@ export const PROOF_GROUPS: ProofGroup[] = [
     points: [
       { id: 'gpa', statId: 'gpa', label: '4.0 GPA', detail: 'Mathematics + Computer Science at Duke' },
       { id: 'biorxiv', statId: 'biorxiv', label: 'bioRxiv co-author', detail: 'MINGL spatial proteomics package' },
-      { id: 'research', label: 'Neural CDE + GMMs', detail: 'longitudinal forecasting and probabilistic classification' },
+      { id: 'research', label: 'Neural CDE forecasting', detail: 'irregular longitudinal Alzheimer’s data' },
       { id: 'chess', statId: 'lichess', label: 'CM / Top-100 Lichess', detail: 'competitive chess signal and calculation depth' },
     ],
   },

@@ -1,11 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import { ExternalLink, FolderOpen, GitBranch, Link2 } from 'lucide-react';
 import { PROJECTS } from '@/data/projects';
 import { getProjectProofTone } from '@/lib/badges';
 import type { Project, ProjectLink } from '@/types';
 import { BodyText, BulletList, LeadText, MetaGrid, MetaTile, SectionBlock, TagList } from './shared/AppContent';
+import ProjectVisualFrame from './ProjectVisualFrame';
 
 interface ProjectsAppProps {
   selectedId: string;
@@ -180,24 +180,7 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
             </div>
           </div>
           {preview && !isMobile ? (
-            <figure
-              className="overflow-hidden rounded-xl border"
-              style={{
-                borderColor: 'rgba(255,255,255,0.08)',
-                background: 'rgba(255,255,255,0.025)',
-              }}
-            >
-              <div className="relative aspect-[16/10]">
-                <Image
-                  src={preview.src}
-                  alt={preview.alt}
-                  fill
-                  sizes="240px"
-                  className="object-cover opacity-[0.85]"
-                />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.22))' }} />
-              </div>
-            </figure>
+            <ProjectVisualFrame media={preview} sizes="240px" aspectClass="aspect-[16/10]" fit="cover" priority />
           ) : null}
         </div>
 
@@ -241,40 +224,13 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
           <SectionBlock title="Images">
             <div className="grid gap-2">
               {project.media.map((item) => (
-                <figure
+                <ProjectVisualFrame
                   key={`${project.id}-${item.alt}`}
-                  className="overflow-hidden rounded-lg border"
-                  style={{
-                    borderColor: 'rgba(255,255,255,0.08)',
-                    background: 'rgba(255,255,255,0.03)',
-                  }}
-                >
-                  <div
-                    className="relative aspect-[16/9] w-full overflow-hidden border-b"
-                    style={{
-                      borderColor: 'rgba(255,255,255,0.08)',
-                      background: 'rgba(8,11,20,0.92)',
-                    }}
-                  >
-                    <Image
-                      src={item.src}
-                      alt={item.alt}
-                      fill
-                      sizes={isMobile ? '100vw' : '(max-width: 1280px) 100vw, 720px'}
-                      className="object-contain"
-                    />
-                  </div>
-                  <figcaption className="px-3 py-3">
-                    <p className="text-[12.5px]" style={{ color: 'var(--os-text)' }}>
-                      {item.alt}
-                    </p>
-                    {item.caption && (
-                      <p className="mt-1 text-[12px] leading-[1.65]" style={{ color: 'var(--os-text-3)' }}>
-                        {item.caption}
-                      </p>
-                    )}
-                  </figcaption>
-                </figure>
+                  media={item}
+                  sizes={isMobile ? '100vw' : '(max-width: 1280px) 100vw, 720px'}
+                  fit="contain"
+                  showCaption
+                />
               ))}
             </div>
           </SectionBlock>

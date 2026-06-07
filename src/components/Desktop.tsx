@@ -7,6 +7,7 @@ import { APPS } from '@/data/apps';
 import { POSITIONING, STATS } from '@/data/highlights';
 import { PROFILE } from '@/data/profile';
 import { PROJECTS } from '@/data/projects';
+import { emitConstellationEvent } from '@/lib/constellation-events';
 import { useWindowManager } from '@/hooks/useWindowManager';
 import { setSimpleView } from '@/lib/view-mode';
 import type { AppId } from '@/types';
@@ -152,6 +153,7 @@ export default function Desktop() {
   }, []);
 
   const openWorkspaceWithNotice = useCallback(() => {
+    emitConstellationEvent({ kind: 'workspace', intensity: 1 });
     openWorkspace();
     toast('Workspace opened', {
       description: 'Resume, projects, and contact are arranged for scanning.',
@@ -159,6 +161,7 @@ export default function Desktop() {
   }, [openWorkspace]);
 
   const arrangeWindowsWithNotice = useCallback(() => {
+    emitConstellationEvent({ kind: 'arrange', intensity: 0.92 });
     arrangeWindows();
     toast('Windows arranged', {
       description: 'Open windows were placed into a clean layout.',
@@ -167,6 +170,7 @@ export default function Desktop() {
 
   const openRecruiterFastPath = useCallback(() => {
     dismissRecruiterPrompt();
+    emitConstellationEvent({ kind: 'recruiter', intensity: 1 });
     activateRecruiterMode();
     toast('Recruiter Mode activated', {
       description: 'Resume, projects, and contact are ready.',
@@ -176,12 +180,13 @@ export default function Desktop() {
   const anyWindowOpen = Object.values(windows).some((windowState) => windowState.isOpen);
   const heroVisible = !heroDismissed && !anyWindowOpen;
 
-  const openProject = (projectId: string) => {
-    setSelectedProjectId(projectId);
-    openApp('projects');
-  };
+  const focusDesktopApp = useCallback((id: AppId) => {
+    emitConstellationEvent({ kind: 'open', intensity: 0.46 });
+    focusApp(id);
+  }, [focusApp]);
 
-  const activateDesktopApp = (id: AppId) => {
+  const activateDesktopApp = useCallback((id: AppId) => {
+    emitConstellationEvent({ kind: 'open', intensity: 0.58 });
     const windowState = windows[id];
     if (windowState?.isOpen) {
       focusApp(id);
@@ -189,6 +194,15 @@ export default function Desktop() {
     }
 
     openApp(id);
+  }, [focusApp, openApp, windows]);
+
+  const previewDesktopApp = useCallback(() => {
+    emitConstellationEvent({ kind: 'hover', intensity: 0.9 });
+  }, []);
+
+  const openProject = (projectId: string) => {
+    setSelectedProjectId(projectId);
+    activateDesktopApp('projects');
   };
 
   const openExternal = (href: string) => {
@@ -224,7 +238,7 @@ export default function Desktop() {
       group: 'Apps' as const,
       iconName: app.iconName,
       keywords: [app.id, app.label, 'window', 'app'],
-      onSelect: () => openApp(app.id),
+      onSelect: () => activateDesktopApp(app.id),
     })),
     ...PROJECTS.map((project) => ({
       id: `project-${project.id}`,
@@ -251,7 +265,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'User',
       keywords: ['bio', 'overview', 'introduction'],
-      onSelect: () => openApp('about'),
+      onSelect: () => activateDesktopApp('about'),
     },
     {
       id: 'action-open-resume',
@@ -261,7 +275,7 @@ export default function Desktop() {
       iconName: 'FileText',
       keywords: ['cv', 'pdf'],
       onSelect: () => {
-        openApp('resume');
+        activateDesktopApp('resume');
         toast('Resume opened', {
           description: 'Resume window focused in JamesOS.',
         });
@@ -274,7 +288,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'FolderOpen',
       keywords: ['portfolio', 'work'],
-      onSelect: () => openApp('projects'),
+      onSelect: () => activateDesktopApp('projects'),
     },
     {
       id: 'action-open-research',
@@ -283,7 +297,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'FlaskConical',
       keywords: ['papers', 'lab'],
-      onSelect: () => openApp('research'),
+      onSelect: () => activateDesktopApp('research'),
     },
     {
       id: 'action-open-experience',
@@ -292,7 +306,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'Monitor',
       keywords: ['roles', 'work history'],
-      onSelect: () => openApp('experience'),
+      onSelect: () => activateDesktopApp('experience'),
     },
     {
       id: 'action-open-contact',
@@ -301,7 +315,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'Mail',
       keywords: ['email', 'reach out'],
-      onSelect: () => openApp('contact'),
+      onSelect: () => activateDesktopApp('contact'),
     },
     {
       id: 'action-open-interests',
@@ -310,7 +324,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'Trophy',
       keywords: ['chess', 'wrestling', 'personal'],
-      onSelect: () => openApp('interests'),
+      onSelect: () => activateDesktopApp('interests'),
     },
     {
       id: 'action-open-sysinfo',
@@ -319,7 +333,7 @@ export default function Desktop() {
       group: 'Actions' as const,
       iconName: 'Cpu',
       keywords: ['status', 'stack', 'skills'],
-      onSelect: () => openApp('sysinfo'),
+      onSelect: () => activateDesktopApp('sysinfo'),
     },
     {
       id: 'action-download-resume',
@@ -432,6 +446,7 @@ export default function Desktop() {
           {heroVisible ? (
             <DesktopHero
               onOpenApp={activateDesktopApp}
+              onOpenWorkspace={openWorkspaceWithNotice}
               onRecruiterMode={openRecruiterFastPath}
               onSimpleView={enterSimpleView}
               onDismiss={() => setHeroDismissed(true)}
@@ -486,8 +501,8 @@ export default function Desktop() {
 
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.86 }}
-          transition={{ delay: 0.9, duration: 0.35 }}
+          animate={{ opacity: heroVisible ? 0.62 : 0.86 }}
+          transition={{ delay: heroVisible ? 1.18 : 0.12, duration: 0.35 }}
           className="absolute top-12 right-5 z-[600] flex flex-col gap-0 pt-2.5 pb-20"
         >
           {APPS.map((app) => (
@@ -500,14 +515,15 @@ export default function Desktop() {
               isFocused={focusedId === app.id}
               isSelected={selectedDesktopIds.includes(app.id)}
               onActivate={() => activateDesktopApp(app.id)}
+              onPreview={previewDesktopApp}
             />
           ))}
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 0.74, y: 0 }}
-          transition={{ delay: 1.15, duration: 0.3 }}
+          animate={{ opacity: heroVisible ? 0.54 : 0.74, y: 0 }}
+          transition={{ delay: heroVisible ? 1.34 : 0.15, duration: 0.3 }}
           className="absolute bottom-20 left-7"
         >
           <WorkspaceStatus
@@ -540,7 +556,7 @@ export default function Desktop() {
                 >
                   <AppContent
                     id={app.id}
-                    onOpen={openApp}
+                    onOpen={activateDesktopApp}
                     onOpenWorkspace={openWorkspaceWithNotice}
                     selectedProjectId={selectedProjectId}
                     onSelectProject={setSelectedProjectId}
@@ -551,7 +567,7 @@ export default function Desktop() {
           </AnimatePresence>
         </div>
 
-        <Dock windows={windows} onOpen={openApp} onFocus={focusApp} />
+        <Dock windows={windows} onOpen={activateDesktopApp} onFocus={focusDesktopApp} onPreview={() => previewDesktopApp()} />
         <QuickLauncher open={launcherOpen} onOpenChange={setLauncherOpen} items={quickLauncherItems} />
         <Toaster
           position="top-right"

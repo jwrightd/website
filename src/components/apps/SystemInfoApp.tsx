@@ -26,8 +26,23 @@ const SYSTEM_INFO = [
 const SYSTEM_CHECK_LINES = [
   'boot: JamesOS shell ready',
   'index: resume, projects, research, contact',
-  'signal: FAANG systems + Quant/ML proof loaded',
+  'signal: SWE systems + Quant/ML proof loaded',
   'access: Cmd/Ctrl+K, Simple View, Recruiter Mode',
+] as const;
+
+const TECHNICAL_NOTES = [
+  {
+    label: 'Rendering',
+    value: 'Server-rendered recruiter brief with an interactive OS shell layered on top.',
+  },
+  {
+    label: 'Motion',
+    value: 'Constellation, boot, and proof animations respect reduced-motion and fall back silently.',
+  },
+  {
+    label: 'Access',
+    value: 'Resume, projects, contact, launcher, Simple View, and OS controls remain keyboard reachable.',
+  },
 ] as const;
 
 export default function SystemInfoApp() {
@@ -117,6 +132,27 @@ function SystemSection() {
       <SurfacePanel>
         <KeyValueRows rows={SYSTEM_INFO} />
       </SurfacePanel>
+      <SectionBlock title="Engineering Notes">
+        <div className="grid gap-2">
+          {TECHNICAL_NOTES.map((note) => (
+            <div
+              key={note.label}
+              className="rounded-lg border px-3 py-3"
+              style={{
+                borderColor: 'rgba(255,255,255,0.07)',
+                background: 'rgba(255,255,255,0.025)',
+              }}
+            >
+              <p className="text-[11.5px] font-semibold uppercase tracking-[0.12em]" style={{ color: '#c7d9ff' }}>
+                {note.label}
+              </p>
+              <p className="mt-1 text-[12.5px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                {note.value}
+              </p>
+            </div>
+          ))}
+        </div>
+      </SectionBlock>
       <TerminalCheck />
     </div>
   );

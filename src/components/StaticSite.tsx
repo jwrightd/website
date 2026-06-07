@@ -1,46 +1,40 @@
 import { ArrowUpRight, Briefcase, FileText, GitBranch, Mail, MapPin } from 'lucide-react';
-import Image from 'next/image';
 
 import { ACHIEVEMENTS } from '@/data/achievements';
 import { EDUCATION } from '@/data/education';
 import { EXPERIENCE } from '@/data/experience';
-import { HERO_CTAS, POSITIONING, PROOF_GROUPS, STATS, TAGLINE } from '@/data/highlights';
+import { HERO_CTAS, POSITIONING, STATS, TAGLINE } from '@/data/highlights';
 import { PROFILE } from '@/data/profile';
 import { PROJECTS } from '@/data/projects';
 import { RESEARCH } from '@/data/research';
 import { SKILLS } from '@/data/skills';
-import { getProjectProofTone, getStatusTone } from '@/lib/badges';
-import type { Project } from '@/types';
+import { getStatusTone } from '@/lib/badges';
 
+import EditorialSectionLabel from './EditorialSectionLabel';
+import SimpleAmbientGrainLayer from './SimpleAmbientGrainLayer';
+import SimpleProjectShowcase from './SimpleProjectShowcase';
 import { EnterJamesOSButton } from './StaticSiteControls';
-import SimpleProofMatrix, { type ProofMatrixRow } from './SimpleProofMatrix';
-import SimpleProofFlow from './SimpleProofFlow';
+import SimpleRecruiterBrief from './SimpleRecruiterBrief';
+import SimpleSectionReveal from './SimpleSectionReveal';
 
 const cardStyle = {
   borderColor: 'rgba(255,255,255,0.08)',
   background: 'rgba(255,255,255,0.025)',
 } as const;
 
-const SIGNAL_LABELS = {
-  winner: 'Product / Systems',
-  published: 'Research / ML',
-  research: 'Quant / ML',
-  systems: 'Systems',
-  vision: 'Computer Vision',
-  sustainability: 'Product / Sustainability',
-  engine: 'Quant / Search',
-} as const;
-
-function SectionHeading({ id, kicker, title }: { id: string; kicker: string; title: string }) {
+function SectionHeading({
+  id,
+  index,
+  label,
+  title,
+}: {
+  id: string;
+  index: string;
+  label: string;
+  title: string;
+}) {
   return (
-    <div className="mb-6">
-      <p className="text-[11px] font-medium uppercase tracking-[0.22em]" style={{ color: 'rgba(255,255,255,0.3)' }}>
-        {kicker}
-      </p>
-      <h2 id={id} className="mt-2 text-[22px] font-semibold tracking-[-0.01em]" style={{ color: 'rgba(255,255,255,0.9)' }}>
-        {title}
-      </h2>
-    </div>
+    <EditorialSectionLabel id={id} index={index} label={label} title={title} />
   );
 }
 
@@ -55,94 +49,13 @@ function Tag({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ProjectProofCard({ project }: { project: Project }) {
-  const tone = getProjectProofTone(project.proofTone);
-  const preview = project.media?.[0];
-
-  return (
-    <article className="project-proof-card flex flex-col overflow-hidden rounded-xl border" style={cardStyle}>
-      {preview ? (
-        <div className="relative aspect-[16/9] border-b" style={{ borderColor: 'rgba(255,255,255,0.07)', background: 'rgba(8,10,14,0.72)' }}>
-          <Image
-            src={preview.src}
-            alt={preview.alt}
-            fill
-            sizes="(max-width: 768px) 100vw, 520px"
-            className="object-cover opacity-[0.82]"
-          />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.28))' }} />
-        </div>
-      ) : null}
-      <div className="flex flex-1 flex-col px-5 py-5">
-        <div className="flex flex-wrap items-center gap-2">
-          <span
-            className="rounded-md border px-2 py-1 text-[11px] font-semibold"
-            style={{ color: tone.fg, background: tone.bg, borderColor: tone.border }}
-          >
-            {project.proof}
-          </span>
-          <span className="text-[11.5px]" style={{ color: 'rgba(255,255,255,0.36)' }}>
-            {project.category}
-          </span>
-        </div>
-        <h3 className="mt-3 text-[17px] font-semibold" style={{ color: 'rgba(255,255,255,0.93)' }}>
-          {project.name}
-        </h3>
-        <p className="mt-2 text-[13.5px] font-medium leading-[1.65]" style={{ color: 'rgba(255,255,255,0.7)' }}>
-          {project.outcome}
-        </p>
-        <p className="mt-2 flex-1 text-[13px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.48)' }}>
-          {project.summary}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {project.techStack.slice(0, 5).map((tech) => (
-            <Tag key={tech}>{tech}</Tag>
-          ))}
-        </div>
-        {project.links.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-3 border-t pt-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-            {project.links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[12.5px] font-semibold"
-                style={{ color: '#c7d9ff' }}
-              >
-                {link.label}
-                <ArrowUpRight size={13} aria-hidden="true" />
-              </a>
-            ))}
-          </div>
-        ) : null}
-      </div>
-    </article>
-  );
-}
-
 export default function StaticSite() {
   const languages = SKILLS.find((group) => group.category === 'Languages');
   const tools = SKILLS.find((group) => group.category === 'Libraries & Tools');
-  const proofProjects = PROJECTS.map((project) => ({
-    id: project.id,
-    name: project.name,
-    proof: project.proof,
-    outcome: project.outcome,
-    href: project.links[0]?.href,
-  }));
-  const proofRows: ProofMatrixRow[] = PROJECTS.map((project) => ({
-    id: project.id,
-    name: project.name,
-    signal: SIGNAL_LABELS[project.proofTone],
-    outcome: project.outcome,
-    stack: project.techStack,
-    proof: project.proof,
-    href: project.links[0]?.href,
-  }));
 
   return (
     <div id="simple-site" style={{ background: 'var(--os-bg)', color: 'var(--os-text)' }}>
+      <SimpleAmbientGrainLayer />
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -165,6 +78,20 @@ export default function StaticSite() {
               style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
             >
               Resume
+            </a>
+            <a
+              href="#projects"
+              className="rounded-md border px-3 py-1.5 text-[12.5px]"
+              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
+            >
+              Projects
+            </a>
+            <a
+              href="#contact"
+              className="rounded-md border px-3 py-1.5 text-[12.5px]"
+              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
+            >
+              Contact
             </a>
             <EnterJamesOSButton className="rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors">
               <span style={{ color: '#bcd4ff' }}>Enter JamesOS →</span>
@@ -237,256 +164,276 @@ export default function StaticSite() {
           </div>
         </section>
 
-        {/* Dual-audience framing */}
-        <section className="py-8" aria-label="What I bring">
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="rounded-xl border px-5 py-5" style={cardStyle}>
-              <h3 className="text-[14px] font-semibold" style={{ color: 'rgba(255,255,255,0.86)' }}>
-                For software teams
-              </h3>
-              <p className="mt-2 text-[13.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.56)' }}>
-                Ships end-to-end systems — real-time voice products, data pipelines over 15M+ rows, and cyberdefense
-                tooling used across 70+ universities. Breadth across Python, C++, Java, C, and TypeScript with live demos
-                and public repos to back it up.
-              </p>
-            </div>
-            <div className="rounded-xl border px-5 py-5" style={cardStyle}>
-              <h3 className="text-[14px] font-semibold" style={{ color: 'rgba(255,255,255,0.86)' }}>
-                For quantitative teams
-              </h3>
-              <p className="mt-2 text-[13.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.56)' }}>
-                Mathematics + CS major with a 4.0 GPA, published ML research (Gaussian Mixture Models, Neural CDEs,
-                RoBERTa/VADER), and a competitive edge — USCF Candidate Master, Top-100 Lichess rapid, and Virginia
-                College State Champion. Measurable outcomes over hand-waving.
-              </p>
-            </div>
-          </div>
-        </section>
+        <SimpleSectionReveal>
+          <section className="py-8" aria-labelledby="signal-h">
+            <SectionHeading id="signal-h" index="01" label="Signal" title="Reading lens" />
+            <SimpleRecruiterBrief />
+          </section>
+        </SimpleSectionReveal>
 
-        <section className="py-8" aria-label="Recruiter signal map">
-          <SimpleProofFlow groups={PROOF_GROUPS} stats={STATS} projects={proofProjects} />
-        </section>
-
-        <section className="py-8" aria-labelledby="proof-matrix-h">
-          <SectionHeading id="proof-matrix-h" kicker="Proof" title="Proof matrix" />
-          <SimpleProofMatrix rows={proofRows} />
-        </section>
+        <SimpleSectionReveal>
+          <section id="resume" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="resume-h">
+            <SectionHeading id="resume-h" index="02" label="Resume" title="Resume access" />
+            <div className="rounded-xl border px-5 py-5" style={cardStyle}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-[16px] font-semibold" style={{ color: 'rgba(255,255,255,0.9)' }}>
+                    James Wright resume
+                  </h3>
+                  <p className="mt-1 text-[13px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.52)' }}>
+                    PDF ready for recruiter review · Last updated {PROFILE.lastUpdated}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href={PROFILE.resumeHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-[13px] font-medium"
+                    style={{ background: 'var(--os-accent)', borderColor: 'var(--os-accent)', color: '#08101f' }}
+                  >
+                    <FileText size={14} aria-hidden="true" />
+                    View PDF
+                  </a>
+                  <a
+                    href={`mailto:${PROFILE.email}`}
+                    className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-[13px]"
+                    style={{ ...cardStyle, color: 'rgba(255,255,255,0.8)' }}
+                  >
+                    <Mail size={14} aria-hidden="true" />
+                    Email
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </SimpleSectionReveal>
 
         {/* About */}
-        <section id="about" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="about-h">
-          <SectionHeading id="about-h" kicker="About" title="Overview" />
-          <p className="max-w-[820px] text-[15px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.72)' }}>
-            {PROFILE.aboutSummary}
-          </p>
-          <p className="mt-3 max-w-[820px] text-[14px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.54)' }}>
-            {PROFILE.aboutSecondary}
-          </p>
-        </section>
+        <SimpleSectionReveal>
+          <section id="about" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="about-h">
+            <SectionHeading id="about-h" index="03" label="About" title="Overview" />
+            <p className="max-w-[820px] text-[15px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.72)' }}>
+              {PROFILE.aboutSummary}
+            </p>
+            <p className="mt-3 max-w-[820px] text-[14px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.54)' }}>
+              {PROFILE.aboutSecondary}
+            </p>
+          </section>
+        </SimpleSectionReveal>
 
         {/* Experience */}
-        <section id="experience" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="experience-h">
-          <SectionHeading id="experience-h" kicker="Experience" title="Where I've worked" />
-          <div className="flex flex-col gap-4">
-            {EXPERIENCE.map((role) => (
-              <article key={role.pid} className="rounded-xl border px-5 py-5" style={cardStyle}>
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 className="text-[16px] font-semibold" style={{ color: 'rgba(255,255,255,0.9)' }}>
-                    {role.role} · {role.organization}
-                  </h3>
-                  <span className="text-[12.5px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                    {role.period}
-                  </span>
-                </div>
-                <p className="mt-2 text-[13.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                  {role.focus}
-                </p>
-                {role.highlights && role.highlights.length > 0 ? (
-                  <ul className="mt-3 flex flex-col gap-1.5">
-                    {role.highlights.map((highlight) => (
-                      <li key={highlight} className="flex items-start gap-2 text-[13px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.52)' }}>
-                        <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: 'var(--os-accent)' }} />
-                        {highlight}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* Projects */}
-        <section id="projects" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="projects-h">
-          <SectionHeading id="projects-h" kicker="Projects" title="Selected work" />
-          <div className="grid gap-4 md:grid-cols-2">
-            {PROJECTS.map((project) => (
-              <ProjectProofCard key={project.id} project={project} />
-            ))}
-          </div>
-        </section>
-
-        {/* Research */}
-        <section id="research" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="research-h">
-          <SectionHeading id="research-h" kicker="Research" title="Open questions I'm working on" />
-          <div className="grid gap-4 md:grid-cols-2">
-            {RESEARCH.map((item) => {
-              const tone = getStatusTone(item.status);
-              return (
-                <article key={item.id} className="rounded-xl border px-5 py-5" style={cardStyle}>
-                  <span
-                    className="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em]"
-                    style={{ color: tone.fg, background: tone.bg, borderColor: tone.border }}
-                  >
-                    {item.status}
-                  </span>
-                  <h3 className="mt-3 text-[16px] font-semibold" style={{ color: 'rgba(255,255,255,0.9)' }}>
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-[13px] italic leading-[1.7]" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                    {item.question}
+        <SimpleSectionReveal>
+          <section id="experience" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="experience-h">
+            <SectionHeading id="experience-h" index="04" label="Experience" title="Where I've worked" />
+            <div className="flex flex-col gap-4">
+              {EXPERIENCE.map((role) => (
+                <article key={role.pid} className="rounded-xl border px-5 py-5" style={cardStyle}>
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <h3 className="text-[16px] font-semibold" style={{ color: 'rgba(255,255,255,0.9)' }}>
+                      {role.role} · {role.organization}
+                    </h3>
+                    <span className="text-[12.5px]" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                      {role.period}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-[13.5px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.58)' }}>
+                    {role.focus}
                   </p>
-                  <p className="mt-2 text-[13px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                    {item.impact}
-                  </p>
-                  {item.links && item.links.length > 0 ? (
-                    <div className="mt-3 flex flex-wrap gap-3">
-                      {item.links.map((link) => (
-                        <a
-                          key={link.href}
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-[12.5px] font-medium"
-                          style={{ color: '#bcd4ff' }}
-                        >
-                          {link.label}
-                          <ArrowUpRight size={13} aria-hidden="true" />
-                        </a>
+                  {role.highlights && role.highlights.length > 0 ? (
+                    <ul className="mt-3 flex flex-col gap-1.5">
+                      {role.highlights.map((highlight) => (
+                        <li key={highlight} className="flex items-start gap-2 text-[13px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.52)' }}>
+                          <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: 'var(--os-accent)' }} />
+                          {highlight}
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   ) : null}
                 </article>
-              );
-            })}
-          </div>
-        </section>
+              ))}
+            </div>
+          </section>
+        </SimpleSectionReveal>
+
+        {/* Projects */}
+        <SimpleSectionReveal>
+          <section id="projects" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="projects-h">
+            <SectionHeading id="projects-h" index="05" label="Projects" title="Selected work" />
+            <SimpleProjectShowcase projects={PROJECTS} />
+          </section>
+        </SimpleSectionReveal>
+
+        {/* Research */}
+        <SimpleSectionReveal>
+          <section id="research" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="research-h">
+            <SectionHeading id="research-h" index="06" label="Research" title="Open questions I'm working on" />
+            <div className="grid gap-4 md:grid-cols-2">
+              {RESEARCH.map((item) => {
+                const tone = getStatusTone(item.status);
+                return (
+                  <article key={item.id} className="rounded-xl border px-5 py-5" style={cardStyle}>
+                    <span
+                      className="rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em]"
+                      style={{ color: tone.fg, background: tone.bg, borderColor: tone.border }}
+                    >
+                      {item.status}
+                    </span>
+                    <h3 className="mt-3 text-[16px] font-semibold" style={{ color: 'rgba(255,255,255,0.9)' }}>
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-[13px] italic leading-[1.7]" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      {item.question}
+                    </p>
+                    <p className="mt-2 text-[13px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.58)' }}>
+                      {item.impact}
+                    </p>
+                    {item.links && item.links.length > 0 ? (
+                      <div className="mt-3 flex flex-wrap gap-3">
+                        {item.links.map((link) => (
+                          <a
+                            key={link.href}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[12.5px] font-medium"
+                            style={{ color: '#bcd4ff' }}
+                          >
+                            {link.label}
+                            <ArrowUpRight size={13} aria-hidden="true" />
+                          </a>
+                        ))}
+                      </div>
+                    ) : null}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        </SimpleSectionReveal>
 
         {/* Skills */}
-        <section id="skills" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="skills-h">
-          <SectionHeading id="skills-h" kicker="Skills" title="Tools of the trade" />
-          {languages ? (
-            <div className="mb-5">
-              <p className="mb-2 text-[12.5px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                Languages
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {languages.items.map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-md border px-2.5 py-1.5 text-[13px] font-medium"
-                    style={{ borderColor: 'rgba(79,142,247,0.28)', background: 'rgba(79,142,247,0.1)', color: '#cfe0ff' }}
-                  >
-                    {item}
-                  </span>
-                ))}
+        <SimpleSectionReveal>
+          <section id="skills" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="skills-h">
+            <SectionHeading id="skills-h" index="07" label="Skills" title="Tools of the trade" />
+            {languages ? (
+              <div className="mb-5">
+                <p className="mb-2 text-[12.5px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  Languages
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {languages.items.map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-md border px-2.5 py-1.5 text-[13px] font-medium"
+                      style={{ borderColor: 'rgba(79,142,247,0.28)', background: 'rgba(79,142,247,0.1)', color: '#cfe0ff' }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : null}
-          {tools ? (
-            <div>
-              <p className="mb-2 text-[12.5px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                Libraries &amp; Tools
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {tools.items.map((item) => (
-                  <Tag key={item}>{item}</Tag>
-                ))}
+            ) : null}
+            {tools ? (
+              <div>
+                <p className="mb-2 text-[12.5px] font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  Libraries &amp; Tools
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {tools.items.map((item) => (
+                    <Tag key={item}>{item}</Tag>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : null}
-        </section>
+            ) : null}
+          </section>
+        </SimpleSectionReveal>
 
         {/* Education + Achievements */}
-        <section className="grid gap-8 border-t py-10 md:grid-cols-2" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-          <div aria-labelledby="education-h">
-            <SectionHeading id="education-h" kicker="Education" title="Education" />
-            <div className="flex flex-col gap-3">
-              {EDUCATION.map((entry) => (
-                <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
-                  <h3 className="text-[15px] font-semibold" style={{ color: 'rgba(255,255,255,0.88)' }}>
-                    {entry.institution}
-                  </h3>
-                  <p className="mt-1 text-[13px]" style={{ color: 'rgba(255,255,255,0.58)' }}>
-                    {entry.program}
-                  </p>
-                  <p className="mt-1 text-[12px]" style={{ color: 'rgba(255,255,255,0.38)' }}>
-                    {entry.location} · {entry.period}
-                  </p>
-                </div>
-              ))}
+        <SimpleSectionReveal>
+          <section className="grid gap-8 border-t py-10 md:grid-cols-2" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+            <div aria-labelledby="education-h">
+              <SectionHeading id="education-h" index="08" label="Background" title="Education" />
+              <div className="flex flex-col gap-3">
+                {EDUCATION.map((entry) => (
+                  <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
+                    <h3 className="text-[15px] font-semibold" style={{ color: 'rgba(255,255,255,0.88)' }}>
+                      {entry.institution}
+                    </h3>
+                    <p className="mt-1 text-[13px]" style={{ color: 'rgba(255,255,255,0.58)' }}>
+                      {entry.program}
+                    </p>
+                    <p className="mt-1 text-[12px]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                      {entry.location} · {entry.period}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-          <div aria-labelledby="achievements-h">
-            <SectionHeading id="achievements-h" kicker="Recognition" title="Achievements" />
-            <div className="flex flex-col gap-3">
-              {ACHIEVEMENTS.map((entry) => (
-                <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
-                  <h3 className="text-[14px] font-semibold" style={{ color: 'rgba(255,255,255,0.86)' }}>
-                    {entry.label}
-                  </h3>
-                  <p className="mt-1 text-[13px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.56)' }}>
-                    {entry.detail}
-                  </p>
-                </div>
-              ))}
+            <div aria-labelledby="achievements-h">
+              <SectionHeading id="achievements-h" index="09" label="Recognition" title="Achievements" />
+              <div className="flex flex-col gap-3">
+                {ACHIEVEMENTS.map((entry) => (
+                  <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
+                    <h3 className="text-[14px] font-semibold" style={{ color: 'rgba(255,255,255,0.86)' }}>
+                      {entry.label}
+                    </h3>
+                    <p className="mt-1 text-[13px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.56)' }}>
+                      {entry.detail}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </SimpleSectionReveal>
 
         {/* Contact */}
-        <section id="contact" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="contact-h">
-          <SectionHeading id="contact-h" kicker="Contact" title="Get in touch" />
-          <div className="flex flex-wrap gap-3">
-            <a
-              href={`mailto:${PROFILE.email}`}
-              className="inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px] font-medium"
-              style={{ background: 'var(--os-accent)', borderColor: 'var(--os-accent)', color: '#08101f' }}
-            >
-              <Mail size={15} aria-hidden="true" />
-              {PROFILE.email}
-            </a>
-            <a
-              href={PROFILE.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px]"
-              style={{ ...cardStyle, color: 'rgba(255,255,255,0.8)' }}
-            >
-              <GitBranch size={15} aria-hidden="true" />
-              GitHub
-            </a>
-            <a
-              href={PROFILE.linkedinUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px]"
-              style={{ ...cardStyle, color: 'rgba(255,255,255,0.8)' }}
-            >
-              <Briefcase size={15} aria-hidden="true" />
-              LinkedIn
-            </a>
-            <a
-              href={PROFILE.resumeHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px]"
-              style={{ ...cardStyle, color: 'rgba(255,255,255,0.8)' }}
-            >
-              <FileText size={15} aria-hidden="true" />
-              Resume (PDF)
-            </a>
-          </div>
-        </section>
+        <SimpleSectionReveal>
+          <section id="contact" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="contact-h">
+            <SectionHeading id="contact-h" index="10" label="Contact" title="Get in touch" />
+            <div className="flex flex-wrap gap-3">
+              <a
+                href={`mailto:${PROFILE.email}`}
+                className="inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px] font-medium"
+                style={{ background: 'var(--os-accent)', borderColor: 'var(--os-accent)', color: '#08101f' }}
+              >
+                <Mail size={15} aria-hidden="true" />
+                {PROFILE.email}
+              </a>
+              <a
+                href={PROFILE.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px]"
+                style={{ ...cardStyle, color: 'rgba(255,255,255,0.8)' }}
+              >
+                <GitBranch size={15} aria-hidden="true" />
+                GitHub
+              </a>
+              <a
+                href={PROFILE.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px]"
+                style={{ ...cardStyle, color: 'rgba(255,255,255,0.8)' }}
+              >
+                <Briefcase size={15} aria-hidden="true" />
+                LinkedIn
+              </a>
+              <a
+                href={PROFILE.resumeHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-[13.5px]"
+                style={{ ...cardStyle, color: 'rgba(255,255,255,0.8)' }}
+              >
+                <FileText size={15} aria-hidden="true" />
+                Resume (PDF)
+              </a>
+            </div>
+          </section>
+        </SimpleSectionReveal>
       </main>
 
       <footer className="border-t py-8" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>

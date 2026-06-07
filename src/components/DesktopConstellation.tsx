@@ -13,6 +13,7 @@ import {
   ShaderMaterial,
   Vector2,
 } from 'three';
+import { CONSTELLATION_EVENT, type ConstellationEventDetail } from '@/lib/constellation-events';
 
 const PARTICLE_COUNT = 76;
 const POINTER_WORLD_X = 4.6;
@@ -75,6 +76,8 @@ function ConstellationField() {
   const pointsRef = useRef<Points>(null);
   const pointMaterialRef = useRef<ShaderMaterial>(null);
   const pointerRef = useRef({ x: 0, y: 0 });
+  const pulseRef = useRef(0);
+  const alignmentRef = useRef(0);
 
   const positions = useMemo(() => createPositions(), []);
   const threadPositions = useMemo(() => createThreadPositions(positions), [positions]);
@@ -92,6 +95,8 @@ function ConstellationField() {
     () => ({
       uTime: { value: 0 },
       uPointer: { value: new Vector2(0, 0) },
+      uPulse: { value: 0 },
+      uAlignment: { value: 0 },
     }),
     []
   );
@@ -99,18 +104,25 @@ function ConstellationField() {
     () => `
           uniform float uTime;
           uniform vec2 uPointer;
+          uniform float uPulse;
+          uniform float uAlignment;
           varying float vAlpha;
 
           void main() {
             vec3 p = position;
             float d = distance(p.xy, uPointer);
             float lift = smoothstep(2.2, 0.0, d);
-            p.z += lift * 0.42 + sin(uTime * 0.55 + position.x * 0.9 + position.y) * 0.035;
+            float center = smoothstep(4.2, 0.25, length(position.xy));
+            float wave = sin(uTime * 2.4 - length(position.xy) * 1.35);
+            p.z += lift * 0.42;
+            p.z += center * uPulse * (0.18 + wave * 0.08);
+            p.z += center * uAlignment * 0.12;
+            p.z += sin(uTime * 0.55 + position.x * 0.9 + position.y) * 0.035;
 
             vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
-            gl_PointSize = (2.0 + lift * 2.1) * (110.0 / -mvPosition.z);
+            gl_PointSize = (2.0 + lift * 2.1 + center * uPulse * 0.55 + center * uAlignment * 0.22) * (110.0 / -mvPosition.z);
             gl_Position = projectionMatrix * mvPosition;
-            vAlpha = 0.2 + lift * 0.38;
+            vAlpha = 0.2 + lift * 0.38 + center * uPulse * 0.16 + center * uAlignment * 0.1;
           }
         `,
     []
@@ -139,21 +151,66 @@ function ConstellationField() {
     return () => window.removeEventListener('pointermove', handlePointerMove);
   }, []);
 
+  useEffect(() => {
+    const handleConstellationEvent = (event: Event) => {
+      const detail = (event as CustomEvent<ConstellationEventDetail>).detail;
+      if (!detail) return;
+
+      const baseIntensity = detail.intensity ?? 0.3;
+      const pulseByKind: Record<ConstellationEventDetail['kind'], number> = {
+        hover: 0.16,
+        open: 0.34,
+        arrange: 0.42,
+        workspace: 0.58,
+        recruiter: 0.76,
+      };
+      const alignmentByKind: Record<ConstellationEventDetail['kind'], number> = {
+        hover: 0.08,
+        open: 0.16,
+        arrange: 0.52,
+        workspace: 0.68,
+        recruiter: 0.95,
+      };
+
+      pulseRef.current = Math.min(1.15, pulseRef.current + pulseByKind[detail.kind] * baseIntensity);
+      alignmentRef.current = Math.max(alignmentRef.current, alignmentByKind[detail.kind] * baseIntensity);
+
+      if (detail.kind === 'workspace' || detail.kind === 'recruiter' || detail.kind === 'arrange') {
+        pointerRef.current.x *= 0.22;
+        pointerRef.current.y *= 0.22;
+      }
+    };
+
+    window.addEventListener(CONSTELLATION_EVENT, handleConstellationEvent);
+    return () => window.removeEventListener(CONSTELLATION_EVENT, handleConstellationEvent);
+  }, []);
+
   useFrame(({ clock }) => {
     if (document.hidden) return;
 
     const target = pointerRef.current;
     const material = pointMaterialRef.current;
+    pulseRef.current += (0 - pulseRef.current) * 0.045;
+    alignmentRef.current += (0 - alignmentRef.current) * 0.018;
+
+    const pulse = pulseRef.current;
+    const alignment = alignmentRef.current;
+
     if (material) {
       material.uniforms.uTime.value = clock.elapsedTime;
       material.uniforms.uPointer.value.set(target.x, target.y);
+      material.uniforms.uPulse.value = pulse;
+      material.uniforms.uAlignment.value = alignment;
     }
 
     if (groupRef.current) {
-      groupRef.current.rotation.y += (target.x * 0.018 - groupRef.current.rotation.y) * 0.035;
-      groupRef.current.rotation.x += (-target.y * 0.018 - groupRef.current.rotation.x) * 0.035;
-      groupRef.current.position.x += (target.x * 0.045 - groupRef.current.position.x) * 0.025;
-      groupRef.current.position.y += (target.y * 0.035 - groupRef.current.position.y) * 0.025;
+      const alignmentDamp = 1 - alignment * 0.78;
+      groupRef.current.rotation.y += (target.x * 0.018 * alignmentDamp - groupRef.current.rotation.y) * 0.035;
+      groupRef.current.rotation.x += (-target.y * 0.018 * alignmentDamp - groupRef.current.rotation.x) * 0.035;
+      groupRef.current.position.x += (target.x * 0.045 * alignmentDamp - groupRef.current.position.x) * 0.025;
+      groupRef.current.position.y += (target.y * 0.035 * alignmentDamp - groupRef.current.position.y) * 0.025;
+      const scale = 1 + pulse * 0.018 + alignment * 0.012;
+      groupRef.current.scale.setScalar(scale);
     }
   });
 

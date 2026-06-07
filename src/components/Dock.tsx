@@ -17,9 +17,10 @@ interface DockProps {
   windows: Record<AppId, WindowState>;
   onOpen: (id: AppId) => void;
   onFocus: (id: AppId) => void;
+  onPreview?: (id: AppId) => void;
 }
 
-export default function Dock({ windows, onOpen, onFocus }: DockProps) {
+export default function Dock({ windows, onOpen, onFocus, onPreview }: DockProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
@@ -78,7 +79,10 @@ export default function Dock({ windows, onOpen, onFocus }: DockProps) {
                   title={app.label}
                   animate={{ scale: isHovered ? 1.18 : 1, y: isHovered ? -6 : 0 }}
                   transition={{ type: 'spring', stiffness: 520, damping: 32 }}
-                  onHoverStart={() => setHoveredId(app.id)}
+                  onHoverStart={() => {
+                    setHoveredId(app.id);
+                    onPreview?.(app.id);
+                  }}
                   onHoverEnd={() => setHoveredId(null)}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => {
