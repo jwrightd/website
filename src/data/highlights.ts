@@ -60,7 +60,7 @@ export const STATS: Stat[] = [
     value: 1000,
     suffix: '+',
     display: '1,000+',
-    label: 'ICD-10 codes mapped · 15M+ row DIIG dataset',
+    label: 'ICD-10 codes mapped · Gradient Health dataset (15M+ rows)',
     audience: 'swe',
     featured: true,
   },
@@ -82,11 +82,11 @@ export const STATS: Stat[] = [
     featured: true,
   },
   {
-    id: 'stingar-reach',
-    value: 70,
+    id: 'discord-nlp',
+    value: 4000,
     suffix: '+',
-    display: '70+',
-    label: 'Universities on STINGAR (platform context, not my metric)',
+    display: '4,000+',
+    label: 'Discord messages modeled · HayhaBots growth analysis',
     audience: 'swe',
   },
   {
@@ -156,7 +156,7 @@ export const PROOF_GROUPS: ProofGroup[] = [
     id: 'systems',
     label: 'SWE / systems',
     points: [
-      { id: 'icd10', statId: 'icd10', label: '1,000+ ICD-10 codes', detail: 'AI-assisted mapping on DIIG’s existing 15M+ row parquet dataset' },
+      { id: 'icd10', statId: 'icd10', label: '1,000+ ICD-10 codes', detail: 'AI-assisted mapping on Gradient Health’s 15M+ row parquet dataset via DIIG' },
       { id: 'stingar', label: 'Code+ summer SWE', detail: 'LLM honeypot prototyping and threat analysis on STINGAR' },
       { id: 'hackathons', statId: 'hackathons', label: '2× hackathon winner', detail: 'Saynario + DataCrawl shipped builds' },
       { id: 'cv', statId: 'cv', label: '90%+ CV accuracy', detail: 'real-time chess move detection' },

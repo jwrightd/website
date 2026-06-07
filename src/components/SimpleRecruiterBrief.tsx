@@ -17,7 +17,7 @@ const PATH_STEPS = [
 const LENS_HIGHLIGHTS: Record<AudienceLens, string[]> = {
   systems: [
     'Saynario — shipped voice product with demo video and public repo',
-    '1,000+ ICD-10 codes mapped with an AI pipeline on DIIG’s 15M+ row dataset',
+    '1,000+ ICD-10 codes mapped with an AI pipeline on Gradient Health’s 15M+ row dataset (DIIG partnership)',
     'Code+ summer SWE — LLM honeypot and threat analysis tooling on STINGAR',
     'DataCrawl — multi-agent financial dataset pipeline',
   ],

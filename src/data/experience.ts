@@ -23,10 +23,10 @@ export const EXPERIENCE: Experience[] = [
     location: 'Durham, NC',
     status: 'Active',
     focus:
-      'Built an AI-assisted ICD-10 coding workflow on top of DIIG’s existing 15M+ row parquet patient dataset, and ran a dual-model NLP pipeline over 4,000+ Discord messages for case-discovery and growth insights.',
+      'Built an AI-assisted ICD-10 coding workflow on Gradient Health’s 15M+ row parquet patient dataset through a DIIG partnership, and ran a dual-model NLP pipeline over 4,000+ Discord messages for case-discovery and growth insights.',
     period: 'September 2025 – Present',
     highlights: [
-      'Mapped 1,000+ ICD-10 codes to de-identified cases for Gradient Health using an LLM pipeline on the existing parquet dataset',
+      'Mapped 1,000+ ICD-10 codes to de-identified cases for Gradient Health using an LLM pipeline on their parquet dataset',
       'Applied RoBERTa and VADER to a 4,000+ message Discord dataset for HayhaBots',
     ],
   },
