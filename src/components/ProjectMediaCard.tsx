@@ -247,18 +247,18 @@ export default function ProjectMediaCard({
             <ArrowUpRight size={12} aria-hidden="true" />
           </Link>
           {project.links.slice(0, 3).map((link) => (
-              <a
-                key={`${project.id}-${link.href}`}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-[12px] font-semibold"
-                style={{ color: '#c7d9ff' }}
-              >
-                {link.label}
-                <ArrowUpRight size={12} aria-hidden="true" />
-              </a>
-            ))}
+            <a
+              key={`${project.id}-${link.href}`}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[12px] font-semibold"
+              style={{ color: '#c7d9ff' }}
+            >
+              {link.label}
+              <ArrowUpRight size={12} aria-hidden="true" />
+            </a>
+          ))}
         </div>
       </div>
     </motion.article>
