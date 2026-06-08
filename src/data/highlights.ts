@@ -49,7 +49,7 @@ export const HERO_PROOF =
 
 /** Short tagline used for meta descriptions and the boot/wake line. */
 export const TAGLINE =
-  'Voice products, bioRxiv spatial proteomics, and 15M-row health data pipelines — SWE & ML internships, Summer 2026.';
+  'Voice products, bioRxiv spatial proteomics, and 15M-row health data pipelines.';
 
 /** "By the numbers" — high-signal proof points, scannable in seconds. */
 export const STATS: Stat[] = [
@@ -138,6 +138,14 @@ export const STATS: Stat[] = [
     shortLabel: 'Lichess · USCF CM',
     audience: 'quant',
   },
+  {
+    id: 'chesscom-blitz',
+    value: null,
+    display: 'Top 0.04%',
+    label: 'Chess.com blitz · global percentile',
+    shortLabel: 'Chess.com top 0.04%',
+    audience: 'quant',
+  },
 ];
 
 export const FEATURED_STATS = STATS.filter((stat) => stat.featured);
@@ -175,7 +183,7 @@ export interface ProofGroup {
   points: ProofPoint[];
 }
 
-export const RECRUITER_PATH = 'Duke Math + CS \u00b7 Summer 2026 internships';
+export const RECRUITER_PATH = 'Duke Math + CS \u00b7 Software & ML';
 
 export const PROOF_GROUPS: ProofGroup[] = [
   {

@@ -8,7 +8,7 @@ export const PROFILE = {
   profilePhotoSrc: '/profile-photo.jpg',
   profilePhotoAlt: 'Portrait of James Wright',
   location: 'Durham, NC',
-  availability: 'Seeking software engineering and ML internships · Summer 2026 · US citizen, authorized to work in the US',
+  availability: 'Open to software engineering and ML roles · US citizen, authorized to work in the US',
   currentFocus: 'Duke Code+ software engineering · Alzheimer’s forecasting · spatial proteomics',
   recruiterHeadline: 'Software Engineer, Duke Code+ · STINGAR',
   lastUpdated: 'June 2026',

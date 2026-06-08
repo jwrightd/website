@@ -197,37 +197,6 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    id: 'fake-news-detection',
-    name: 'Fake News Detection',
-    category: 'NLP classifier',
-    status: 'Course project',
-    outcome: 'Fine-tuned BERT to 99.5% accuracy on the WELFake fake-vs-real news benchmark.',
-    proof: '99.5% · BERT on WELFake',
-    proofTone: 'research',
-    badges: ['Research'],
-    featured: true,
-    summary:
-      'End-to-end NLP pipeline for classifying fake vs. real news articles, comparing classical embeddings with transformer fine-tuning.',
-    overview:
-      'Group NLP project built around the WELFake dataset (~72K labeled articles). The work compared classical feature pipelines against a fine-tuned BERT classifier for fake-news detection.',
-    problem:
-      'Fake news spreads quickly on social platforms, but reliable detection needs models that generalize beyond simple keyword heuristics on noisy article text.',
-    approach: [
-      'Built a preprocessing pipeline with lemmatization, stopword handling, and stratified train/test splits on WELFake.',
-      'Compared TF-IDF, Doc2Vec, Word2Vec, and Sentence2Vec embeddings with logistic regression, random forest, XGBoost, and k-NN baselines.',
-      'Fine-tuned BERT on cleaned article text and evaluated against the classical embedding baselines.',
-    ],
-    technicalChallenge:
-      'The core challenge was turning a large, noisy text corpus into reproducible preprocessing and evaluation so transformer gains were measurable against simpler baselines.',
-    result:
-      'Achieved 99.5% accuracy with fine-tuned BERT on WELFake — outperforming the classical embedding pipelines built earlier in the project.',
-    techStack: ['Python', 'BERT', 'scikit-learn', 'Gensim', 'NLTK', 'pandas'],
-    myContribution:
-      'BERT fine-tuning, preprocessing/lemmatization workflow, and benchmark evaluation against classical embedding baselines.',
-    links: [{ label: 'Team repo (course)', href: 'https://github.com/8301Joseph/FakeNewsDetection', kind: 'github' }],
-    media: [],
-  },
-  {
     id: 'co2ldown',
     name: 'CO2Ldown',
     category: 'Website + Chrome extension',
@@ -263,6 +232,37 @@ export const PROJECTS: Project[] = [
         type: 'image',
       },
     ],
+  },
+  {
+    id: 'fake-news-detection',
+    name: 'Fake News Detection',
+    category: 'NLP classifier',
+    status: 'Course project',
+    outcome: 'Fine-tuned BERT to 99.5% accuracy on the WELFake fake-vs-real news benchmark.',
+    proof: '99.5% · BERT on WELFake',
+    proofTone: 'research',
+    badges: ['Research'],
+    featured: true,
+    summary:
+      'End-to-end NLP pipeline for classifying fake vs. real news articles, comparing classical embeddings with transformer fine-tuning.',
+    overview:
+      'Group NLP project built around the WELFake dataset (~72K labeled articles). The work compared classical feature pipelines against a fine-tuned BERT classifier for fake-news detection.',
+    problem:
+      'Fake news spreads quickly on social platforms, but reliable detection needs models that generalize beyond simple keyword heuristics on noisy article text.',
+    approach: [
+      'Built a preprocessing pipeline with lemmatization, stopword handling, and stratified train/test splits on WELFake.',
+      'Compared TF-IDF, Doc2Vec, Word2Vec, and Sentence2Vec embeddings with logistic regression, random forest, XGBoost, and k-NN baselines.',
+      'Fine-tuned BERT on cleaned article text and evaluated against the classical embedding baselines.',
+    ],
+    technicalChallenge:
+      'The core challenge was turning a large, noisy text corpus into reproducible preprocessing and evaluation so transformer gains were measurable against simpler baselines.',
+    result:
+      'Achieved 99.5% accuracy with fine-tuned BERT on WELFake — outperforming the classical embedding pipelines built earlier in the project.',
+    techStack: ['Python', 'BERT', 'scikit-learn', 'Gensim', 'NLTK', 'pandas'],
+    myContribution:
+      'BERT fine-tuning, preprocessing/lemmatization workflow, and benchmark evaluation against classical embedding baselines.',
+    links: [{ label: 'Team repo (course)', href: 'https://github.com/8301Joseph/FakeNewsDetection', kind: 'github' }],
+    media: [],
   },
   {
     id: 'chessengine',

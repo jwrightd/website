@@ -6,7 +6,7 @@ import './globals.css';
 
 const SITE_URL = 'https://jameswright.dev';
 const DESCRIPTION =
-  'James Wright — Duke Math + CS, software engineer & ML researcher. Shipped systems, bioRxiv research, and large-scale data pipelines. Seeking SWE/ML internships Summer 2026.';
+  'James Wright — Duke Math + CS, software engineer & ML researcher. Shipped systems, bioRxiv research, and large-scale data pipelines.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

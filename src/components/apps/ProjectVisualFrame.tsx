@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import type { PointerEvent } from 'react';
+import { useState, type PointerEvent } from 'react';
 import type { ProjectMedia } from '@/types';
 
 interface ProjectVisualFrameProps {
@@ -11,6 +11,9 @@ interface ProjectVisualFrameProps {
   fit?: 'cover' | 'contain';
   showCaption?: boolean;
   priority?: boolean;
+  className?: string;
+  /** Full-width fixed-height strip for project headers. */
+  variant?: 'default' | 'banner';
 }
 
 export default function ProjectVisualFrame({
@@ -20,7 +23,11 @@ export default function ProjectVisualFrame({
   fit = 'cover',
   showCaption = false,
   priority = false,
+  className = '',
+  variant = 'default',
 }: ProjectVisualFrameProps) {
+  const [intrinsicAspect, setIntrinsicAspect] = useState<number | null>(null);
+
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 100;
@@ -30,9 +37,37 @@ export default function ProjectVisualFrame({
     event.currentTarget.style.setProperty('--visual-y', `${y.toFixed(2)}%`);
   };
 
+  if (variant === 'banner') {
+    return (
+      <figure
+        className={`project-visual-frame project-visual-banner w-full overflow-hidden rounded-xl border ${className}`.trim()}
+        data-fit="cover"
+        onPointerMove={handlePointerMove}
+        onPointerLeave={(event) => {
+          event.currentTarget.style.removeProperty('--visual-x');
+          event.currentTarget.style.removeProperty('--visual-y');
+        }}
+      >
+        <div className="project-visual-plane relative h-[188px] w-full overflow-hidden">
+          <Image
+            src={media.src}
+            alt={media.alt}
+            fill
+            priority={priority}
+            sizes={sizes}
+            className="project-visual-image object-cover object-top"
+          />
+        </div>
+      </figure>
+    );
+  }
+
+  const useIntrinsicAspect = fit === 'contain' && intrinsicAspect != null;
+  const planeClass = useIntrinsicAspect ? 'relative w-full overflow-hidden' : `relative w-full overflow-hidden ${aspectClass}`;
+
   return (
     <figure
-      className="project-visual-frame overflow-hidden rounded-xl border"
+      className={`project-visual-frame w-full self-start overflow-hidden rounded-xl border ${className}`.trim()}
       data-fit={fit}
       onPointerMove={handlePointerMove}
       onPointerLeave={(event) => {
@@ -40,13 +75,22 @@ export default function ProjectVisualFrame({
         event.currentTarget.style.removeProperty('--visual-y');
       }}
     >
-      <div className={`project-visual-plane relative w-full overflow-hidden ${aspectClass}`}>
+      <div
+        className={`project-visual-plane ${planeClass}`}
+        style={useIntrinsicAspect ? { aspectRatio: intrinsicAspect } : undefined}
+      >
         <Image
           src={media.src}
           alt={media.alt}
           fill
           priority={priority}
           sizes={sizes}
+          onLoad={(event) => {
+            const { naturalWidth, naturalHeight } = event.currentTarget;
+            if (fit === 'contain' && naturalWidth > 0 && naturalHeight > 0) {
+              setIntrinsicAspect(naturalWidth / naturalHeight);
+            }
+          }}
           className={`project-visual-image ${fit === 'cover' ? 'object-cover' : 'object-contain'}`}
         />
       </div>

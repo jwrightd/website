@@ -90,8 +90,10 @@ export default function FeaturedProjectDeck({ projects }: FeaturedProjectDeckPro
           transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="featured-project-glow" aria-hidden="true" />
-          <ProjectMediaSurface project={active} sizes="(max-width: 1024px) 100vw, 620px" priority />
-          <div className="px-4 py-4 md:px-5">
+          <div className="featured-project-media-wrap">
+            <ProjectMediaSurface project={active} sizes="(max-width: 1024px) 100vw, 620px" priority className="!aspect-[16/9] sm:!aspect-[16/10]" />
+          </div>
+          <div className="px-4 py-3 md:px-5 md:py-4">
             <div className="flex flex-wrap items-center gap-2">
               <span
                 className="rounded-md border px-2 py-1 text-[11px] font-semibold"

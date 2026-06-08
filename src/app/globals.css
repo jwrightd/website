@@ -768,6 +768,18 @@ html.booted .boot-screen {
   background: rgba(8,11,20,0.92);
 }
 
+.project-visual-frame[data-fit="contain"] .project-visual-plane {
+  background: rgba(8,11,20,0.96);
+}
+
+.project-visual-banner .project-visual-plane {
+  border-bottom: none;
+}
+
+.project-visual-banner .project-visual-image {
+  opacity: 0.92;
+}
+
 .project-visual-image {
   opacity: 0.86;
   transition:

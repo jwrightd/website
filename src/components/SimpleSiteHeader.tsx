@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { PROFILE } from '@/data/profile';
+import { EnterJamesOSButton } from './StaticSiteControls';
 
 const cardStyle = {
   borderColor: 'rgba(255,255,255,0.08)',
@@ -50,56 +51,62 @@ export default function SimpleSiteHeader() {
           James Wright
         </a>
 
-        <nav className="hidden items-center gap-2 md:flex" aria-label="Quick links">
-          {NAV_LINKS.map((link) =>
-            link.external ? (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-md border px-3 py-1.5 text-[12.5px]"
-                style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
-              >
-                {link.label}
-              </a>
-            ) : (
-              <a
-                key={link.href}
-                href={link.href}
-                className="rounded-md border px-3 py-1.5 text-[12.5px]"
-                style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
-              >
-                {link.label}
-              </a>
-            )
-          )}
-          <Link
-            href="/projects"
-            className="rounded-md border px-3 py-1.5 text-[12.5px]"
-            style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
-          >
-            All projects
-          </Link>
-        </nav>
+        <div className="flex items-center gap-2">
+          <nav className="hidden items-center gap-2 lg:flex" aria-label="Quick links">
+            {NAV_LINKS.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md border px-3 py-1.5 text-[12.5px]"
+                  style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-md border px-3 py-1.5 text-[12.5px]"
+                  style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
+                >
+                  {link.label}
+                </a>
+              )
+            )}
+            <Link
+              href="/projects"
+              className="rounded-md border px-3 py-1.5 text-[12.5px]"
+              style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
+            >
+              All projects
+            </Link>
+          </nav>
 
-        <button
-          type="button"
-          className="grid h-9 w-9 place-items-center rounded-md border md:hidden"
-          style={{ ...cardStyle, color: 'rgba(255,255,255,0.72)' }}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
-        </button>
+          <EnterJamesOSButton className="rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors">
+            <span style={{ color: '#bcd4ff' }}>Interactive portfolio</span>
+          </EnterJamesOSButton>
+
+          <button
+            type="button"
+            className="grid h-9 w-9 place-items-center rounded-md border lg:hidden"
+            style={{ ...cardStyle, color: 'rgba(255,255,255,0.72)' }}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
+          </button>
+        </div>
       </div>
 
       {open ? (
         <nav
           id="mobile-nav"
-          className="border-t px-6 py-4 md:hidden"
+          className="border-t px-6 py-4 lg:hidden"
           style={{ borderColor: 'rgba(255,255,255,0.07)', background: 'rgba(12,13,16,0.96)' }}
           aria-label="Mobile navigation"
         >

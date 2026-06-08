@@ -12,11 +12,9 @@ import { SKILLS } from '@/data/skills';
 
 import EditorialSectionLabel from './EditorialSectionLabel';
 import SimpleAmbientGrainLayer from './SimpleAmbientGrainLayer';
-import SimpleGitHubSpotlight from './SimpleGitHubSpotlight';
 import SimpleProjectShowcase from './SimpleProjectShowcase';
 import SimpleQuantSection from './SimpleQuantSection';
 import SimpleSiteHeader from './SimpleSiteHeader';
-import { EnterJamesOSButton } from './StaticSiteControls';
 import SimpleSectionReveal from './SimpleSectionReveal';
 
 const cardStyle = {
@@ -73,10 +71,10 @@ export default function StaticSite() {
 
       <main id="main" className="mx-auto max-w-[1100px] px-6 pb-24">
         {/* Hero */}
-        <section id="top" className="pt-14 pb-10" aria-labelledby="hero-name">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+        <section id="top" className="pt-10 pb-8 sm:pt-12" aria-labelledby="hero-name">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-7">
             <div
-              className="relative mx-auto h-28 w-28 shrink-0 overflow-hidden rounded-xl border sm:mx-0 sm:h-32 sm:w-32"
+              className="relative mx-auto h-24 w-24 shrink-0 overflow-hidden rounded-xl border sm:mx-0 sm:h-28 sm:w-28"
               style={cardStyle}
             >
               <Image
@@ -84,7 +82,7 @@ export default function StaticSite() {
                 alt={PROFILE.profilePhotoAlt}
                 fill
                 priority
-                sizes="(max-width: 640px) 112px, 128px"
+                sizes="(max-width: 640px) 96px, 112px"
                 className="object-cover"
               />
             </div>
@@ -95,51 +93,53 @@ export default function StaticSite() {
               </p>
               <h1
                 id="hero-name"
-                className="mt-3 text-[44px] font-semibold leading-[1.05] tracking-[-0.02em] sm:text-[56px]"
+                className="mt-2 text-[38px] font-semibold leading-[1.05] tracking-[-0.02em] sm:text-[52px]"
                 style={{ color: 'rgba(255,255,255,0.95)' }}
               >
                 James Wright
               </h1>
-              <p className="mt-3 max-w-[760px] text-[14px] leading-[1.65] sm:mx-0 mx-auto" style={{ color: 'rgba(255,255,255,0.58)' }}>
+              <p className="mt-2 max-w-[760px] text-[14px] leading-[1.6] sm:mx-0 mx-auto" style={{ color: 'rgba(255,255,255,0.62)' }}>
                 {HERO_PROOF}
               </p>
-              <p className="mt-4 max-w-[760px] text-[16.5px] leading-[1.6] sm:mx-0 mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>
+
+              <div className="mt-4 flex flex-wrap justify-center gap-2.5 sm:justify-start">
+                {HERO_CTAS.map((cta) => {
+                  const isPrimary = cta.tone === 'primary';
+                  const href = cta.href ?? (cta.id === 'resume' ? PROFILE.resumeHref : (cta.anchor ?? '#'));
+                  const external = Boolean(cta.href) || cta.id === 'resume';
+                  return (
+                    <a
+                      key={cta.id}
+                      href={href}
+                      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                      className="rounded-lg border px-4 py-2 text-[13.5px] font-medium transition-colors"
+                      style={
+                        isPrimary
+                          ? { background: 'var(--os-accent)', borderColor: 'var(--os-accent)', color: '#08101f' }
+                          : { ...cardStyle, color: 'rgba(255,255,255,0.82)' }
+                      }
+                    >
+                      {cta.label}
+                    </a>
+                  );
+                })}
+              </div>
+
+              <p className="mt-4 max-w-[760px] text-[15px] leading-[1.55] sm:mx-0 mx-auto" style={{ color: 'rgba(255,255,255,0.68)' }}>
                 {POSITIONING}
               </p>
-              <p className="mt-3 max-w-[720px] text-[14.5px] leading-[1.7] sm:mx-0 mx-auto" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              <p className="mt-2 max-w-[720px] text-[13.5px] leading-[1.55] sm:mx-0 mx-auto" style={{ color: 'rgba(255,255,255,0.46)' }}>
                 {TAGLINE}
               </p>
-              <div className="mt-4 flex flex-col gap-1.5 text-[13px] sm:items-start items-center" style={{ color: 'rgba(255,255,255,0.42)' }}>
-                <p className="flex items-center gap-1.5">
-                  <MapPin size={14} aria-hidden="true" />
+              <p className="mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[12.5px] sm:justify-start" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                <span className="inline-flex items-center gap-1">
+                  <MapPin size={13} aria-hidden="true" />
                   {PROFILE.location}
-                </p>
-                <p>{PROFILE.availability}</p>
-              </div>
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>{PROFILE.availability}</span>
+              </p>
             </div>
-          </div>
-
-          <div className="mt-7 flex flex-wrap justify-center gap-3 sm:justify-start">
-            {HERO_CTAS.map((cta) => {
-              const isPrimary = cta.tone === 'primary';
-              const href = cta.href ?? (cta.id === 'resume' ? PROFILE.resumeHref : (cta.anchor ?? '#'));
-              const external = Boolean(cta.href) || cta.id === 'resume';
-              return (
-                <a
-                  key={cta.id}
-                  href={href}
-                  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className="rounded-lg border px-5 py-2.5 text-[14px] font-medium transition-colors"
-                  style={
-                    isPrimary
-                      ? { background: 'var(--os-accent)', borderColor: 'var(--os-accent)', color: '#08101f' }
-                      : { ...cardStyle, color: 'rgba(255,255,255,0.82)' }
-                  }
-                >
-                  {cta.label}
-                </a>
-              );
-            })}
           </div>
         </section>
 
@@ -182,16 +182,9 @@ export default function StaticSite() {
         </section>
 
         <SimpleSectionReveal>
-          <section className="py-8" aria-labelledby="github-h">
-            <SectionHeading id="github-h" index="01" label="Code" title="GitHub spotlight" />
-            <SimpleGitHubSpotlight />
-          </section>
-        </SimpleSectionReveal>
-
-        <SimpleSectionReveal>
           <section id="projects" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="projects-h">
             <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
-              <EditorialSectionLabel id="projects-h" index="02" label="Projects" title="Selected work" />
+              <EditorialSectionLabel id="projects-h" index="01" label="Projects" title="Selected work" />
               <Link
                 href="/projects"
                 className="text-[12.5px] font-semibold"
@@ -206,7 +199,7 @@ export default function StaticSite() {
 
         <SimpleSectionReveal>
           <section id="experience" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="experience-h">
-            <SectionHeading id="experience-h" index="03" label="Experience" title="Where I've worked" />
+            <SectionHeading id="experience-h" index="02" label="Experience" title="Where I've worked" />
             <div className="flex flex-col gap-4">
               {EXPERIENCE.map((role) => (
                 <article key={role.pid} className="rounded-xl border px-5 py-5" style={cardStyle}>
@@ -243,14 +236,14 @@ export default function StaticSite() {
 
         <SimpleSectionReveal>
           <section id="quant" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="quant-h">
-            <SectionHeading id="quant-h" index="04" label="Quant / ML" title="Quant-relevant work" />
+            <SectionHeading id="quant-h" index="03" label="Quant / ML" title="Quant-relevant work" />
             <SimpleQuantSection />
           </section>
         </SimpleSectionReveal>
 
         <SimpleSectionReveal>
           <section id="about" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="about-h">
-            <SectionHeading id="about-h" index="05" label="About" title="Overview" />
+            <SectionHeading id="about-h" index="04" label="About" title="Overview" />
             <p className="max-w-[820px] text-[15px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.72)' }}>
               {PROFILE.aboutSummary}
             </p>
@@ -292,7 +285,7 @@ export default function StaticSite() {
 
         <SimpleSectionReveal>
           <section id="skills" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="skills-h">
-            <SectionHeading id="skills-h" index="06" label="Skills" title="Technical stack" />
+            <SectionHeading id="skills-h" index="05" label="Skills" title="Technical stack" />
             <div className="flex flex-col gap-5">
               {SKILLS.map((group) => (
                 <div key={group.category}>
@@ -313,7 +306,7 @@ export default function StaticSite() {
         <SimpleSectionReveal>
           <section className="grid gap-8 border-t py-10 md:grid-cols-2" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
             <div aria-labelledby="education-h">
-              <SectionHeading id="education-h" index="07" label="Background" title="Education" />
+              <SectionHeading id="education-h" index="06" label="Background" title="Education" />
               <div className="flex flex-col gap-3">
                 {EDUCATION.map((entry) => (
                   <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
@@ -350,7 +343,7 @@ export default function StaticSite() {
               </div>
             </div>
             <div aria-labelledby="achievements-h">
-              <SectionHeading id="achievements-h" index="08" label="Recognition" title="Achievements" />
+              <SectionHeading id="achievements-h" index="07" label="Recognition" title="Achievements" />
               <div className="flex flex-col gap-3">
                 {ACHIEVEMENTS.map((entry) => (
                   <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
@@ -369,7 +362,7 @@ export default function StaticSite() {
 
         <SimpleSectionReveal>
           <section id="contact" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="contact-h">
-            <SectionHeading id="contact-h" index="09" label="Contact" title="Get in touch" />
+            <SectionHeading id="contact-h" index="08" label="Contact" title="Get in touch" />
             <div className="flex flex-wrap gap-3">
               <a
                 href={`mailto:${PROFILE.email}`}
@@ -415,13 +408,10 @@ export default function StaticSite() {
       </main>
 
       <footer className="border-t py-6" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-        <div className="mx-auto flex max-w-[1100px] flex-col items-center gap-2 px-6 text-center">
+        <div className="mx-auto max-w-[1100px] px-6 text-center">
           <p className="text-[12px]" style={{ color: 'rgba(255,255,255,0.38)' }}>
             © {new Date().getFullYear()} James Wright · {PROFILE.email}
           </p>
-          <EnterJamesOSButton className="rounded-md border px-2.5 py-1 text-[11px] font-medium">
-            <span style={{ color: 'rgba(188,212,255,0.65)' }}>Interactive portfolio</span>
-          </EnterJamesOSButton>
         </div>
       </footer>
     </div>

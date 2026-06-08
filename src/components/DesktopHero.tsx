@@ -5,14 +5,9 @@ import { ArrowRight, FileText, FolderOpen, Mail, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import {
-  LENS_OPTIONS,
   POSITIONING,
-  PROOF_GROUPS,
   RECRUITER_PATH,
   STATS,
-  type AudienceLens,
-  type ProofGroup,
-  type ProofPoint,
 } from '@/data/highlights';
 import { PROFILE } from '@/data/profile';
 import { formatAnimatedStat } from '@/lib/format-stat';
@@ -42,58 +37,6 @@ function useCountUp(target: number | null, durationMs = 1100) {
   }, [target, durationMs]);
 
   return value;
-}
-
-function ProofRow({ point }: { point: ProofPoint }) {
-  const stat = point.statId ? STATS.find((s) => s.id === point.statId) : null;
-  const animated = useCountUp(stat?.value ?? null, 950);
-  const value = stat ? formatAnimatedStat(stat, animated) : point.label;
-
-  return (
-    <div className="grid grid-cols-[82px_1fr] gap-2.5 border-t py-2 first:border-t-0" style={{ borderColor: 'rgba(255,255,255,0.065)' }}>
-      <p className="text-[14px] font-semibold leading-snug tabular-nums" style={{ color: 'rgba(255,255,255,0.92)' }}>
-        {value}
-      </p>
-      <div>
-        <p className="text-[12px] font-medium leading-snug" style={{ color: 'rgba(255,255,255,0.76)' }}>
-          {point.label}
-        </p>
-        <p className="mt-0.5 line-clamp-1 text-[10.8px] leading-[1.35]" style={{ color: 'rgba(255,255,255,0.42)' }}>
-          {point.detail}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function ProofGroupCard({ group, active }: { group: ProofGroup; active: boolean }) {
-  const visiblePoints = group.points.slice(0, 3);
-  const remainingCount = group.points.length - visiblePoints.length;
-
-  return (
-    <div
-      className="hero-proof-group rounded-xl border px-3.5 py-2.5"
-      data-active={active ? 'true' : 'false'}
-      style={{
-        borderColor: active ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.075)',
-        background: group.id === 'systems' ? 'rgba(79,142,247,0.055)' : 'rgba(167,139,250,0.052)',
-      }}
-    >
-      <p className="text-[11.5px] font-semibold" style={{ color: 'rgba(255,255,255,0.72)' }}>
-        {group.label}
-      </p>
-      <div className="mt-2">
-        {visiblePoints.map((point) => (
-          <ProofRow key={point.id} point={point} />
-        ))}
-      </div>
-      {remainingCount > 0 ? (
-        <p className="border-t pt-2 text-[10.8px]" style={{ borderColor: 'rgba(255,255,255,0.055)', color: 'rgba(255,255,255,0.36)' }}>
-          +{remainingCount} more proof point{remainingCount === 1 ? '' : 's'} in Projects and Research
-        </p>
-      ) : null}
-    </div>
-  );
 }
 
 function HeroMetric({ statId }: { statId: string }) {
@@ -136,14 +79,10 @@ export default function DesktopHero({
   onSimpleView,
   onDismiss,
 }: DesktopHeroProps) {
-  const [lens, setLens] = useState<AudienceLens>('systems');
-  const orderedGroups = useMemo(
-    () => [...PROOF_GROUPS].sort((a, b) => (a.id === lens ? -1 : b.id === lens ? 1 : 0)),
-    [lens]
+  const metricIds = useMemo(
+    () => ['hackathons', 'chesscom-blitz', 'biorxiv', 'gpa'],
+    [],
   );
-  const metricIds = lens === 'systems'
-    ? ['icd10', 'hackathons', 'cv', 'biorxiv']
-    : ['gpa', 'biorxiv', 'lichess', 'elo'];
 
   return (
     <motion.section
@@ -154,7 +93,7 @@ export default function DesktopHero({
       className="pointer-events-auto absolute left-1/2 top-[58px] z-[20] w-[min(920px,calc(100vw-360px))] -translate-x-1/2"
     >
       <div
-        className="relative max-h-[calc(100vh-172px)] overflow-y-auto rounded-2xl border px-6 py-5 shadow-[0_26px_60px_rgba(0,0,0,0.38)] backdrop-blur-xl"
+        className="relative rounded-2xl border px-5 py-4 shadow-[0_26px_60px_rgba(0,0,0,0.38)] backdrop-blur-xl sm:px-6 sm:py-5"
         style={{
           borderColor: 'rgba(255,255,255,0.13)',
           background: 'linear-gradient(180deg, rgba(24,25,29,0.88) 0%, rgba(16,17,20,0.82) 100%)',
@@ -217,40 +156,7 @@ export default function DesktopHero({
           </div>
         </div>
 
-        <div className="hero-signal-map mt-4 rounded-2xl border px-3.5 py-3.5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-[12px] font-semibold" style={{ color: 'rgba(255,255,255,0.76)' }}>
-                Recruiter signal map
-              </p>
-              <p className="mt-0.5 text-[11.5px]" style={{ color: 'rgba(255,255,255,0.38)' }}>
-                Same proof, emphasized for the role you care about.
-              </p>
-            </div>
-            <div className="flex rounded-lg border p-1" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(8,10,14,0.34)' }}>
-              {LENS_OPTIONS.map((option) => (
-                <button
-                  key={option.id}
-                  type="button"
-                  onClick={() => setLens(option.id)}
-                  aria-pressed={lens === option.id}
-                  className="hero-lens-button rounded-md px-3 py-1.5 text-[11.5px] font-semibold"
-                  data-active={lens === option.id ? 'true' : 'false'}
-                  title={option.description}
-                >
-                  {option.id === 'systems' ? 'SWE' : 'Quant / ML'}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="mt-3 grid gap-3 lg:grid-cols-2">
-            {orderedGroups.map((group) => (
-              <ProofGroupCard key={group.id} group={group} active={group.id === lens} />
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-4 flex flex-wrap items-center gap-2.5 border-t pt-3.5" style={{ borderColor: 'rgba(255,255,255,0.075)' }}>
+        <div className="mt-3 flex flex-wrap items-center gap-2 border-t pt-3" style={{ borderColor: 'rgba(255,255,255,0.075)' }}>
           <button
             type="button"
             onClick={() => onOpenApp('resume')}

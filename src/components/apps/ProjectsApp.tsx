@@ -155,7 +155,7 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
   return (
     <div className={`flex-1 overflow-auto ${isMobile ? 'px-4 py-4' : 'px-6 py-5'}`}>
       <div className="flex flex-col gap-5">
-        <div className={`grid gap-4 ${preview && !isMobile ? 'grid-cols-[1fr_240px]' : 'grid-cols-1'}`}>
+        <div className="flex flex-col gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-[21px] font-semibold tracking-[-0.01em]" style={{ color: 'var(--os-text)' }}>
@@ -172,16 +172,19 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
                 {project.proof}
               </span>
             </div>
-            <p className="mt-3 max-w-[70ch] text-[14px] font-medium leading-[1.65]" style={{ color: 'rgba(255,255,255,0.74)' }}>
+            <p className="mt-3 text-[14px] font-medium leading-[1.65]" style={{ color: 'rgba(255,255,255,0.74)' }}>
               {project.outcome}
             </p>
-            <div className="mt-2 max-w-[70ch]">
-              <LeadText>{project.summary}</LeadText>
-            </div>
           </div>
-          {preview && !isMobile ? (
-            <ProjectVisualFrame media={preview} sizes="240px" aspectClass="aspect-[16/10]" fit="cover" priority />
+          {preview ? (
+            <ProjectVisualFrame
+              variant="banner"
+              media={preview}
+              sizes={isMobile ? '100vw' : '(max-width: 1280px) 100vw, 720px'}
+              priority
+            />
           ) : null}
+          <LeadText>{project.summary}</LeadText>
         </div>
 
         {isMobile ? (
@@ -220,10 +223,10 @@ function ProjectDetail({ project, isMobile = false }: { project: Project; isMobi
           <TagList items={project.techStack} />
         </SectionBlock>
 
-        {project.media && project.media.length > 0 && (
+        {project.media && project.media.length > 1 && (
           <SectionBlock title="Images">
             <div className="grid gap-2">
-              {project.media.map((item) => (
+              {project.media.slice(1).map((item) => (
                 <ProjectVisualFrame
                   key={`${project.id}-${item.alt}`}
                   media={item}
