@@ -2,16 +2,6 @@ import type { AchievementEntry } from '@/types';
 
 export const ACHIEVEMENTS: AchievementEntry[] = [
   {
-    id: 'hackprinceton-2026',
-    label: 'HackPrinceton 2026',
-    detail: 'Best Use of ElevenLabs for Saynario.',
-  },
-  {
-    id: 'hackduke-2026',
-    label: 'HackDuke Code for Good 2026',
-    detail: 'Winning build for DataCrawl — multi-agent financial dataset pipeline.',
-  },
-  {
     id: 'mingl-preprint',
     label: 'MINGL preprint',
     detail: 'Named co-author on a bioRxiv preprint through the Hickey Lab.',

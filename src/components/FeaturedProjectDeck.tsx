@@ -2,7 +2,9 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import Link from 'next/link';
 import { useMemo, useState, type CSSProperties } from 'react';
+import { trackProjectClick } from '@/lib/analytics';
 import { getProjectProofTone } from '@/lib/badges';
 import type { Project } from '@/types';
 import { ProjectMediaSurface } from './ProjectMediaCard';
@@ -56,9 +58,17 @@ export default function FeaturedProjectDeck({ projects }: FeaturedProjectDeckPro
                       0{index + 1}
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-[13px] font-semibold" style={{ color: 'rgba(255,255,255,0.84)' }}>
+                      <Link
+                        href={`/projects/${project.id}`}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          trackProjectClick(project.id, 'deck');
+                        }}
+                        className="block text-[13px] font-semibold transition-colors hover:text-white"
+                        style={{ color: 'rgba(255,255,255,0.84)' }}
+                      >
                         {project.name}
-                      </span>
+                      </Link>
                       <span className="mt-1 line-clamp-2 block text-[12px] leading-[1.45]" style={{ color: 'rgba(255,255,255,0.46)' }}>
                         {project.proof}
                       </span>
@@ -94,14 +104,29 @@ export default function FeaturedProjectDeck({ projects }: FeaturedProjectDeckPro
               </span>
             </div>
             <h3 className="mt-3 text-[18px] font-semibold tracking-[-0.01em]" style={{ color: 'rgba(255,255,255,0.92)' }}>
-              {active.name}
+              <Link
+                href={`/projects/${active.id}`}
+                onClick={() => trackProjectClick(active.id, 'deck')}
+                className="transition-colors hover:text-white"
+              >
+                {active.name}
+              </Link>
             </h3>
             <p className="mt-2 text-[13.5px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.58)' }}>
               {active.outcome}
             </p>
-            {active.links.length > 0 ? (
-              <div className="mt-4 flex flex-wrap gap-3">
-                {active.links.slice(0, 3).map((link) => (
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link
+                href={`/projects/${active.id}`}
+                onClick={() => trackProjectClick(active.id, 'deck')}
+                className="inline-flex items-center gap-1 text-[12px] font-semibold"
+                style={{ color: '#c7d9ff' }}
+              >
+                Full case study
+                <ArrowUpRight size={12} aria-hidden="true" />
+              </Link>
+              {active.links.length > 0 ? (
+                active.links.slice(0, 3).map((link) => (
                   <a
                     key={`${active.id}-${link.href}`}
                     href={link.href}
@@ -113,9 +138,9 @@ export default function FeaturedProjectDeck({ projects }: FeaturedProjectDeckPro
                     {link.label}
                     <ArrowUpRight size={12} aria-hidden="true" />
                   </a>
-                ))}
-              </div>
-            ) : null}
+                ))
+              ) : null}
+            </div>
           </div>
         </motion.div>
       </div>

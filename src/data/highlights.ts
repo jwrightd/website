@@ -1,4 +1,5 @@
 import type { AppId } from '@/types';
+import { PROFILE } from '@/data/profile';
 
 export type StatAudience = 'swe' | 'quant' | 'both';
 export type AudienceLens = 'systems' | 'quant';
@@ -32,6 +33,8 @@ export interface Stat {
   suffix?: string;
   decimals?: number;
   label: string;
+  /** Shorter label for narrow mobile stat cards. */
+  shortLabel?: string;
   audience: StatAudience;
   featured?: boolean;
 }
@@ -40,19 +43,24 @@ export interface Stat {
 export const POSITIONING =
   'Duke Mathematics + Computer Science · Software engineer & ML researcher';
 
+/** One-line shipped proof shown directly under the name. */
+export const HERO_PROOF =
+  'Saynario (HackPrinceton) · MINGL bioRxiv co-author · Code+ SWE on STINGAR';
+
 /** Short tagline used for meta descriptions and the boot/wake line. */
 export const TAGLINE =
-  'Shipped voice products, research-grade ML, and large-scale data systems — open to SWE and ML internships, Summer 2026.';
+  'Voice products, bioRxiv spatial proteomics, and 15M-row health data pipelines — SWE & ML internships, Summer 2026.';
 
 /** "By the numbers" — high-signal proof points, scannable in seconds. */
 export const STATS: Stat[] = [
   {
-    id: 'gpa',
-    value: 4.0,
-    decimals: 1,
-    display: '4.0',
-    label: 'GPA · Mathematics + CS, Duke',
-    audience: 'quant',
+    id: 'hackathons',
+    value: 2,
+    suffix: '×',
+    display: '2×',
+    label: 'Hackathon wins · ElevenLabs (HackPrinceton), Solana (HackDuke)',
+    shortLabel: 'Hackathon wins',
+    audience: 'both',
     featured: true,
   },
   {
@@ -61,16 +69,8 @@ export const STATS: Stat[] = [
     suffix: '+',
     display: '1,000+',
     label: 'ICD-10 codes mapped · Gradient Health dataset (15M+ rows)',
+    shortLabel: 'ICD-10 · 15M+ rows',
     audience: 'swe',
-    featured: true,
-  },
-  {
-    id: 'hackathons',
-    value: 2,
-    suffix: '×',
-    display: '2×',
-    label: 'Hackathon wins · HackPrinceton, HackDuke',
-    audience: 'both',
     featured: true,
   },
   {
@@ -78,8 +78,29 @@ export const STATS: Stat[] = [
     value: null,
     display: 'bioRxiv',
     label: 'Named co-author preprint · MINGL',
+    shortLabel: 'MINGL preprint',
     audience: 'quant',
     featured: true,
+  },
+  {
+    id: 'gpa',
+    value: 4.0,
+    decimals: 1,
+    display: '4.0',
+    label: 'GPA · Mathematics + CS, Duke',
+    shortLabel: 'GPA · Math + CS',
+    audience: 'quant',
+    featured: true,
+  },
+  {
+    id: 'fake-news',
+    value: 99.5,
+    suffix: '%',
+    decimals: 1,
+    display: '99.5%',
+    label: 'BERT accuracy · WELFake fake-news detection',
+    shortLabel: 'BERT · WELFake',
+    audience: 'quant',
   },
   {
     id: 'discord-nlp',
@@ -87,6 +108,7 @@ export const STATS: Stat[] = [
     suffix: '+',
     display: '4,000+',
     label: 'Discord messages modeled · HayhaBots growth analysis',
+    shortLabel: 'Discord NLP',
     audience: 'swe',
   },
   {
@@ -95,6 +117,7 @@ export const STATS: Stat[] = [
     suffix: '%+',
     display: '90%+',
     label: 'Real-time chess move-detection accuracy',
+    shortLabel: 'ChessVision CV',
     audience: 'swe',
   },
   {
@@ -103,6 +126,7 @@ export const STATS: Stat[] = [
     prefix: '~',
     display: '~1500',
     label: 'Elo · self-built chess engine (Python & C++)',
+    shortLabel: 'Chess engine Elo',
     audience: 'both',
   },
   {
@@ -111,6 +135,7 @@ export const STATS: Stat[] = [
     prefix: 'Top ',
     display: 'Top 100',
     label: 'Lichess rapid worldwide · USCF Candidate Master',
+    shortLabel: 'Lichess · USCF CM',
     audience: 'quant',
   },
 ];
@@ -133,6 +158,7 @@ export interface HeroCta {
 export const HERO_CTAS: HeroCta[] = [
   { id: 'resume', label: 'View Resume', app: 'resume', anchor: '#resume', href: '/resume.pdf', tone: 'primary' },
   { id: 'projects', label: 'Browse Projects', app: 'projects', anchor: '#projects', tone: 'secondary' },
+  { id: 'github', label: 'GitHub', href: PROFILE.githubUrl, tone: 'secondary' },
   { id: 'contact', label: 'Contact', app: 'contact', anchor: '#contact', tone: 'secondary' },
 ];
 
@@ -149,7 +175,7 @@ export interface ProofGroup {
   points: ProofPoint[];
 }
 
-export const RECRUITER_PATH = 'Resume \u2192 Projects \u2192 Contact';
+export const RECRUITER_PATH = 'Duke Math + CS \u00b7 Summer 2026 internships';
 
 export const PROOF_GROUPS: ProofGroup[] = [
   {

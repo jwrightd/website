@@ -18,7 +18,8 @@ export default function EditorialSectionLabel({
         className="font-mono text-[11px] leading-none tracking-[0.08em]"
         style={{ color: 'rgba(255,255,255,0.34)' }}
       >
-        [{index}] {label}
+        <span className="hidden sm:inline">[{index}] </span>
+        {label}
       </p>
       <h2
         id={id}

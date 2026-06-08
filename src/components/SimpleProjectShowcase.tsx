@@ -16,6 +16,7 @@ const PREVIEW_WIDTH = 282;
 const PREVIEW_HEIGHT = 238;
 const PREVIEW_GAP = 18;
 const VIEWPORT_MARGIN = 18;
+const DECK_LIMIT = 4;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -28,13 +29,14 @@ export default function SimpleProjectShowcase({ projects }: SimpleProjectShowcas
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const { featured, additional } = useMemo(() => {
-    const selected = projects.filter((project) => project.featured);
-    const flagship = selected.length > 0 ? selected : projects.slice(0, 4);
-    const flagshipIds = new Set(flagship.map((project) => project.id));
+  const { deckProjects, moreProjects } = useMemo(() => {
+    const featured = projects.filter((project) => project.featured);
+    const flagship = featured.length > 0 ? featured : projects.slice(0, DECK_LIMIT);
+    const deck = flagship.slice(0, DECK_LIMIT);
+    const deckIds = new Set(deck.map((project) => project.id));
     return {
-      featured: flagship,
-      additional: projects.filter((project) => !flagshipIds.has(project.id)),
+      deckProjects: deck,
+      moreProjects: projects.filter((project) => !deckIds.has(project.id)),
     };
   }, [projects]);
 
@@ -97,19 +99,15 @@ export default function SimpleProjectShowcase({ projects }: SimpleProjectShowcas
 
   return (
     <div className="simple-project-showcase">
-      <FeaturedProjectDeck projects={featured} />
+      <FeaturedProjectDeck projects={deckProjects} />
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {featured.map((project) => renderCard(project))}
-      </div>
-
-      {additional.length > 0 ? (
+      {moreProjects.length > 0 ? (
         <div className="mt-8 border-t pt-8" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
           <p className="text-[12.5px] font-semibold" style={{ color: 'rgba(255,255,255,0.52)' }}>
-            Additional work
+            More projects
           </p>
           <div className="mt-3 grid gap-4 md:grid-cols-2">
-            {additional.map((project) => renderCard(project))}
+            {moreProjects.map((project) => renderCard(project))}
           </div>
         </div>
       ) : null}

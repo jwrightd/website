@@ -2,9 +2,10 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import { preloadJamesOS } from '@/lib/preload-jamesos';
 import { SIMPLE_VIEW_STORAGE_KEY, VIEW_MODE_EVENT } from '@/lib/view-mode';
 
-const Desktop = dynamic(() => import('./Desktop'), {
+const Desktop = dynamic(() => preloadJamesOS(), {
   ssr: false,
   loading: () => null,
 });

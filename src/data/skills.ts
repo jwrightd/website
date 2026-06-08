@@ -30,7 +30,6 @@ export const SKILLS: Skill[] = [
       'Firebase',
       'Parquet',
       'DigitalOcean',
-      'Auth0',
     ],
   },
   {

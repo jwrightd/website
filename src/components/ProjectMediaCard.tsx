@@ -5,6 +5,7 @@ import { ArrowUpRight, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, type CSSProperties, type MouseEventHandler } from 'react';
+import { trackProjectClick } from '@/lib/analytics';
 import { getProjectProofTone } from '@/lib/badges';
 import type { Project } from '@/types';
 
@@ -128,7 +129,11 @@ export default function ProjectMediaCard({
         </div>
 
         <h3 className="mt-3 text-[16px] font-semibold" style={{ color: 'rgba(255,255,255,0.91)' }}>
-          <Link href={`/projects/${project.id}`} className="transition-colors hover:text-white">
+          <Link
+            href={`/projects/${project.id}`}
+            onClick={() => trackProjectClick(project.id, 'card')}
+            className="transition-colors hover:text-white"
+          >
             {project.name}
           </Link>
         </h3>
@@ -240,6 +245,7 @@ export default function ProjectMediaCard({
         <div className="mt-4 flex flex-wrap gap-3 border-t pt-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
           <Link
             href={`/projects/${project.id}`}
+            onClick={() => trackProjectClick(project.id, 'card')}
             className="inline-flex items-center gap-1 text-[12px] font-semibold"
             style={{ color: '#c7d9ff' }}
           >

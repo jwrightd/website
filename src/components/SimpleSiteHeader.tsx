@@ -4,7 +4,6 @@ import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { PROFILE } from '@/data/profile';
-import { EnterJamesOSButton } from './StaticSiteControls';
 
 const cardStyle = {
   borderColor: 'rgba(255,255,255,0.08)',
@@ -14,6 +13,7 @@ const cardStyle = {
 const NAV_LINKS = [
   { href: PROFILE.resumeHref, label: 'Resume', external: true },
   { href: '/#projects', label: 'Projects', external: false },
+  { href: '/#quant', label: 'Quant / ML', external: false },
   { href: PROFILE.githubUrl, label: 'GitHub', external: true },
   { href: PROFILE.linkedinUrl, label: 'LinkedIn', external: true },
   { href: '/#contact', label: 'Contact', external: false },
@@ -74,9 +74,13 @@ export default function SimpleSiteHeader() {
               </a>
             )
           )}
-          <EnterJamesOSButton className="rounded-md border px-3 py-1.5 text-[12.5px] font-medium transition-colors">
-            <span style={{ color: '#bcd4ff' }}>Enter JamesOS →</span>
-          </EnterJamesOSButton>
+          <Link
+            href="/projects"
+            className="rounded-md border px-3 py-1.5 text-[12.5px]"
+            style={{ ...cardStyle, color: 'rgba(255,255,255,0.74)' }}
+          >
+            All projects
+          </Link>
         </nav>
 
         <button
@@ -125,19 +129,13 @@ export default function SimpleSiteHeader() {
                 </a>
               )
             )}
-            <EnterJamesOSButton
-              className="rounded-md border px-3 py-2.5 text-left text-[13px] font-medium"
-              onActivate={closeMenu}
-            >
-              <span style={{ color: '#bcd4ff' }}>Enter JamesOS →</span>
-            </EnterJamesOSButton>
             <Link
-              href="/#quant"
+              href="/projects"
               onClick={closeMenu}
               className="rounded-md border px-3 py-2.5 text-[13px]"
               style={{ ...cardStyle, color: 'rgba(255,255,255,0.78)' }}
             >
-              Quant / ML
+              All projects
             </Link>
           </div>
         </nav>

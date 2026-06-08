@@ -18,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 1,
     },
+    {
+      url: `${SITE_URL}/projects`,
+      lastModified: new Date('2026-06-07'),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
     ...projectEntries,
   ];
 }

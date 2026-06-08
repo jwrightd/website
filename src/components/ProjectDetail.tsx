@@ -21,12 +21,12 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
       >
         <div className="mx-auto flex h-14 max-w-[900px] items-center justify-between px-6">
           <Link
-            href="/#projects"
+            href="/projects"
             className="inline-flex items-center gap-2 text-[13px] font-medium"
             style={{ color: 'rgba(255,255,255,0.72)' }}
           >
             <ArrowLeft size={15} aria-hidden="true" />
-            Back to projects
+            All projects
           </Link>
           <Link href="/" className="text-[13px] font-semibold" style={{ color: 'rgba(255,255,255,0.82)' }}>
             jameswright.dev

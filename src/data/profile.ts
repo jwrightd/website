@@ -8,10 +8,10 @@ export const PROFILE = {
   profilePhotoSrc: '/profile-photo.jpg',
   profilePhotoAlt: 'Portrait of James Wright',
   location: 'Durham, NC',
-  availability: 'Seeking software engineering and ML internships · Summer 2026 · US',
+  availability: 'Seeking software engineering and ML internships · Summer 2026 · US citizen, authorized to work in the US',
   currentFocus: 'Duke Code+ software engineering · Alzheimer’s forecasting · spatial proteomics',
   recruiterHeadline: 'Software Engineer, Duke Code+ · STINGAR',
-  lastUpdated: 'May 2026',
+  lastUpdated: 'June 2026',
   email: 'james.wright@duke.edu',
   githubUrl: 'https://github.com/jwrightd',
   githubDisplay: 'github.com/jwrightd',
@@ -21,9 +21,12 @@ export const PROFILE = {
   resumeLabel: 'resume.pdf',
   resumeAvailable: true,
   aboutSummary:
-    'Mathematics and Computer Science student at Duke University, building across machine learning, data systems, and applied software.',
-  aboutSecondary:
-    'Current work spans Duke Impact Investment Group, Duke Applied Machine Learning, and the Hickey Lab, with experience in cyberdefense tooling, voice interfaces, longitudinal Alzheimer’s modeling, spatial proteomics, and computer vision.',
+    'Product builder (Saynario, DataCrawl, STINGAR tooling) and ML researcher (MINGL bioRxiv, ADNI Neural CDEs) — Mathematics and Computer Science at Duke.',
+  aboutBullets: [
+    'Shipped voice products, multi-agent data pipelines, and production-adjacent cyberdefense tooling.',
+    'Research spans spatial proteomics, longitudinal disease forecasting, and NLP classification.',
+    'Concurrent roles at Code+, DIIG, Duke AML, and Hickey Lab during the academic year.',
+  ],
 } as const;
 
 export const PRIMARY_RECRUITER_APPS: AppId[] = ['resume', 'projects', 'contact'];

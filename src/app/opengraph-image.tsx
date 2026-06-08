@@ -59,7 +59,7 @@ export default function OpenGraphImage() {
         </div>
 
         <div style={{ display: 'flex', gap: 18 }}>
-          {['4.0 GPA', 'bioRxiv co-author', '2x hackathon winner', 'USCF Candidate Master'].map((item) => (
+          {['2× hackathon winner', '1,000+ ICD-10 codes', 'bioRxiv co-author', '4.0 GPA'].map((item) => (
             <div
               key={item}
               style={{

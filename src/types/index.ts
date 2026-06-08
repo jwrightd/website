@@ -91,6 +91,8 @@ export interface Experience {
   status: 'Active' | 'Completed' | 'On Hold';
   focus: string;
   period: string;
+  /** Weekly time commitment when helpful for concurrent roles. */
+  scope?: string;
   highlights?: string[];
 }
 

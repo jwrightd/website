@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { QUANT_SIGNALS, QUANT_SUMMARY } from '@/data/quant';
+import { QUANT_COURSEWORK, QUANT_SIGNALS, QUANT_SUMMARY } from '@/data/quant';
 
 const cardStyle = {
   borderColor: 'rgba(255,255,255,0.08)',
@@ -13,6 +13,21 @@ export default function SimpleQuantSection() {
       <p className="max-w-[720px] text-[14px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.58)' }}>
         {QUANT_SUMMARY}
       </p>
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {QUANT_COURSEWORK.map((course) => (
+          <span
+            key={course}
+            className="rounded-md border px-2 py-1 text-[11.5px]"
+            style={{
+              borderColor: 'rgba(255,255,255,0.08)',
+              background: 'rgba(255,255,255,0.03)',
+              color: 'rgba(255,255,255,0.52)',
+            }}
+          >
+            {course}
+          </span>
+        ))}
+      </div>
       <ul className="mt-4 grid gap-3 sm:grid-cols-2">
         {QUANT_SIGNALS.map((signal) => (
           <li

@@ -54,7 +54,13 @@ export default function AboutApp({ onOpen, onOpenWorkspace }: AboutAppProps) {
         <LeadText>{PROFILE.aboutSummary}</LeadText>
 
         <SectionBlock title="Overview">
-          <BodyText>{PROFILE.aboutSecondary}</BodyText>
+          <ul className="flex flex-col gap-2">
+            {PROFILE.aboutBullets.map((bullet) => (
+              <li key={bullet} className="text-[13px] leading-[1.65]" style={{ color: 'var(--os-text-2)' }}>
+                {bullet}
+              </li>
+            ))}
+          </ul>
         </SectionBlock>
       </div>
 
