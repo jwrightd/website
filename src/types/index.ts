@@ -126,6 +126,29 @@ export interface AchievementEntry {
   detail: string;
 }
 
+export interface NeetCodeProblem {
+  slug: string;
+  name: string;
+  topic: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+}
+
+export interface LeetCodeTopicProgress {
+  topic: string;
+  solved: number;
+  total: number;
+}
+
+export interface LeetCodeProgress {
+  totalRepoSolved: number;
+  neetcodeSolved: number;
+  neetcodeTotal: number;
+  percent: number;
+  byTopic: LeetCodeTopicProgress[];
+  byDifficulty: Record<'Easy' | 'Medium' | 'Hard', number>;
+  lastSynced: string | null;
+}
+
 export interface ContactMethod {
   id: 'email' | 'github' | 'linkedin' | 'resume';
   label: string;

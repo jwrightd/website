@@ -13,6 +13,7 @@ import { SKILLS } from '@/data/skills';
 import EditorialSectionLabel from './EditorialSectionLabel';
 import SimpleAmbientGrainLayer from './SimpleAmbientGrainLayer';
 import SimpleProjectShowcase from './SimpleProjectShowcase';
+import SimpleLeetCodeSection from './SimpleLeetCodeSection';
 import SimpleQuantSection from './SimpleQuantSection';
 import SimpleSiteHeader from './SimpleSiteHeader';
 import SimpleSectionReveal from './SimpleSectionReveal';
@@ -242,8 +243,15 @@ export default function StaticSite() {
         </SimpleSectionReveal>
 
         <SimpleSectionReveal>
+          <section id="leetcode" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="leetcode-h">
+            <SectionHeading id="leetcode-h" index="04" label="Interview prep" title="LeetCode progress" />
+            <SimpleLeetCodeSection />
+          </section>
+        </SimpleSectionReveal>
+
+        <SimpleSectionReveal>
           <section id="about" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="about-h">
-            <SectionHeading id="about-h" index="04" label="About" title="Overview" />
+            <SectionHeading id="about-h" index="05" label="About" title="Overview" />
             <p className="max-w-[820px] text-[15px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.72)' }}>
               {PROFILE.aboutSummary}
             </p>
@@ -285,7 +293,7 @@ export default function StaticSite() {
 
         <SimpleSectionReveal>
           <section id="skills" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="skills-h">
-            <SectionHeading id="skills-h" index="05" label="Skills" title="Technical stack" />
+            <SectionHeading id="skills-h" index="06" label="Skills" title="Technical stack" />
             <div className="flex flex-col gap-5">
               {SKILLS.map((group) => (
                 <div key={group.category}>
@@ -306,7 +314,7 @@ export default function StaticSite() {
         <SimpleSectionReveal>
           <section className="grid gap-8 border-t py-10 md:grid-cols-2" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
             <div aria-labelledby="education-h">
-              <SectionHeading id="education-h" index="06" label="Background" title="Education" />
+              <SectionHeading id="education-h" index="07" label="Background" title="Education" />
               <div className="flex flex-col gap-3">
                 {EDUCATION.map((entry) => (
                   <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
@@ -343,7 +351,7 @@ export default function StaticSite() {
               </div>
             </div>
             <div aria-labelledby="achievements-h">
-              <SectionHeading id="achievements-h" index="07" label="Recognition" title="Achievements" />
+              <SectionHeading id="achievements-h" index="08" label="Recognition" title="Achievements" />
               <div className="flex flex-col gap-3">
                 {ACHIEVEMENTS.map((entry) => (
                   <div key={entry.id} className="rounded-xl border px-5 py-4" style={cardStyle}>
@@ -362,7 +370,7 @@ export default function StaticSite() {
 
         <SimpleSectionReveal>
           <section id="contact" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="contact-h">
-            <SectionHeading id="contact-h" index="08" label="Contact" title="Get in touch" />
+            <SectionHeading id="contact-h" index="09" label="Contact" title="Get in touch" />
             <div className="flex flex-wrap gap-3">
               <a
                 href={`mailto:${PROFILE.email}`}

@@ -15,6 +15,7 @@ const NAV_LINKS = [
   { href: PROFILE.resumeHref, label: 'Resume', external: true },
   { href: '/#projects', label: 'Projects', external: false },
   { href: '/#quant', label: 'Quant / ML', external: false },
+  { href: '/#leetcode', label: 'LeetCode', external: false },
   { href: PROFILE.githubUrl, label: 'GitHub', external: true },
   { href: PROFILE.linkedinUrl, label: 'LinkedIn', external: true },
   { href: '/#contact', label: 'Contact', external: false },
