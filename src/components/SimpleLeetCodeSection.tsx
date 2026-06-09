@@ -18,8 +18,8 @@ export default async function SimpleLeetCodeSection() {
   const progress = await fetchLeetCodeProgress();
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[1fr_420px] lg:items-start">
-      <div className="rounded-xl border px-4 py-4 sm:px-5 sm:py-5" style={cardStyle}>
+    <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,500px)] lg:items-start">
+      <div className="min-w-0 rounded-xl border px-4 py-4 sm:px-5 sm:py-5" style={cardStyle}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h3 className="text-[15px] font-semibold" style={{ color: 'rgba(255,255,255,0.88)' }}>
@@ -105,7 +105,7 @@ export default async function SimpleLeetCodeSection() {
         ) : null}
       </div>
 
-      <div className="rounded-xl border overflow-hidden" style={cardStyle}>
+      <div className="mx-auto min-w-0 w-full max-w-[500px] rounded-xl border lg:mx-0 lg:max-w-none lg:justify-self-end" style={cardStyle}>
         <div className="border-b px-4 py-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
           <p className="text-[13px] font-semibold" style={{ color: 'rgba(255,255,255,0.82)' }}>
             LeetCode stats
@@ -114,15 +114,22 @@ export default async function SimpleLeetCodeSection() {
             Live profile · @{LEETCODE.username}
           </p>
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={LEETCODE.statsCardUrl}
-          alt={`LeetCode statistics for ${LEETCODE.username}`}
-          width={420}
-          height={200}
-          className="block w-full"
-          loading="lazy"
-        />
+        <a
+          href={`https://leetcode.com/u/${LEETCODE.username}/`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={LEETCODE.statsCardUrl}
+            alt={`LeetCode statistics for ${LEETCODE.username}`}
+            width={500}
+            height={200}
+            className="block h-auto w-full max-w-[500px] rounded-b-xl"
+            loading="lazy"
+          />
+        </a>
       </div>
     </div>
   );
