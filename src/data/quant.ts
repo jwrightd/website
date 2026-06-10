@@ -3,6 +3,9 @@ export interface QuantSignal {
   title: string;
   detail: string;
   projectId?: string;
+  /** External proof link (e.g. live rating profile) shown beside the project link. */
+  externalHref?: string;
+  externalLabel?: string;
 }
 
 export const QUANT_SIGNALS: QuantSignal[] = [
@@ -27,8 +30,10 @@ export const QUANT_SIGNALS: QuantSignal[] = [
   {
     id: 'chess',
     title: 'Search, pruning, and competitive play',
-    detail: 'Self-built chess engines (~1500 Elo), USCF Candidate Master, and Top 100 Lichess rapid.',
+    detail: 'Self-built chess engines (~1500 Elo), USCF Candidate Master, and peak top 100 Lichess rapid (2538).',
     projectId: 'chessengine',
+    externalHref: 'https://lichess.org/@/jamesw112106/perf/rapid',
+    externalLabel: 'Lichess profile',
   },
   {
     id: 'diig',
@@ -38,10 +43,12 @@ export const QUANT_SIGNALS: QuantSignal[] = [
 ];
 
 export const QUANT_COURSEWORK = [
+  'Combinatorics (MATH 371)',
+  'High Dimensional Data Analysis (MATH 465)',
   'Probability (MATH 230)',
   'Linear Algebra (MATH 221)',
   'Advanced Multivariable Calculus (MATH 222)',
 ] as const;
 
 export const QUANT_SUMMARY =
-  'Probability, linear algebra, and multivariable calculus coursework plus research-grade modeling and DIIG investing-group pipelines on 15M+ row health data — maps to quant-adjacent SWE and ML engineering roles.';
+  'Research-grade modeling on irregular longitudinal data, DIIG investing-group pipelines on 15M+ row health data, and competitive search-and-pruning depth — maps to quant-adjacent SWE and ML engineering roles.';

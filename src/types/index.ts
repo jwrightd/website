@@ -124,6 +124,15 @@ export interface AchievementEntry {
   id: string;
   label: string;
   detail: string;
+  /** External proof link (e.g. live rating profile). */
+  href?: string;
+  hrefLabel?: string;
+  /** Screenshot evidence rendered inside the achievement card. */
+  proofImage?: {
+    src: string;
+    alt: string;
+    caption?: string;
+  };
 }
 
 export interface NeetCodeProblem {

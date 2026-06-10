@@ -16,11 +16,13 @@ export default function SimpleSectionReveal({
 
   return (
     <motion.div
-      className={className}
-      initial={prefersReducedMotion ? false : { opacity: 0, y: 12, filter: 'blur(8px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.44, ease: [0.22, 1, 0.36, 1] }}
+      className={className ? `cine-js-reveal ${className}` : 'cine-js-reveal'}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      // Trigger 240px before the section enters and settle fast: content must be
+      // readable the moment it's on screen, even at recruiter skim-scroll speed.
+      viewport={{ once: true, margin: '0px 0px 240px 0px' }}
+      transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.28, ease: 'easeOut' }}
     >
       {children}
     </motion.div>

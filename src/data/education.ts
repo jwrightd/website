@@ -8,11 +8,13 @@ export const EDUCATION: EducationEntry[] = [
     program: 'Mathematics and Computer Science · GPA 4.0',
     period: 'August 2025 – May 2028',
     coursework: [
+      'Combinatorics (MATH 371)',
+      'Introduction to High Dimensional Data Analysis (MATH 465)',
+      'Probability (MATH 230)',
       'Advanced Multivariable Calculus (MATH 222)',
+      'Linear Algebra (MATH 221)',
       'Data Structures and Algorithms (COMPSCI 201)',
       'Intro to Computer Systems (COMPSCI 210)',
-      'Linear Algebra (MATH 221)',
-      'Probability (MATH 230)',
     ],
   },
   {

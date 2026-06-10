@@ -3,6 +3,7 @@
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { LEETCODE_SECTION_ENABLED } from '@/data/leetcode';
 import { PROFILE } from '@/data/profile';
 import { EnterJamesOSButton } from './StaticSiteControls';
 
@@ -11,15 +12,15 @@ const cardStyle = {
   background: 'rgba(255,255,255,0.025)',
 } as const;
 
-const NAV_LINKS = [
+const NAV_LINKS: ReadonlyArray<{ href: string; label: string; external: boolean }> = [
   { href: PROFILE.resumeHref, label: 'Resume', external: true },
   { href: '/#projects', label: 'Projects', external: false },
   { href: '/#quant', label: 'Quant / ML', external: false },
-  { href: '/#leetcode', label: 'LeetCode', external: false },
+  ...(LEETCODE_SECTION_ENABLED ? [{ href: '/#leetcode', label: 'LeetCode', external: false }] : []),
   { href: PROFILE.githubUrl, label: 'GitHub', external: true },
   { href: PROFILE.linkedinUrl, label: 'LinkedIn', external: true },
   { href: '/#contact', label: 'Contact', external: false },
-] as const;
+];
 
 export default function SimpleSiteHeader() {
   const [open, setOpen] = useState(false);

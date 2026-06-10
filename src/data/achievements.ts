@@ -14,7 +14,14 @@ export const ACHIEVEMENTS: AchievementEntry[] = [
   {
     id: 'chess-online',
     label: 'Online chess rankings',
-    detail: 'Top 100 rapid players globally on Lichess.org and top 0.04% of Chess.com blitz players.',
+    detail: 'Peaked at rank 100 in rapid worldwide on Lichess.org (rating 2538) and top 0.04% of Chess.com blitz players.',
+    href: 'https://lichess.org/@/jamesw112106/perf/rapid',
+    hrefLabel: 'Lichess profile',
+    proofImage: {
+      src: '/proof/lichess-top100.png',
+      alt: 'Lichess rapid statistics showing rating 2538 and worldwide rank 100',
+      caption: 'Lichess rapid at peak · rank 100 worldwide',
+    },
   },
   {
     id: 'chess-virginia-college',

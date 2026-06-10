@@ -137,11 +137,10 @@ export default function ProjectMediaCard({
             {project.name}
           </Link>
         </h3>
+        {/* One line per card — the summary largely restates the outcome, so it
+            lives on the full case-study page instead. */}
         <p className="mt-2 text-[13px] font-medium leading-[1.6]" style={{ color: 'rgba(255,255,255,0.66)' }}>
           {project.outcome}
-        </p>
-        <p className="mt-2 line-clamp-3 text-[12.5px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.46)' }}>
-          {project.summary}
         </p>
 
         <div className="mt-3 flex flex-wrap gap-1.5">

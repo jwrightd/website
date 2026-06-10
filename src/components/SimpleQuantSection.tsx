@@ -13,21 +13,6 @@ export default function SimpleQuantSection() {
       <p className="max-w-[720px] text-[14px] leading-[1.65]" style={{ color: 'rgba(255,255,255,0.58)' }}>
         {QUANT_SUMMARY}
       </p>
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        {QUANT_COURSEWORK.map((course) => (
-          <span
-            key={course}
-            className="rounded-md border px-2 py-1 text-[11.5px]"
-            style={{
-              borderColor: 'rgba(255,255,255,0.08)',
-              background: 'rgba(255,255,255,0.03)',
-              color: 'rgba(255,255,255,0.52)',
-            }}
-          >
-            {course}
-          </span>
-        ))}
-      </div>
       <ul className="mt-4 grid gap-3 sm:grid-cols-2">
         {QUANT_SIGNALS.map((signal) => (
           <li
@@ -41,19 +26,38 @@ export default function SimpleQuantSection() {
             <p className="mt-1.5 text-[12.5px] leading-[1.6]" style={{ color: 'rgba(255,255,255,0.5)' }}>
               {signal.detail}
             </p>
-            {signal.projectId ? (
-              <Link
-                href={`/projects/${signal.projectId}`}
-                className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold"
-                style={{ color: '#c7d9ff' }}
-              >
-                View project
-                <ArrowUpRight size={12} aria-hidden="true" />
-              </Link>
+            {signal.projectId || signal.externalHref ? (
+              <div className="mt-3 flex flex-wrap gap-3">
+                {signal.projectId ? (
+                  <Link
+                    href={`/projects/${signal.projectId}`}
+                    className="inline-flex items-center gap-1 text-[12px] font-semibold"
+                    style={{ color: '#c7d9ff' }}
+                  >
+                    View project
+                    <ArrowUpRight size={12} aria-hidden="true" />
+                  </Link>
+                ) : null}
+                {signal.externalHref ? (
+                  <a
+                    href={signal.externalHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[12px] font-semibold"
+                    style={{ color: '#c7d9ff' }}
+                  >
+                    {signal.externalLabel ?? 'View proof'}
+                    <ArrowUpRight size={12} aria-hidden="true" />
+                  </a>
+                ) : null}
+              </div>
             ) : null}
           </li>
         ))}
       </ul>
+      <p className="mt-4 text-[12px] leading-[1.55]" style={{ color: 'rgba(255,255,255,0.38)' }}>
+        Coursework: {QUANT_COURSEWORK.join(' · ')}
+      </p>
     </div>
   );
 }

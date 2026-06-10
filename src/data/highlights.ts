@@ -98,7 +98,7 @@ export const STATS: Stat[] = [
     suffix: '%',
     decimals: 1,
     display: '99.5%',
-    label: 'BERT accuracy · WELFake fake-news detection',
+    label: 'BERT vs. classical embeddings · WELFake (known-separable benchmark)',
     shortLabel: 'BERT · WELFake',
     audience: 'quant',
   },
@@ -134,8 +134,8 @@ export const STATS: Stat[] = [
     value: 100,
     prefix: 'Top ',
     display: 'Top 100',
-    label: 'Lichess rapid worldwide · USCF Candidate Master',
-    shortLabel: 'Lichess · USCF CM',
+    label: 'Peak Lichess rapid rank worldwide (2538) · USCF Candidate Master',
+    shortLabel: 'Peak Lichess · USCF CM',
     audience: 'quant',
   },
   {
@@ -183,7 +183,7 @@ export interface ProofGroup {
   points: ProofPoint[];
 }
 
-export const RECRUITER_PATH = 'Duke Math + CS \u00b7 Software & ML';
+export const RECRUITER_PATH = 'Duke Math + CS \u201928 \u00b7 Software & ML';
 
 export const PROOF_GROUPS: ProofGroup[] = [
   {
@@ -203,7 +203,7 @@ export const PROOF_GROUPS: ProofGroup[] = [
       { id: 'gpa', statId: 'gpa', label: '4.0 GPA', detail: 'Mathematics + Computer Science at Duke' },
       { id: 'biorxiv', statId: 'biorxiv', label: 'bioRxiv co-author', detail: 'MINGL spatial proteomics package' },
       { id: 'research', label: 'Neural CDE forecasting', detail: 'irregular longitudinal Alzheimer’s data' },
-      { id: 'chess', statId: 'lichess', label: 'CM / Top-100 Lichess', detail: 'competitive chess and search depth' },
+      { id: 'chess', statId: 'lichess', label: 'CM / peak top-100 Lichess', detail: 'competitive chess and search depth' },
     ],
   },
 ];

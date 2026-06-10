@@ -1011,6 +1011,89 @@ html.booted .boot-screen {
   }
 }
 
+/* ── Cinematic intro (simple view) ─────────────────────── */
+.cine-grid {
+  background-image:
+    linear-gradient(rgba(148, 168, 210, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 168, 210, 0.05) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 58% at 50% 44%, black, transparent 74%);
+  mask-image: radial-gradient(ellipse 72% 58% at 50% 44%, black, transparent 74%);
+}
+
+.cine-knight-glow {
+  background: radial-gradient(
+    circle,
+    rgba(var(--os-accent-rgb), 0.17) 0%,
+    rgba(var(--os-accent-rgb), 0.05) 44%,
+    transparent 70%
+  );
+}
+
+.cine-scroll-line {
+  position: relative;
+  width: 1px;
+  height: 38px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.cine-scroll-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.75));
+  animation: cine-scroll-drop 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes cine-scroll-drop {
+  from { transform: translateY(0); }
+  to { transform: translateY(350%); }
+}
+
+/* Hero copy: CSS-driven entrance so the text paints with the initial HTML,
+   before hydration and independent of the 3D knight chunk loading. */
+.cine-hero-in {
+  animation: cine-hero-in 150ms ease-out backwards;
+}
+
+@keyframes cine-hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* No-JS / crawler fallback: motion-driven elements render fully visible,
+   and the sticky reveal track collapses into a normal static section. */
+html:not(.js) .cine-js-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+html:not(.js) .cine-reveal-track {
+  height: auto !important;
+}
+
+html:not(.js) .cine-reveal-stage {
+  position: static !important;
+  height: auto !important;
+  padding: 48px 0;
+}
+
+html:not(.js) .cine-reveal-line {
+  position: static !important;
+  padding: 28px 0;
+}
+
 /* Thin OS-style scrollbars */
 ::-webkit-scrollbar        { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track  { background: transparent; }
