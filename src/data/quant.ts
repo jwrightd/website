@@ -20,6 +20,8 @@ export const QUANT_SIGNALS: QuantSignal[] = [
     title: 'Prompt-to-dataset financial pipelines',
     detail: 'HackDuke Best Use of Solana — multi-agent orchestration with schema validation subagents for structured financial data from plain-English requests.',
     projectId: 'datacrawl',
+    externalHref: 'https://datacrawl.vercel.app',
+    externalLabel: 'Live site',
   },
   {
     id: 'mingl',

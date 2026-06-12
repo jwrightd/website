@@ -186,7 +186,10 @@ export const PROJECTS: Project[] = [
     techStack: ['Python', 'TypeScript', 'React', 'FastAPI', 'LangGraph', 'Firebase', 'Gemini'],
     myContribution:
       'Gemini orchestrator design, LangGraph/FastAPI pipeline wiring, and validation subagent coordination.',
-    links: [{ label: 'Team repo (hackathon)', href: 'https://github.com/Aarushvinod/DataCrawl', kind: 'github' }],
+    links: [
+      { label: 'Live site', href: 'https://datacrawl.vercel.app', kind: 'live' },
+      { label: 'Team repo (hackathon)', href: 'https://github.com/Aarushvinod/DataCrawl', kind: 'github' },
+    ],
     media: [
       {
         src: '/projects/datacrawl-main.png',
