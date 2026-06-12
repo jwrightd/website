@@ -1,4 +1,4 @@
-import { HERO_PROOF, POSITIONING, TAGLINE } from '@/data/highlights';
+import { POSITIONING, TAGLINE } from '@/data/highlights';
 
 import SimpleSectionReveal from './SimpleSectionReveal';
 
@@ -8,10 +8,23 @@ const LICHESS_RAPID_URL = 'https://lichess.org/@/jamesw112106/perf/rapid';
  * Compact positioning section between the hero and the stats cards. Previously a
  * 260vh sticky scroll-reveal track; folded into a single viewport so skimming
  * recruiters reach the proof points without burning scroll distance.
+ *
+ * Doubles as the hero's landing strip: the cinematic intro dissolves into this
+ * section, so it carries the hero's grid texture and a faint accent glow that
+ * fade out down the page instead of cutting to a flat background.
  */
 export default function ScrollTextReveal() {
   return (
-    <section aria-label="Focus" className="mx-auto max-w-[1100px] px-6 pb-14 pt-4 text-center">
+    <section aria-label="Focus" className="relative">
+      <div
+        className="cine-bridge-glow pointer-events-none absolute inset-x-0 top-0 h-[420px]"
+        aria-hidden="true"
+      />
+      <div
+        className="cine-grid-bridge pointer-events-none absolute inset-x-0 top-0 h-[60vh]"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1100px] px-6 pb-14 pt-6 text-center">
       <SimpleSectionReveal>
         <p
           className="mx-auto max-w-[900px] text-[clamp(26px,4.2vw,46px)] font-semibold leading-[1.14] tracking-[-0.02em]"
@@ -52,11 +65,12 @@ export default function ScrollTextReveal() {
               {TAGLINE}
             </p>
             <p className="mt-3 text-[clamp(12px,1.3vw,13.5px)] tracking-[0.03em]" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              {HERO_PROOF}
+              Four concurrent campus roles · Code+, DIIG, Duke AML, Hickey Lab
             </p>
           </div>
         </div>
       </SimpleSectionReveal>
+      </div>
     </section>
   );
 }

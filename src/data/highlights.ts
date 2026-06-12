@@ -128,6 +128,7 @@ export const STATS: Stat[] = [
     label: 'Elo · self-built chess engine (Python & C++)',
     shortLabel: 'Chess engine Elo',
     audience: 'both',
+    featured: true,
   },
   {
     id: 'lichess',
@@ -137,6 +138,7 @@ export const STATS: Stat[] = [
     label: 'Peak Lichess rapid rank worldwide (2538) · USCF Candidate Master',
     shortLabel: 'Peak Lichess · USCF CM',
     audience: 'quant',
+    featured: true,
   },
   {
     id: 'chesscom-blitz',

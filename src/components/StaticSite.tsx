@@ -33,7 +33,6 @@ const SECTION_ORDER = [
   'experience',
   'quant',
   ...(LEETCODE_SECTION_ENABLED ? ['leetcode'] : []),
-  'about',
   'skills',
   'background',
   'recognition',
@@ -101,7 +100,7 @@ export default function StaticSite() {
         {/* By the numbers */}
         <SimpleSectionReveal>
         <section className="py-8" aria-label="By the numbers">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {FEATURED_STATS.map((stat) => (
               <div key={stat.id} className="rounded-xl border px-4 py-4" style={cardStyle}>
                 <p className="text-[26px] font-semibold leading-none tracking-[-0.01em]" style={{ color: 'rgba(255,255,255,0.92)' }}>
@@ -208,23 +207,8 @@ export default function StaticSite() {
           </SimpleSectionReveal>
         ) : null}
 
-        <SimpleSectionReveal>
-          <section id="about" className="border-t py-10" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="about-h">
-            <SectionHeading id="about-h" index={sectionIndex('about')} label="About" title="Overview" />
-            <p className="max-w-[820px] text-[15px] leading-[1.8]" style={{ color: 'rgba(255,255,255,0.72)' }}>
-              {PROFILE.aboutSummary}
-            </p>
-            <ul className="mt-4 max-w-[820px] flex flex-col gap-2">
-              {PROFILE.aboutBullets.map((bullet) => (
-                <li key={bullet} className="flex items-start gap-2 text-[14px] leading-[1.7]" style={{ color: 'rgba(255,255,255,0.54)' }}>
-                  <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: 'rgba(255,255,255,0.28)' }} />
-                  {bullet}
-                </li>
-              ))}
-            </ul>
-          </section>
-        </SimpleSectionReveal>
-
+        {/* The former "Overview" section repeated the hero pitch a fourth time;
+            its content lives on in PROFILE for the JamesOS view. */}
         <SimpleSectionReveal>
           <section id="resume" className="border-t py-8" style={{ borderColor: 'rgba(255,255,255,0.06)' }} aria-labelledby="resume-h">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

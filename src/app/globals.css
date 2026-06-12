@@ -1030,6 +1030,28 @@ html.booted .boot-screen {
   );
 }
 
+/* Hero → content handoff: the grid texture continues past the hero's bottom
+   edge and dissolves down the page, so the first section shares the hero's
+   backdrop instead of starting on a flat cut. */
+.cine-grid-bridge {
+  background-image:
+    linear-gradient(rgba(148, 168, 210, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 168, 210, 0.05) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent 94%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent 94%);
+}
+
+/* Faint accent wash at the seam, matching the video's blue rim light. */
+.cine-bridge-glow {
+  background: radial-gradient(
+    ellipse 62% 100% at 50% 0%,
+    rgba(var(--os-accent-rgb), 0.07) 0%,
+    rgba(var(--os-accent-rgb), 0.025) 45%,
+    transparent 72%
+  );
+}
+
 .cine-scroll-line {
   position: relative;
   width: 1px;

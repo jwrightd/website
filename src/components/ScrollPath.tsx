@@ -46,8 +46,9 @@ interface Rect {
 }
 
 // How visible the trail is while crossing a content block (mask luminance).
-const DIM_FILL = '#5a5a5a';
-const DIM_PAD = 10;
+// Kept near-invisible: a bright streak over text reads as a rendering bug.
+const DIM_FILL = '#1a1a1a';
+const DIM_PAD = 18;
 
 export default function ScrollPath() {
   const prefersReducedMotion = useReducedMotion();
@@ -117,7 +118,7 @@ export default function ScrollPath() {
     const overContent = dimRectsRef.current.some(
       (r) => point.x >= r.x && point.x <= r.x + r.w && point.y >= r.y && point.y <= r.y + r.h
     );
-    dotDim.set(overContent ? 0.4 : 1);
+    dotDim.set(overContent ? 0.12 : 1);
   }, [pathLength, dotX, dotY, dotDim]);
   useMotionValueEvent(pathLength, 'change', syncDot);
   // Re-anchor the dot whenever the path is rebuilt at a new size.
@@ -130,6 +131,9 @@ export default function ScrollPath() {
   const dotDimSmooth = useSpring(dotDim, { stiffness: 170, damping: 26 });
   const dotEndsFade = useTransform(pathLength, [0, 0.015, 0.985, 1], [0, 1, 1, 0]);
   const dotOpacity = useTransform(() => dotEndsFade.get() * dotDimSmooth.get());
+  // The route (ghost + drawn stroke) fades in with the first bit of drawing,
+  // picking up where the hero tour left off instead of popping in fully formed.
+  const routeOpacity = useTransform(pathLength, [0, 0.05], [0, 1]);
 
   const d = size ? buildPath(size.w, size.h) : null;
 
@@ -156,7 +160,10 @@ export default function ScrollPath() {
               ))}
             </mask>
           </defs>
-          <g mask="url(#scroll-path-mask)">
+          <motion.g
+            mask="url(#scroll-path-mask)"
+            style={{ opacity: prefersReducedMotion ? 1 : routeOpacity }}
+          >
             {/* Faint ghost of the full route ahead. */}
             <path d={d} stroke="rgba(255,255,255,0.07)" strokeWidth={1} />
             <motion.path
@@ -170,7 +177,7 @@ export default function ScrollPath() {
                 filter: 'drop-shadow(0 0 7px rgba(190,210,255,0.5))',
               }}
             />
-          </g>
+          </motion.g>
         </svg>
       )}
       {d && !prefersReducedMotion && (
