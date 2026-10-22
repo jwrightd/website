@@ -19,12 +19,6 @@ export const HERO_PHOTOS: HeroPhoto[] = [
     caption: 'Cameron Indoor',
   },
   {
-    id: 'duke-festival',
-    src: '/photos/hero-duke-festival.png',
-    alt: 'James Wright at a Duke campus festival',
-    caption: 'Duke campus',
-  },
-  {
     id: 'lotte-world',
     src: '/photos/hero-lotte-world.png',
     alt: 'James Wright at Lotte World in Seoul',
@@ -47,12 +41,6 @@ export const HERO_PHOTOS: HeroPhoto[] = [
     src: '/photos/hero-night-street.png',
     alt: 'James Wright on a city street at night',
     caption: 'Night walk',
-  },
-  {
-    id: 'dinner',
-    src: '/photos/hero-dinner.png',
-    alt: 'James Wright at dinner',
-    caption: 'Dinner out',
   },
   {
     id: 'childhood',
